@@ -1,0 +1,20 @@
+{
+    "name": "sysborg/focusnfe",
+    "description": "Integração para Laravel com a FocusNFe",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Sysborg\\FocusNfe\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Anderson Arruda",
+            "email": "andmarruda@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "Laravel/framework": "^9.0"
+    }
+}
