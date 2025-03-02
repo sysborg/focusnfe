@@ -9,7 +9,7 @@ return [
   'regimeTributario' => [
     1 => 'Simples Nacional',
     2 => 'Simples Nacional - Excesso de sublimite de receita bruta',
-    3 => 'Regime Normal'
+    3 => 'Regime Normal',
     4 => 'Simples Nacional - Microempreendedor Individual - MEI'
   ],
 
