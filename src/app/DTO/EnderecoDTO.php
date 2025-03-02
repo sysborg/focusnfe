@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO;
+namespace Sysborg\FocusNfe\app\DTO;
 
 class EnderecoDTO extends DTO
 {

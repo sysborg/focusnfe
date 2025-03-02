@@ -1,8 +1,8 @@
 <?php
 
 namespace Sysborg\FocusNFe\App\Services;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-use Log;
 
 class NCM {
   /**

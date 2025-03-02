@@ -3,10 +3,11 @@
 namespace Sysborg\FocusNFe\App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Sysborg\FocusNFe\App\Rules\CnpjRule;
-use Sysborg\FocusNFe\App\Services\Empresas;
 use Sysborg\FocusNFe\App\Services\NFSe;
-use Sysborg\FocusNFe\App\Services\NFSeNacional
+use Sysborg\FocusNFe\App\Rules\CnpjRule;
+use Illuminate\Support\Facades\Validator;
+use Sysborg\FocusNFe\App\Services\Empresas;
+use Sysborg\FocusNFe\App\Services\NFSeNacional;
 
 class SBFocusNFeProvider extends ServiceProvider
 {

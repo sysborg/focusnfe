@@ -1,9 +1,9 @@
 <?php
 namespace Sysborg\FocusNFe\App\Services;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Sysborg\FocusNFe\App\DTO\NFSeDTO;
-use Log;
 
 /**
  * Classe responsável por manipular as NFSe
@@ -58,13 +58,15 @@ class NFSe {
     return $request->json();
   }
 
+  
+
   /**
    * Consulta uma NFSe
    * 
    * @param string $referencia
    * @return array
    */
-  public function consulta(string $referencia): array
+  public function get(string $referencia): array
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
