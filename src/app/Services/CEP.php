@@ -44,7 +44,7 @@ class CEP {
     ])->get(config('focusnfe.URL.production') . self::URL . "/$cep");
 
     if ($request->failed()) {
-      Log::error('FocusNFe.Empresa: Erro ao consultar CEP', [
+      Log::error('FocusNFe.Cep: Erro ao consultar CEP', [
         'response' => $request->json(),
         'data' => [
           'cep' => $cep

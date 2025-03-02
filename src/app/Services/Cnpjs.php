@@ -44,7 +44,7 @@ class Cnpjs {
     ])->get(config('focusnfe.URL.production') . self::URL . "/$cnpj");
 
     if ($request->failed()) {
-      Log::error('FocusNFe.Empresa: Erro ao consultar CNPJ', [
+      Log::error('FocusNFe.Cnpjs: Erro ao consultar CNPJ', [
         'response' => $request->json(),
         'data' => [
           'cnpj' => $cnpj
