@@ -1,21 +1,21 @@
-<?php
+<?php 
 
-namespace Sysborg\FocusNFe\App\Http\Controllers\Api;
-
+namespace Sysborg\FocusNFe\App\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNFe\App\Services\ConsultaEmails;
 
 class ConsultaEmailsController extends Controller
 {
-    
+   
     public function getEmail(string $email)
     {
-  
+        return response()->json(ConsultaEmails::get($email));
+    }
 
-        $consultaEmail = new ConsultaEmails($email);
 
-        return response()->json($consultaEmail->get($email));
+    public function deleteEmail(string $email)
+    {
+        return response()->json(ConsultaEmails::delete($email));
     }
 }
-

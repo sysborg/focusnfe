@@ -44,7 +44,7 @@ class ConsultaEmails {
     ])->get(config('focusnfe.URL.production') . self::URL . "/$email");
 
     if ($request->failed()) {
-        Log::error('FocusNFe.Empresa: Erro ao consultar e-mail', [
+        Log::error('FocusNFe.ConsultarEmails: Erro ao consultar e-mail', [
             'response' => $request->json(),
             'data' => ['email' => $email]
         ]);
@@ -76,6 +76,51 @@ class ConsultaEmails {
         'data' => $data
     ];
 }
+
+
+
+/**
+   * Realiza a deleção de um e-mail
+   * 
+   * @param string $email
+   * @return array  
+   */
+
+   public function delete(string $email): array
+   {
+       $response = Http::withHeaders([
+           'Authorization' => $this->token,
+       ])->delete(config('focusnfe.URL.production') . self::URL . "/$email");
+   
+       $data = $response->json();
+   
+       if ($response->failed()) {
+           Log::error('FocusNFe.ConsultarEmails: Erro ao deletar e-mail', [
+               'response' => $data,
+               'email' => $email
+           ]);
+   
+           if (isset($data['codigo']) && $data['codigo'] === 'requisicao_invalida') {
+               return [
+                   'erro' => 'Falha ao excluir o e-mail.',
+                   'mensagem' => $data['mensagem'] ?? 'Erro desconhecido.',
+                   'status_http' => 400
+               ];
+           }
+   
+           return [
+               'erro' => 'Falha ao deletar o e-mail da lista de bloqueios.',
+               'mensagem' => $data['mensagem'] ?? 'Erro desconhecido.',
+               'status_http' => $response->status()
+           ];
+       }
+   
+       return [
+           'status' => 'sucesso',
+           'mensagem' => 'E-mail removido da lista de bloqueios.'
+       ];
+   }
+   
 
 
 }

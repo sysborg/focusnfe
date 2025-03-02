@@ -1,7 +1,7 @@
 <?php
 
 namespace Sysborg\FocusNFe\App\Services;
-use Illuminate\Support\Facades\Log;
+use Log;
 use Illuminate\Support\Facades\Http;
 
 class CFOP {

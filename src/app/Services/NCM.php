@@ -1,7 +1,7 @@
 <?php
 
 namespace Sysborg\FocusNFe\App\Services;
-use Illuminate\Support\Facades\Log;
+use Log;
 use Illuminate\Support\Facades\Http;
 
 class NCM {
@@ -32,7 +32,7 @@ class NCM {
 
   /**
    * Lista todos os NCMs
-   * https://focusnfe.com.br/doc/?php#consulta-de-ncm
+   * 
    * 
    * @param int $offset
    * @param string|null $cnpj
@@ -58,4 +58,32 @@ class NCM {
 
     return $request->json();
   }
+
+  /**
+ * Retorna o NCM pelo código exato
+ *
+ * @param string $codigo
+ * @return array
+ */
+public function get(string $codigo): array
+{
+
+    $request = Http::withHeaders([
+        'Authorization' => $this->token,
+    ])->get(config('focusnfe.URL.production') . self::URL . "/$codigo");
+
+    if ($request->failed()) {
+        Log::error('FocusNFe.NCM: Erro ao buscar NCM', [
+          'response' => $request->json(),
+          'data' => [
+            'ncm' => $codigo
+          ]
+        ]);
+      }
+
+
+    return $request->json();
+      }
+    
+
 }
