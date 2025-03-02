@@ -2,11 +2,12 @@
 
 namespace Sysborg\FocusNFe\App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
-use Sysborg\FocusNFe\App\Http\Requests\NFSeRequest;
+use Illuminate\Routing\Controller;
 use Sysborg\FocusNFe\App\DTO\NFSeDTO;
-use Facades\Sysborg\FocusNFe\App\Services\NFSe;
+use Sysborg\FocusNFe\App\Services\NFSe;
+use Sysborg\FocusNFe\App\Http\Requests\NFSeRequest;
 
 class NFSeController extends Controller
 {
@@ -27,8 +28,14 @@ class NFSeController extends Controller
      */
     public function store(NFSeRequest $request)
     {
+
         $dto = NFSeDTO::fromArray($request->validated());
-        return response()->json(NFSe::create($dto), 201);
+
+        $nfseService = new NFSe(config('focusnfe.token'));
+
+        return response()->json($nfseService->envia($dto));
+
+        
     }
 
     /**
@@ -36,7 +43,10 @@ class NFSeController extends Controller
      */
     public function show(string $id)
     {
-        return response()->json(NFSe::get($id));
+
+        $nfseService = new NFSe(config('focusnfe.token'));
+
+        return response()->json($nfseService->get($id));
     }
 
     /**
@@ -53,6 +63,10 @@ class NFSeController extends Controller
      */
     public function destroy(string $id)
     {
-        return response()->json(NFSe::delete($id));
+
+        $nfseService = new NFSe(config('focusnfe.token'));
+
+        return response()->json($nfseService->cancela($id));
+
     }
 }

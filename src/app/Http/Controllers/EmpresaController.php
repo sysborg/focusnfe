@@ -2,11 +2,11 @@
 
 namespace Sysborg\FocusNFe\App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Sysborg\FocusNFe\App\Http\Requests\EmpresaRequest;
+use Illuminate\Routing\Controller;
 use Sysborg\FocusNFe\App\DTO\EmpresaDTO;
-use Facades\Sysborg\FocusNFe\App\Services\Empresas;
+use Sysborg\FocusNFe\App\Services\Empresas;
+use Sysborg\FocusNFe\App\Http\Requests\EmpresaRequest;
 
 class EmpresaController extends Controller
 {
@@ -15,7 +15,10 @@ class EmpresaController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json(Empresas::list(
+
+        $empresaService = new Empresas(config('focusnfe.token'));
+
+        return response()->json($empresaService->list(
             $request->query('offset', 1),
             $request->query('cnpj', null),
             $request->query('cpf', null)
@@ -28,15 +31,21 @@ class EmpresaController extends Controller
     public function store(EmpresaRequest $request)
     {
         $dto = EmpresaDTO::fromArray($request->validated());
-        return response()->json(Empresas::create($dto), 201);
+    
+        $empresaService = new Empresas(config('focusnfe.token'));
+    
+        return response()->json($empresaService->create($dto), 201);
     }
-
+    
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        return response()->json(Empresas::get($id));
+
+        $empresaService = new Empresas(config('focusnfe.token'));
+
+        return response()->json($empresaService->get($id));
     }
 
     /**
@@ -45,14 +54,21 @@ class EmpresaController extends Controller
     public function update(EmpresaRequest $request, string $id)
     {
         $dto = EmpresaDTO::fromArray($request->validated());
-        return response()->json(Empresas::update($id, $dto));
+    
+        $empresaService = new Empresas(config('focusnfe.token'));
+    
+        return response()->json($empresaService->update($id, $dto));
     }
+    
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        return response()->json(Empresas::delete($id));
-    }
+{
+    $empresaService = new Empresas(config('focusnfe.token'));
+
+    return response()->json($empresaService->delete($id));
+}
+
 }
