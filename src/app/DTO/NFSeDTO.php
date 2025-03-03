@@ -1,8 +1,11 @@
 <?php
 
-namespace App\DTO;
+namespace Sysborg\FocusNfe\App\DTO;
 
 use Carbon\Carbon;
+use App\DTO\ServicoDTO;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class NFSeDTO extends DTO {
     public function __construct(
@@ -20,13 +23,20 @@ class NFSeDTO extends DTO {
      */
     public static function fromArray(array $data): self
     {
-        $prestador = PrestadorDTO::fromArray($data['prestador']);
-        $tomador = TomadorDTO::fromArray($data['tomador']);
-        $servico = ServicoDTO::fromArray($data['servico']);
 
-        $validatedData = self::validate($data);
+        $validatedData = Validator::make($data, [
+            'data_emissao' => 'required|date',
+            'prestador' => 'required|array',
+            'tomador' => 'required|array',
+            'servico' => 'required|array'
+        ])->validate(); 
+    
+        $prestador = PrestadorDTO::fromArray($validatedData['prestador']);
+        $tomador = TomadorDTO::fromArray($validatedData['tomador']);
+        $servico = ServicoDTO::fromArray($validatedData['servico']);
+    
         return new self(
-            $data['dataEmissao'],
+            $validatedData['data_emissao'],
             $prestador,
             $tomador,
             $servico

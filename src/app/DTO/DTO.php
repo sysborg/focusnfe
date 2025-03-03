@@ -1,6 +1,6 @@
 <?php
 
-namespace Sysborg\FocusNFe\App\DTO;
+namespace Sysborg\FocusNfe\app\DTO;
 
 abstract class DTO {
   /**

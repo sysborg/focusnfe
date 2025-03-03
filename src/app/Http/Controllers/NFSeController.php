@@ -1,8 +1,8 @@
 <?php
 
-namespace Sysborg\FocusNFe\App\Http\Controllers\Api;
+namespace Sysborg\FocusNFe\App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Sysborg\FocusNFe\App\Http\Requests\NFSeRequest;
 use Sysborg\FocusNFe\App\DTO\NFSeDTO;
@@ -53,6 +53,6 @@ class NFSeController extends Controller
      */
     public function destroy(string $id)
     {
-        return response()->json(NFSe::delete($id));
+        return response()->json(NFSe::cancela($id));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO;
+namespace Sysborg\FocusNfe\app\DTO;
 use App\Helpers\Validations;
 
 class TomadorDTO extends DTO

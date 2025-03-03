@@ -1,9 +1,9 @@
 <?php
 namespace Sysborg\FocusNFe\App\Services;
 
-use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\App\DTO\NFSeNDTO;
 use Log;
+use NFSeNDTO;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Classe responsável por manipular as NFSe Nacional

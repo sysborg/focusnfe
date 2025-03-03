@@ -1,12 +1,12 @@
-<?php
+<?php 
 
-namespace Sysborg\FocusNFe\App\Http\Controllers\Api;
+namespace Sysborg\FocusNFe\App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Sysborg\FocusNFe\App\Http\Requests\EmpresaRequest;
+use Illuminate\Routing\Controller;
 use Sysborg\FocusNFe\App\DTO\EmpresaDTO;
-use Facades\Sysborg\FocusNFe\App\Services\Empresas;
+use Sysborg\FocusNFe\App\Http\Requests\EmpresaRequest;
+use Sysborg\FocusNfe\app\Services\Empresas;
 
 class EmpresaController extends Controller
 {
@@ -30,7 +30,7 @@ class EmpresaController extends Controller
         $dto = EmpresaDTO::fromArray($request->validated());
         return response()->json(Empresas::create($dto), 201);
     }
-
+    
     /**
      * Display the specified resource.
      */
@@ -47,7 +47,7 @@ class EmpresaController extends Controller
         $dto = EmpresaDTO::fromArray($request->validated());
         return response()->json(Empresas::update($id, $dto));
     }
-
+    
     /**
      * Remove the specified resource from storage.
      */
