@@ -17,7 +17,7 @@ class SBFocusNFeProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->mergeConfigFrom(__DIR__.'/../../config/focusnfe.php', 'focusnfe');
     }
 
     /**
@@ -25,6 +25,12 @@ class SBFocusNFeProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->loadRoutesFrom(__DIR__.'/../../routes/sbfocusnfe.php');
+
+        $this->publishes([
+            __DIR__ . '/../../config/focusnfe.php' => config_path('focusnfe.php'),
+        ], 'config');
+
         Validator::extend('cnpj', function ($attribute, $value, $parameters, $validator) {
             return (new CnpjRule())->passes($attribute, $value);
         }, (new CnpjRule())->message());
