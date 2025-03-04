@@ -1,21 +1,23 @@
 <?php
 
-namespace Sysborg\FocusNFe\App\Http\Controllers;
+namespace Sysborg\FocusNFe\app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNFe\app\DTO\NFSenDTO;
-use Sysborg\FocusNFe\App\Services\NFSeNacional;
+use Sysborg\FocusNFe\app\Services\NFSeNacional;
+use Sysborg\FocusNFe\app\Http\Requests\NFSeNacionalRequest;
 
 
 class NFSeNacionalController extends Controller
 {
   
-    public function store(Request $request)
+    public function store(NFSeNacionalRequest $request)
     {
-        $dto = NFSenDTO::fromArray($request->validated());
+        $dto = NFSeNDTO::fromArray($request->validated());
         return response()->json(NFSeNacional::envia($dto), 201);
     }
+    
 
     public function show(string $referencia)
     {

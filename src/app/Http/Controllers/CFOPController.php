@@ -4,7 +4,7 @@ namespace Sysborg\FocusNFe\App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNfe\App\Services\CFOP; 
+use Sysborg\FocusNfe\app\Services\CFOP; 
 
 class CfopController extends Controller
 {
