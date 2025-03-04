@@ -1,6 +1,6 @@
 <?php
 
-namespace Sysborg\FocusNfe\App\DTO;
+namespace Sysborg\FocusNfe\app\DTO;
 
 use Carbon\Carbon;
 use App\DTO\ServicoDTO;
