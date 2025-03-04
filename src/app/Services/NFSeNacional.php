@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
  * https://focusnfe.com.br/doc/?php#nfse-nacional_envio
  */
 
-class NFSen {
+class NFSeNacional {
   /**
    * URL base da API NFSe Nacional
    * 
