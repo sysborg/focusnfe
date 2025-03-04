@@ -1,14 +1,14 @@
 <?php
 
-namespace Sysborg\FocusNFe\App\Providers;
+namespace Sysborg\FocusNFe\app\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Sysborg\FocusNFe\App\Services\CFOP;
-use Sysborg\FocusNFe\App\Services\NFSe;
-use Sysborg\FocusNFe\App\Rules\CnpjRule;
+use Sysborg\FocusNFe\app\Services\CFOP;
+use Sysborg\FocusNFe\app\Services\NFSe;
+use Sysborg\FocusNFe\app\Rules\CnpjRule;
 use Illuminate\Support\Facades\Validator;
-use Sysborg\FocusNFe\App\Services\Empresas;
-use Sysborg\FocusNFe\App\Services\NFSeNacional;
+use Sysborg\FocusNFe\app\Services\Empresas;
+use Sysborg\FocusNFe\app\Services\NFSeNacional;
 
 class SBFocusNFeProvider extends ServiceProvider
 {
