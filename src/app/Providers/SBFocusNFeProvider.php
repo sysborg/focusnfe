@@ -1,6 +1,6 @@
 <?php
 
-namespace Sysborg\FocusNFe\App\Providers;
+namespace Sysborg\FocusNFe\app\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Sysborg\FocusNFe\App\Services\CFOP;
