@@ -14,7 +14,6 @@ class CTERecebidasController extends Controller
     {
         return response()->json(CTERecebidas::consulta($cnpj));
     }
-
  
     public function consultaCTE(string $chave)
     {
@@ -26,7 +25,6 @@ class CTERecebidasController extends Controller
         $dto = CTERecebidasDTO::fromArray($request->validated());
         return response()->json(CTERecebidas::informarDesacordo($chave, $dto));
     }
-
  
     public function consultaDesacordo(string $chave)
     {
