@@ -1,9 +1,8 @@
 <?php
 
 namespace Sysborg\FocusNFe\app\Services;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-
+use Log;
 
 class CEP {
   /**
@@ -54,5 +53,4 @@ class CEP {
 
     return $request->json();
   }
-
 }
