@@ -2,7 +2,7 @@
 
 namespace Sysborg\FocusNFe\app\DTO;
 
-class CTERecebidasDTO {
+class CTERecebidasDTO  extends DTO {
     public function __construct(
         public string $observacoes
     ) {}

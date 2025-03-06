@@ -5,15 +5,12 @@ namespace Sysborg\FocusNFe\app\DTO;
 class CTEDTO extends DTO
 {
     public function __construct(
-        public string $referencia,
-        public string $modal,
-        public array $dadosGerais,
-        public ?array $modalRodoviario = null,
-        public ?array $modalAereo = null,
-        public ?array $modalAquaviario = null,
-        public ?array $modalFerroviario = null,
-        public ?array $modalDutoviario = null,
-        public ?array $modalMultimodal = null
+        public ?ModalAereoDTO $modal_aereo,
+        public ?ModalAquaviarioDTO $modal_aquaviario,
+        public ?ModalDutoviarioDTO $modal_dutoviario,
+        public ?ModalFerroviarioDTO $modal_ferroviario,
+        public ?ModalMultimodalDTO $modal_multimodal,
+        public ?ModalRodoviarioDTO $modal_rodoviario,
     ) {}
 
     /**
@@ -24,16 +21,45 @@ class CTEDTO extends DTO
      */
     public static function fromArray(array $data): self
     {
+        $modal_aereo = null;
+        if (isset($data['modal_aereo'])) {
+            $modal_aereo = ModalAereoDTO::fromArray($data['modal_aereo']);
+        }
+
+        $modal_aquaviario = null;
+        if (isset($data['modal_aquaviario'])) {
+            $modal_aquaviario = ModalAquaviarioDTO::fromArray($data['modal_aquaviario']);
+        }
+
+        $modal_dutoviario = null;
+        if (isset($data['modal_dutoviario'])) {
+            $modal_dutoviario = ModalDutoviarioDTO::fromArray($data['modal_dutoviario']);
+        }
+
+        $modal_ferroviario = null;
+        if (isset($data['modal_ferroviario'])) {
+            $modal_ferroviario = ModalFerroviarioDTO::fromArray($data['modal_ferroviario']);
+        }
+
+        $modal_multimodal = null;
+        if (isset($data['modal_multimodal'])) {
+            $modal_multimodal = ModalMultimodalDTO::fromArray($data['modal_multimodal']);
+        }
+
+        $modal_rodoviario = null;
+        if (isset($data['modal_rodoviario'])) {
+            $modal_rodoviario = $data['modal_rodoviario']['tipo'] === 'CTe' ? 
+                ModalRodoviarioDTO::fromArray($data['modal_rodoviario']) :
+                ModalRodoviarioCTeOSDTO::fromArray($data['modal_rodoviario']);
+        }
+
         return new self(
-            $data['referencia'],
-            $data['modal'],
-            $data['dados_gerais'],
-            $data['modal_rodoviario'] ?? null,
-            $data['modal_aereo'] ?? null,
-            $data['modal_aquaviario'] ?? null,
-            $data['modal_ferroviario'] ?? null,
-            $data['modal_dutoviario'] ?? null,
-            $data['modal_multimodal'] ?? null
+            $modal_aereo,
+            $modal_aquaviario,
+            $modal_dutoviario,
+            $modal_ferroviario,
+            $modal_multimodal,
+            $modal_rodoviario,
         );
     }
 }

@@ -91,7 +91,22 @@ return [
         '0' => 'Não Negociável',
         '1' => 'Negociável'
       ]
-    ]
+    ],
+
+    'modal_rodoviario' => [
+      'CTeOS' => [
+        'tipo_proprietario' => [
+          '0' => 'TAC - Agregado',
+          '1' => 'TAC - Independente',
+          '2' => 'Outros'
+        ],
+
+        'tipo_fretamento' => [
+          '1' => 'Eventual',
+          '2' => 'Continuo'
+        ]
+      ]
+    ],
   ],
 
   'middlewares' => [],

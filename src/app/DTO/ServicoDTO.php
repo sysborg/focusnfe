@@ -2,7 +2,7 @@
 
 namespace app\DTO;
 
-class ServicoDTO
+class ServicoDTO  extends DTO
 {
     public function __construct(
         public float $aliquota,

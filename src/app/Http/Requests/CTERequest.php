@@ -14,20 +14,56 @@ class CTeRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'modal_rodoviario' => 'sometimes|array',
+            'modal_rodoviario.type' => 'required|string|in:CTe, CTeOS',
+            'modal_rodoviario.rntrc' => 'required_if:modal_rodoviario.type,CTe|string|min:8|max:8',
+            'modal_rodoviario.orderns_coleta_associados' => [
+                'sometimes',
+                'array',
+                function ($attribute, $value, $fail) {
+                    if (request('modal_rodoviario.tipo') !== 'CTe') {
+                        $fail('O campo ' . $attribute . ' somente é permitido para CTe');
+                    }
+                },
+            ],
+            'modal_rodoviario.orderns_coleta_associados.*.serie' => 'sometimes|string|min:1|max:3',
+            'modal_rodoviario.orderns_coleta_associados.*.numero_ordem_coleta' => 'required|string|regex:/^\d{1,6}$/',
+            'modal_rodoviario.orderns_coleta_associados.*.data_emissao' => 'required|date|after_or_equal:today',
+            'modal_rodoviario.orderns_coleta_associados.*.cnpj' => 'required|string|min:14|max:14',
+            'modal_rodoviario.orderns_coleta_associados.*.codigo_interno' => 'sometimes|string|min:1|max:10',
+            'modal_rodoviario.orderns_coleta_associados.*.inscricao_estadual' => 'required|string|min:2|max:14',
+            'modal_rodoviario.orderns_coleta_associados.*.uf' => 'required|string|min:2|max:2',
+            'modal_rodoviario.orderns_coleta_associados.*.telefone' => 'sometimes|string|min:6|max:14',
+            'modal_rodoviario.taf' => 'required_if:modal_rodoviario.type,CTeOS|string|regex:/^\d{12}$/',
+            'modal_rodoviario.numero_registro_estadual' => 'required_if:modal_rodoviario.type,CTeOS|string|regex:/^\d{25}$/',
+            'modal_rodoviario.placa' => 'required_if:modal_rodoviario.type,CTeOS|string|min:4|max:4',
+            'modal_rodoviario.renavam' => 'required_if:modal_rodoviario.type,CTeOS|string|min:9|max:11',
+            'modal_rodoviario.cpf_proprietario' => 'required_if:modal_rodoviario.type,CTeOS|string|min:11|max:11',
+            'modal_rodoviario.cnpj_proprietario' => 'required_if:modal_rodoviario.type,CTeOS|string|min:14|max:14',
+            'modal_rodoviario.taf_proprietario' => 'required_if:modal_rodoviario.type,CTeOS|string|regex:/^\d{12}$/',
+            'modal_rodoviario.numero_registro_estadual_proprietario' => 'required_if:modal_rodoviario.type,CTeOS|string|regex:/^\d{25}$/',
+            'modal_rodoviario.razao_social_proprietario' => 'required_if:modal_rodoviario.type,CTeOS|string|min:2|max:60',
+            'modal_rodoviario.inscricao_estadual_proprietario' => 'required_if:modal_rodoviario.type,CTeOS|string|min:0|max:14',
+            'modal_rodoviario.uf_proprietario' => 'required_if:modal_rodoviario.type,CTeOS|string|min:2|max:2',
+            'modal_rodoviario.tipo_proprietario' => 'required_if:modal_rodoviario.type,CTeOS|string|in:0,1,2',
+            'modal_rodoviario.uf_licenciamento' => 'required_if:modal_rodoviario.type,CTeOS|string|min:2|max:2',
+            'modal_rodoviario.tipo_fretamento' => 'required_if:modal_rodoviario.type,CTeOS|string|in:1,2',
+            'modal_rodoviario.data_viagem_fretamento' => 'required_if:modal_rodoviario.type,CTeOS|date|after_or_equal:today',
+
             'modal_aereo' => 'sometimes|array',
             'modal_aereo.numero_minuta' => 'required|string|regex:/^\d{9}$/',
             'modal_aereo.numero_operacional' => 'required|string|regex:/^\d{11}$/',
             'modal_aereo.data_prevista_entrega' => 'required|date|after_or_equal:today',
             'modal_aereo.dimensao_carga' => 'required|string|min:5|max:14',
             'modal_aereo.informacoes_manuseio' => 'required|array',
-            'modal_aereo.informacoes_manuseio.*' => 'required|string|min:2|max:2|in:01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,99'
+            'modal_aereo.informacoes_manuseio.*.codigo' => 'required|string|min:2|max:2|in:01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,99'
             'modal_aereo.classe_tarifa' => 'required|string|in:M,G,E',
             'modal_aereo.codigo_tarifa' => 'required|string|min:1|max:4',
-            'modal_aereo.valor_tarifa' => 'required|numeric',
+            'modal_aereo.valor_tarifa' => 'required|numeric|decimal:13,2',
             'modal_aereo.artigos_perigosos' => 'sometimes|array',
             'modal_aereo.artigos_perigosos.*.numero_onu' => 'required|string|min:4|max:4',
             'modal_aereo.artigos_perigosos.*.quantidade_total_volumes' => 'required|string|min:1|max:20',
-            'modal_aereo.artigos_perigosos.*.quantidade_total_artigos' => 'required|numeric',
+            'modal_aereo.artigos_perigosos.*.quantidade_total_artigos' => 'required|numeric|decimal:11,4',
             'modal_aereo.artigos_perigosos.*.unidade_medida' => 'sometimes|string|in:KG,KG G,LITROS,TI,Unidades',
             
             'modal_aquaviario' => 'sometimes|array',
