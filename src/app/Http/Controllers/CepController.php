@@ -3,8 +3,8 @@
 namespace Sysborg\FocusNFe\App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\App\Rules\CepRule;
-use Sysborg\FocusNFe\App\Services\CEP;
+use Sysborg\FocusNFe\app\Rules\CepRule;
+use Sysborg\FocusNFe\app\Services\CEP;
 
 class CepController extends Controller
 {

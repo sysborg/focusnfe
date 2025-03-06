@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO;
+namespace app\DTO;
 
 class ServicoDTO
 {

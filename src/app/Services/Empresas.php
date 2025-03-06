@@ -1,9 +1,9 @@
 <?php
 
-namespace Sysborg\FocusNFe\App\Services;
+namespace Sysborg\FocusNFe\app\Services;
 use Log;
 use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\App\DTO\EmpresaDTO;
+use Sysborg\FocusNFe\app\DTO\EmpresaDTO;
 
 class Empresas {
   /**

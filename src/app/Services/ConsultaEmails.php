@@ -1,6 +1,6 @@
 <?php
 
-namespace Sysborg\FocusNFe\App\Services;
+namespace Sysborg\FocusNFe\app\Services;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 

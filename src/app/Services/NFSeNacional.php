@@ -1,16 +1,16 @@
 <?php
-namespace Sysborg\FocusNFe\App\Services;
+namespace Sysborg\FocusNFe\app\Services;
 
 use Log;
-use NFSeNDTO;
+use Sysborg\FocusNFe\app\DTO\NFSenDTO;
 use Illuminate\Support\Facades\Http;
 
 /**
  * Classe responsável por manipular as NFSe Nacional
- * https://focusnfe.com.br/doc/?php#nfse-nacional_envio
+ * 
  */
 
-class NFSen {
+class NFSeNacional {
   /**
    * URL base da API NFSe Nacional
    * 
@@ -42,7 +42,7 @@ class NFSen {
    * @param NFSeNDTO $data
    * @return array
    */
-  public function envia(NFSeNDTO $data): array
+  public function envia(NFSenDTO $data): array
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,

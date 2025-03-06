@@ -1,0 +1,89 @@
+<?php
+
+namespace Sysborg\FocusNFe\app\Services;
+
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Sysborg\FocusNFe\app\DTO\NFeRecebidasDTO;
+
+class NFeRecebidas
+{
+    /**
+     * URL base da API NFe Recebidas
+     * 
+     * @var string
+     */
+    const URL = '/v2/nfes_recebidas';
+
+    /**
+     * Token de acesso
+     * 
+     * @var string
+     */
+    private string $token;
+
+    /**
+     * Construtor da classe
+     * 
+     * @param string $token
+     * @return void
+     */
+    public function __construct(string $token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * Lista todas as NFe Recebidas de um CNPJ específico.
+     * 
+     * @param string $cnpj
+     * @return array
+     */
+    public function listByCnpj(string $cnpj): array
+    {
+        $request = Http::withHeaders([
+            'Authorization' => $this->token,
+        ])->get(config('focusnfe.URL.production') . self::URL . "?cnpj=$cnpj");
+
+        if ($request->failed()) {
+            Log::error('FocusNFe.NFeRecebidas: Erro ao listar NFe Recebidas', [
+                'response' => $request->json(),
+                'cnpj' => $cnpj
+            ]);
+        }
+
+        return $request->json();
+    }
+
+   
+    /**
+     * Realiza um manifesto na nota informada
+     * 
+     * @param string $chave
+     * @param array $data
+     * @return array
+     */
+    public function manifestar(string $chave, NFeRecebidasDTO $data): array
+    {
+        $request = Http::withHeaders([
+            'Authorization' => $this->token,
+        ])->post(config('focusnfe.URL.production') . self::URL . "/$chave/manifesto", $data);
+
+        return $request->json();
+    }
+
+    /**
+     * Consulta o último manifesto válido na nota fiscal informada
+     * 
+     * @param string $chave
+     * @return array
+     */
+    public function consultarManifesto(string $chave): array
+    {
+        $request = Http::withHeaders([
+            'Authorization' => $this->token,
+        ])->get(config('focusnfe.URL.production') . self::URL . "/$chave/manifesto");
+
+        return $request->json();
+    }
+}
