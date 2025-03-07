@@ -44,7 +44,12 @@ class SBFocusNFeProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadRoutesFrom(__DIR__.'/../../routes/sbfocusnfe.php');
+        $this->app->router->group([
+            'prefix' => config('focusnfe.apiPrefix') . '/sbfocus',
+            'middleware' => config('focusnfe.middlewares')
+        ], function () {
+            $this->loadRoutesFrom(__DIR__.'/../../routes/sbfocusnfe.php');
+        });
 
         $this->publishes([
             __DIR__ . '/../../config/focusnfe.php' => config_path('focusnfe.php'),

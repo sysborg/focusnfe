@@ -20,24 +20,23 @@ use Sysborg\FocusNFe\app\Http\Controllers\CepController;
 use Sysborg\FocusNFe\app\Http\Controllers\CnaeController;
 use Sysborg\FocusNFe\app\Http\Controllers\CnpjController;
 
-Route::prefix('sbfocus')->middleware(config('focusnfe.middlewares', []))->group(function () {
-    Route::apiResource('empresas', EmpresaController::class);
-    Route::apiResource('nfse', NFSeController::class);
-    Route::apiResource('cte', CTEController::class);
-    Route::apiResource('cte_recebidas', CTERecebidasController::class);
-    Route::apiResource('nfe', NFeController::class);
-    Route::apiResource('nfe_recebidas', NFeRecebidasController::class);
-    Route::apiResource('nfse_arquivo', NFSeArquivoController::class);
-    Route::apiResource('nfse_nacional', NFSeNacionalController::class);
-    Route::apiResource('nfse_recebidas', NFSeRecebidasController::class);
-    Route::apiResource('mdfe', MDFeController::class);
-    Route::apiResource('ncm', NcmController::class);
-    Route::apiResource('cfop', CFOPController::class);
-    Route::apiResource('municipios', MunicipiosController::class);
-    Route::apiResource('consulta_emails', ConsultaEmailsController::class);
-    Route::apiResource('cep', CepController::class);
-    Route::apiResource('cnae', CnaeController::class);
-    Route::apiResource('cnpj', CnpjController::class);
-});
+Route::apiResource('empresas', EmpresaController::class);
+Route::apiResource('nfse', NFSeController::class);
+Route::apiResource('cte', CTEController::class);
+Route::apiResource('cte_recebidas', CTERecebidasController::class);
+Route::apiResource('nfe', NFeController::class);
+Route::apiResource('nfe_recebidas', NFeRecebidasController::class);
+Route::apiResource('nfse_arquivo', NFSeArquivoController::class);
+Route::apiResource('nfse_nacional', NFSeNacionalController::class);
+Route::apiResource('nfse_recebidas', NFSeRecebidasController::class);
+Route::apiResource('mdfe', MDFeController::class);
+Route::apiResource('municipios', MunicipiosController::class);
+Route::apiResource('consulta_emails', ConsultaEmailsController::class);
+
+Route::apiResource('ncm', NcmController::class)->only(['index', 'show']);
+Route::apiResource('cnae', CnaeController::class)->only(['index', 'show']);
+Route::apiResource('cfop', CFOPController::class)->only(['index', 'show']);
+Route::get('/cep/{cep}', [CepController::class, 'show'])->where('cep', '[0-9]{8}');
+Route::get('/cnpj/{cnpj}', [CnpjController::class, 'consultar'])->where('cnpj', '[0-9]{14}');
 
 Route::post('/sbfocus/hooks', [HooksController::class, 'webhook']);
