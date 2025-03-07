@@ -3,12 +3,12 @@
 namespace Sysborg\FocusNFe\app\DTO;
 
 use Carbon\Carbon;
-use App\DTO\ServicoDTO;
+use Sysborg\FocusNFe\app\DTO\ServicoDTO;
 
 class NFSenDTO extends DTO 
 {
     public function __construct(
-        public Carbon $dataEmissao,
+        public Carbon $data_emissao,
         public PrestadorDTO $prestador,
         public TomadorDTO $tomador,
         public ServicoDTO $servico

@@ -2,6 +2,15 @@
 
 namespace Sysborg\FocusNFe\app\DTO;
 
+use Sysborg\FocusNFe\app\DTO\ModalAereoDTO;
+use Sysborg\FocusNFe\app\DTO\ModalAquaviarioDTO;
+use Sysborg\FocusNFe\app\DTO\ModalDutoviarioDTO;
+use Sysborg\FocusNFe\app\DTO\ModalMultimodalDTO;
+use Sysborg\FocusNFe\app\DTO\ModalRodoviarioDTO;
+use Sysborg\FocusNFe\app\DTO\ModalFerroviarioDTO;
+
+
+
 class CTEDTO extends DTO
 {
     public function __construct(
@@ -11,6 +20,7 @@ class CTEDTO extends DTO
         public ?ModalFerroviarioDTO $modal_ferroviario,
         public ?ModalMultimodalDTO $modal_multimodal,
         public ?ModalRodoviarioDTO $modal_rodoviario,
+        public $referencia
     ) {}
 
     /**
@@ -50,16 +60,17 @@ class CTEDTO extends DTO
         if (isset($data['modal_rodoviario'])) {
             $modal_rodoviario = $data['modal_rodoviario']['tipo'] === 'CTe' ? 
                 ModalRodoviarioDTO::fromArray($data['modal_rodoviario']) :
-                ModalRodoviarioCTeOSDTO::fromArray($data['modal_rodoviario']);
+                ModalRodoviarioOSDTO::fromArray($data['modal_rodoviario']);
         }
 
         return new self(
+            $data['referencia'],
             $modal_aereo,
             $modal_aquaviario,
             $modal_dutoviario,
             $modal_ferroviario,
             $modal_multimodal,
-            $modal_rodoviario,
+            $modal_rodoviario
         );
     }
 }

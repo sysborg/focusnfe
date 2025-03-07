@@ -9,7 +9,7 @@ class EnderecoDTO extends DTO
         public string $numero,
         public string $complemento,
         public string $bairro,
-        public string $codigoMunicipio,
+        public string $codigo_municipio,
         public string $uf,
         public string $cep
     ) {}

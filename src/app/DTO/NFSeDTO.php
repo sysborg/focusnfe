@@ -3,13 +3,13 @@
 namespace Sysborg\FocusNfe\app\DTO;
 
 use Carbon\Carbon;
-use App\DTO\ServicoDTO;
+use Sysborg\FocusNFe\App\DTO\ServicoDTO;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class NFSeDTO extends DTO {
     public function __construct(
-        public Carbon $dataEmissao,
+        public Carbon $data_emissao,
         public PrestadorDTO $prestador,
         public TomadorDTO $tomador,
         public ServicoDTO $servico

@@ -6,12 +6,12 @@ use Carbon\Carbon;
 
 class NFCeDTO extends DTO {
     public function __construct(
-        public string $naturezaOperacao,
-        public Carbon $dataEmissao,
-        public int $presencaComprador,
-        public string $cnpjEmitente,
-        public int $modalidadeFrete,
-        public int $localDestino,
+        public string $natureza_operacao,
+        public Carbon $data_emissao,
+        public int $presenca_comprador,
+        public string $cnpj_emitente,
+        public int $modalidade_frete,
+        public int $local_destino,
     ) {}
 
     /**
