@@ -39,12 +39,10 @@ class CTe{
      */
     public function envia(array $data, string $referencia): array
     {
-        $url = config('focusnfe.URL.production') . self::URL . "?ref=$referencia";
-
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->post($url, $data);
-
+        ])->post(config('focusnfe.URL.production') . self::URL . "?ref=$referencia", $data);
+    
         if ($request->failed()) {
             Log::error('FocusNFe.CTe: Erro ao enviar CTe', [
                 'response' => $request->json(),
@@ -52,7 +50,7 @@ class CTe{
                 'referencia' => $referencia
             ]);
         }
-
+    
         return $request->json();
     }
 
@@ -104,20 +102,18 @@ class CTe{
         return $request->json();
     }
 
-    /**
+     /**
      * Cria uma Carta de Correção para uma CTe
-     * 
+     *
      * @param string $referencia
      * @param array $data
      * @return array
      */
     public function cartaCorrecao(string $referencia, array $data): array
     {
-        $url = config('focusnfe.URL.production') . self::URL . "/$referencia/carta_correcao";
-
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->post($url, $data);
+        ])->post(config('focusnfe.URL.production') . self::URL . "/$referencia/carta_correcao", $data);
 
         if ($request->failed()) {
             Log::error('FocusNFe.CTe: Erro ao enviar Carta de Correção', [
