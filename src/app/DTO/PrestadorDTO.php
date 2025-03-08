@@ -6,8 +6,8 @@ class PrestadorDTO extends DTO
 {
     public function __construct(
         public string $cnpj,
-        public string $inscricaoMunicipal,
-        public string $codigoMunicipio
+        public string $inscricao_municipal,
+        public string $codigo_municipio
     ) {}
 
     /**

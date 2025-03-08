@@ -1,6 +1,6 @@
 <?php
 
-namespace app\DTO;
+namespace Sysborg\FocusNfe\app\DTO;
 use Carbon\Carbon;
 
 class ModalDutoviarioDTO extends DTO

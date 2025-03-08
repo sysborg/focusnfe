@@ -111,6 +111,8 @@ return [
 
   'middlewares' => [],
 
+  'apiPrefix' => 'api/v1',
+
   'listeners' => [
     'hooks' => []
   ],

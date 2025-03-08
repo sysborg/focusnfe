@@ -56,7 +56,7 @@ class CTeRequest extends FormRequest
             'modal_aereo.data_prevista_entrega' => 'required|date|after_or_equal:today',
             'modal_aereo.dimensao_carga' => 'required|string|min:5|max:14',
             'modal_aereo.informacoes_manuseio' => 'required|array',
-            'modal_aereo.informacoes_manuseio.*.codigo' => 'required|string|min:2|max:2|in:01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,99'
+            'modal_aereo.informacoes_manuseio.*.codigo' => 'required|string|min:2|max:2|in:01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,99',
             'modal_aereo.classe_tarifa' => 'required|string|in:M,G,E',
             'modal_aereo.codigo_tarifa' => 'required|string|min:1|max:4',
             'modal_aereo.valor_tarifa' => 'required|numeric|decimal:13,2',
@@ -86,7 +86,7 @@ class CTeRequest extends FormRequest
             'modal_aquaviario.containers.*.nfes' => 'sometimes|array',
             'modal_aquaviario.containers.*.nfes.*.chave_nfe' => 'required|string|min:44|max:44',
             'modal_aquaviario.containers.*.nfes.*.unidade_medida_rateada' => 'required|numeric|decimal:3,2',
-            'modal_aquaviario.tipo_navegacao' => 'required|string|min:1|max:1|in:0,1'
+            'modal_aquaviario.tipo_navegacao' => 'required|string|min:1|max:1|in:0,1',
 
             'modal_ferroviario' => 'sometimes|array',
             'modal_ferroviario.tipo_trafego' => 'required|string|min:1|max:1|in:0,1,2,3',

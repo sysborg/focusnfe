@@ -19,6 +19,7 @@ class CTeController extends Controller
     public function store(CTeRequest $request): JsonResponse
     {
         $dto = CTeDTO::fromArray($request->validated());
+
         return response()->json(CTe::envia($dto->toArray(), $dto->referencia), 201);
     }
 
@@ -42,5 +43,18 @@ class CTeController extends Controller
     public function destroy(string $referencia): JsonResponse
     {
         return response()->json(CTe::cancela($referencia));
+    }
+
+      /**
+     * Cria uma Carta de Correção para um CTe.
+     * 
+     * @param string $referencia
+     * @param CTeRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cartaCorrecao(string $referencia, CTeRequest $request): JsonResponse
+    {
+        $dto = CTeDTO::fromArray($request->validated());
+        return response()->json(CTe::cartaCorrecao($referencia, $dto->toArray()));
     }
 }

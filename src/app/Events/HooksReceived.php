@@ -13,7 +13,7 @@ class HooksReceived {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public array $data;
-    public strnig $urlReferrer;
+    public string $urlReferrer;
 
     public function __construct(array $data, string $urlReferrer)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\DTO;
+namespace Sysborg\FocusNfe\app\DTO;
 use Carbon\Carbon;
 
 class ModalAereoDTO extends DTO
@@ -28,7 +28,7 @@ class ModalAereoDTO extends DTO
     $artigos_perigosos = null;
     if (isset($data['artigos_perigosos'])) {
       foreach ($data['artigos_perigosos'] as $artigo_perigoso) {
-        $artigos_perigosos[] = ArtigoPerigosoDTO::fromArray($artigo_perigoso);
+        $artigos_perigosos[] = ArtigosPerigososDTO::fromArray($artigo_perigoso);
       }
     }
 

@@ -4,31 +4,32 @@ namespace Sysborg\FocusNfe\app\DTO;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class EmpresaDTO extends DTO {
+class EmpresaDTO extends DTO
+{
   public function __construct(
-    public string $razaoSocial,
-    public string $nomeFantasia,
+    public string $razao_social,
+    public string $nome_fantasia,
     public string $bairro,
     public int $cep,
     public string $cnpj,
     public string $complemento,
     public string $email,
-    public string $inscricaoEstadual,
-    public string $inscricaoMunicipal,
+    public string $inscricao_estadual,
+    public string $inscricao_municipal,
     public string $logradouro,
     public int $numero,
-    public int $regimeTributario,
+    public int $regime_tributario,
     public string $telefone,
     public string $municipio,
     public string $uf,
-    public bool $habilitaNfe,
-    public bool $habilitaNfce,
-    public string $arquivoCertificado,
-    public string $senhaCertificado,
-    public string $cscNfceProducao,
-    public string $idTokenNfceProducao,
-    public bool $enviaEmailDestinatario = true,
-    public bool $discriminaImposto = true,
+    public bool $habilita_nfe,
+    public bool $habilita_nfce,
+    public string $arquivo_certificado,
+    public string $senha_certificado,
+    public string $csc_nfce_producao,
+    public string $id_token_nfce_producao,
+    public bool $envia_email_destinatario = true,
+    public bool $discrimina_imposto = true,
   ) {}
 
   /**
@@ -38,59 +39,31 @@ class EmpresaDTO extends DTO {
    * @return EmpresaDTO
    */
   public static function fromArray(array $data): self
-{
-    // Validação dos dados
-    $validatedData = Validator::make($data, [
-        'razaoSocial' => 'required|string',
-        'nomeFantasia' => 'nullable|string',
-        'bairro' => 'required|string',
-        'cep' => 'required|integer',
-        'cnpj' => 'required|string',
-        'complemento' => 'nullable|string',
-        'email' => 'required|email',
-        'inscricaoEstadual' => 'nullable|string',
-        'inscricaoMunicipal' => 'nullable|string',
-        'logradouro' => 'required|string',
-        'numero' => 'required|integer',
-        'regimeTributario' => 'required|integer',
-        'telefone' => 'required|string',
-        'municipio' => 'required|string',
-        'uf' => 'required|string|size:2',
-        'habilitaNfe' => 'required|boolean',
-        'habilitaNfce' => 'required|boolean',
-        'arquivoCertificado' => 'nullable|string',
-        'senhaCertificado' => 'nullable|string',
-        'cscNfceProducao' => 'nullable|string',
-        'idTokenNfceProducao' => 'nullable|string',
-        'enviaEmailDestinatario' => 'required|boolean',
-        'discriminaImposto' => 'required|boolean',
-    ])->validate(); // Aplica a validação
-
+  {
     return new self(
-        $validatedData['razaoSocial'],
-        $validatedData['nomeFantasia'] ?? '',
-        $validatedData['bairro'],
-        $validatedData['cep'],
-        $validatedData['cnpj'],
-        $validatedData['complemento'] ?? '',
-        $validatedData['email'],
-        $validatedData['inscricaoEstadual'] ?? '',
-        $validatedData['inscricaoMunicipal'] ?? '',
-        $validatedData['logradouro'],
-        $validatedData['numero'],
-        $validatedData['regimeTributario'],
-        $validatedData['telefone'],
-        $validatedData['municipio'],
-        $validatedData['uf'],
-        $validatedData['habilitaNfe'],
-        $validatedData['habilitaNfce'],
-        $validatedData['arquivoCertificado'] ?? '',
-        $validatedData['senhaCertificado'] ?? '',
-        $validatedData['cscNfceProducao'] ?? '',
-        $validatedData['idTokenNfceProducao'] ?? '',
-        $validatedData['enviaEmailDestinatario'],
-        $validatedData['discriminaImposto'],
+        $data['razao_social'],
+        $data['nome_fantasia'] ?? '',
+        $data['bairro'],
+        $data['cep'],
+        $data['cnpj'],
+        $data['complemento'] ?? '',
+        $data['email'],
+        $data['inscricao_estadual'] ?? '',
+        $data['inscricao_municipal'] ?? '',
+        $data['logradouro'],
+        $data['numero'],
+        $data['regime_tributario'],
+        $data['telefone'],
+        $data['municipio'],
+        $data['uf'],
+        $data['habilita_nfe'],
+        $data['habilita_nfce'],
+        $data['arquivo_certificado'] ?? '',
+        $data['senha_certificado'] ?? '',
+        $data['csc_nfce_producao'] ?? '',
+        $data['id_token_nfce_producao'] ?? '',
+        $data['envia_email_destinatario'],
+        $data['discrimina_imposto'],
     );
-}
-
+  }
 }

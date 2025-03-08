@@ -1,16 +1,16 @@
 <?php
 
-namespace app\DTO;
+namespace Sysborg\FocusNfe\app\DTO;
 
-class ServicoDTO  extends DTO
+class ServicoDTO extends DTO
 {
     public function __construct(
         public float $aliquota,
         public string $discriminacao,
-        public bool $issRetido,
-        public string $itemListaServico,
-        public string $codigoTributarioMunicipio,
-        public float $valorServicos
+        public bool $iss_retido,
+        public string $item_lista_servico,
+        public string $codigo_tributario_municipio,
+        public float $valor_servicos
     ) {}
 
     /**

@@ -3,13 +3,47 @@ namespace Sysborg\FocusNFe\tests\mocks\Stub;
 
 class EmpresaStub {
   /**
+   * Mock de request da empresa
+   * 
+   * @return array
+   */
+  public static function request(): array
+  {
+    return [
+      'nome' => 'Nome da empresa Ltda',
+      'nome_fantasia' => 'Nome Fantasia',
+      'bairro' => 'Vila Isabel',
+      'cep' => 80210000,
+      'cnpj' => '10964044000164',
+      'complemento' => 'Loja 1',
+      'discrimina_impostos' => true,
+      'email' => 'test@example.com',
+      'enviar_email_destinatario' => true,
+      'inscricao_estadual' => 1234,
+      'inscricao_municipal' => 46532,
+      'logradouro' => 'Rua João da Silva',
+      'numero' => 153,
+      'regime_tributario' => 1,
+      'telefone' => '4130333333',
+      'municipio' => 'Curitiba',
+      'uf' => 'PR',
+      'habilita_nfe' => true,
+      'habilita_nfce' => true,
+      'arquivo_certificado_base64' => 'MIIj4gIBAzCCI54GCSqGSIb3DQEHAaCC..apagado…ASD==',
+      'senha_certificado' => 123456,
+      'csc_nfce_producao' => 'ABCDEF',
+      'id_token_nfce_producao' => '00001'
+    ];
+  }
+
+  /**
    * Retorna dados mocados de erro validação certificado
    * 
-   * @return string
+   * @return array
    */
-  public static function erroValidacaoCertificado(): string
+  public static function erroValidacaoCertificado(): array
   {
-    return json_encode([
+    return [
       'codigo' => 'erro_validacao',
       'mensagem' => 'Erro de validação',
       'erros' => [
@@ -19,7 +53,7 @@ class EmpresaStub {
           'campo' => 'arquivo_certificado_base64'
         ]
       ]
-    ]);
+    ];
   }
 
   /**
@@ -27,39 +61,19 @@ class EmpresaStub {
    * 
    * @return string
    */
-  public static function erroGeralCertificado(): string
+  public static function erroGeralCertificado(): array
   {
-    return json_encode([
+    return [
       'codigo' => 'erro_validacao',
       'mensagem' => 'Erro de validação',
       'erros' => [
         [
           'codigo' => 'erro_validacao',
           'mensagem' => 'Arquivo certificado base64 Certificado não pertence ao CNPJ informado',
-          'campo' => 'senha_certificado'
-        ]
-      ]
-    ]);
-  }
-
-  /**
-   * Retorna dados mocados de erro de certificado vencido
-   * 
-   * @return string
-   */
-  public static function erroCerticadoVencido(): string
-  {
-    return json_encode([
-      'codigo' => 'erro_validacao',
-      'mensagem' => 'Erro de validação',
-      'erros' => [
-        [
-          'codigo' => 'erro_validacao',
-          'mensagem' => 'Arquivo certificado base64 Certificado com prazo de validade vencido',
           'campo' => 'arquivo_certificado_base64'
         ]
       ]
-    ]);
+    ];
   }
 
   /**
@@ -102,13 +116,13 @@ class EmpresaStub {
   }
 
   /**
-   * Retorna dados mocados de uma empresa criada
+   * Retorna dados mocados de uma empresa criada em array
    * 
-   * @return string
+   * @return array
    */
-  public static function sucesso(): string
+  public static function sucesso(): array
   {
-    return json_encode([
+    return [
       "id" => 123,
       "nome" => "Razão social da empresa",
       "nome_fantasia" => "Nome fantasia da empresa",
@@ -222,6 +236,6 @@ class EmpresaStub {
       "smtp_tls" => false,
       "token_producao" => "",
       "token_homologacao" => ""
-    ]);
+    ];
   }
 }

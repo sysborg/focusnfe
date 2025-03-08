@@ -7,7 +7,7 @@ class TomadorDTO extends DTO
 {
     public function __construct(
         public string $cnpj,
-        public string $razaoSocial,
+        public string $razao_social,
         public string $email,
         public EnderecoDTO $endereco
     ) {}

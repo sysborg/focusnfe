@@ -1,12 +1,12 @@
 <?php 
 
-namespace Sysborg\FocusNFe\App\Http\Controllers;
+namespace Sysborg\FocusNFe\app\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Facades\Sysborg\FocusNFe\app\Services\Backups;
+use Sysborg\FocusNFe\app\Services\Backups;
 use Log;
 
-class HooksController extends Controller
+class BackupControllerr extends Controller
 {
     public function request(Request $request)
     {
