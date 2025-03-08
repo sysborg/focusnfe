@@ -61,7 +61,7 @@ class EmpresaStub {
    * 
    * @return string
    */
-  public static function erroGeralCertificado(): string
+  public static function erroGeralCertificado(): array
   {
     return [
       'codigo' => 'erro_validacao',
