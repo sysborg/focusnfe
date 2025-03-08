@@ -1,9 +1,9 @@
 <?php
 
-namespace Sysborg\FocusNFe\App\Services;
+namespace Sysborg\FocusNFe\app\Services;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
+use Log;
 
 class CTe{
     /**

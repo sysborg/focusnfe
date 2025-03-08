@@ -79,27 +79,27 @@ class EmpresaStub {
   /**
    * Retorna dados mocados de empresa nao encontrada
    * 
-   * @return string
+   * @return array
    */
-  public static function erroEmpresaNaoEncontrada(): string
+  public static function erroEmpresaNaoEncontrada(): array
   {
-    return json_encode([
+    return [
       'codigo' => 'nao_encontrado',
       'mensagem' => 'Empresa não encontrada'
-    ]);
+    ];
   }
 
   /**
    * Retorna dados mocados de permissão negada não pertence ao domínio do cliente
    * 
-   * @return string
+   * @return array
    */
-  public static function erroPermissaoNegada(): string
+  public static function erroPermissaoNegada(): array
   {
-    return json_encode([
+    return [
       'codigo' => 'permissao_negada',
       'mensagem' => 'Empresa não encontrada como propriedade da revenda'
-    ]);
+    ];
   }
 
   /**
@@ -109,10 +109,10 @@ class EmpresaStub {
    */
   public static function erroParametrosInvalidos(): string
   {
-    return json_encode([
+    return [
       'codigo' => 'parametros_invalidos',
       'mensagem' => 'Existe um problema no JSON recebido: 822: unexpected token at \'empresa_id=12079\'',
-    ]);
+    ];
   }
 
   /**

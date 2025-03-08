@@ -2,9 +2,9 @@
 
 namespace Sysborg\FocusNFe\app\Services;
 
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Sysborg\FocusNFe\app\DTO\NFeRecebidasDTO;
+use Illuminate\Support\Facades\Http;
+use Log;
 
 class NFeRecebidas
 {

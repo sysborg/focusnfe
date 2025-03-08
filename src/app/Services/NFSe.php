@@ -3,14 +3,16 @@ namespace Sysborg\FocusNFe\app\Services;
 
 use Log;
 use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\App\DTO\NFSeDTO;
+use Sysborg\FocusNFe\app\DTO\NFSeDTO;
+use Sysborg\FocusNFe\app\Events\NFSeEnviada;
+use Sysborg\FocusNFe\app\Events\NFSeCancelada;
 
 /**
  * Classe responsável por manipular as NFSe
  * https://focusnfe.com.br/doc/?php#nfse
  */
 
-class NFSe {
+class NFSe extends EventHelper {
   /**
    * URL base da API NFSe
    * 
@@ -48,6 +50,7 @@ class NFSe {
       'Authorization' => $this->token,
     ])->post(config('focusnfe.URL.production') . self::URL, $data->toArray());
 
+    $this->dispatchEvent($request, NFSeEnviada::class);
     if ($request->failed()) {
       Log::error('FocusNFe.NFSe: Erro ao enviar NFSe', [
         'response' => $request->json(),
@@ -94,6 +97,7 @@ class NFSe {
       'Authorization' => $this->token,
     ])->delete(config('focusnfe.URL.production') . self::URL . "/$referencia");
 
+    $this->dispatchEvent($request, NFSeCancelada::class);
     if ($request->failed()) {
       Log::error('FocusNFe.NFSe: Erro ao cancelar NFSe', [
         'response' => $request->json(),

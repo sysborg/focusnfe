@@ -3,7 +3,7 @@
 namespace Sysborg\FocusNFe\app\Services;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
+use Log;
 
 /**
  * Classe responsável por manipular o envio de NFSe via arquivo XML

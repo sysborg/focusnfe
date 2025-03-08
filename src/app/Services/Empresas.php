@@ -4,8 +4,12 @@ namespace Sysborg\FocusNFe\app\Services;
 use Log;
 use Illuminate\Support\Facades\Http;
 use Sysborg\FocusNFe\app\DTO\EmpresaDTO;
+use Sysborg\FocusNFe\app\Events\EmpresaCreated;
+use Sysborg\FocusNFe\app\Events\EmpresaUpdated;
+use Sysborg\FocusNFe\app\Events\EmpresaDeleted;
 
-class Empresas {
+class Empresas extends EventHelper
+{
   /**
    * URL base da API Empresas
    * 
@@ -43,6 +47,7 @@ class Empresas {
       'Authorization' => $this->token,
     ])->post(config('focusnfe.URL.production') . self::URL, $data->toArray());
 
+    $this->dispatch(EmpresaCreated::class, $request);
     if ($request->failed()) {
       Log::error('FocusNFe.Empresa: Erro ao criar empresa', [
         'response' => $request->json(),
@@ -118,6 +123,7 @@ class Empresas {
       'Authorization' => $this->token,
     ])->put(config('focusnfe.URL.production') . self::URL . "/$id", $data->toArray());
 
+    $this->dispatch(EmpresaUpdated::class, $request);
     if ($request->failed()) {
       Log::error('FocusNFe.Empresa: Erro ao atualizar empresa', [
         'response' => $request->json(),
@@ -143,6 +149,7 @@ class Empresas {
       'Authorization' => $this->token,
     ])->delete(config('focusnfe.URL.production') . self::URL . "/$id");
 
+    $this->dispatch(EmpresaDeleted::class, $request);
     if ($request->failed()) {
       Log::error('FocusNFe.Empresa: Erro ao deletar empresa', [
         'response' => $request->json(),

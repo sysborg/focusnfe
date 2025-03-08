@@ -3,7 +3,7 @@
 namespace Sysborg\FocusNFe\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\Services\ConsultaEmails;
+use Facades\Sysborg\FocusNFe\app\Services\ConsultaEmails;
 
 class ConsultaEmailsController extends Controller
 {

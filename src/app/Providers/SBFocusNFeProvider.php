@@ -24,7 +24,6 @@ use Sysborg\FocusNFe\app\Services\{
     NFSeNacional,
     NFSeRecebidas
 };
-use Sysborg\FocusNFe\app\Services\NFSe;
 use Illuminate\Support\Facades\Validator;
 use Sysborg\FocusNFe\app\Events\HooksReceived;
 use Sysborg\FocusNFe\app\Rules\{CepRule, CnaeRule, CnpjRule};

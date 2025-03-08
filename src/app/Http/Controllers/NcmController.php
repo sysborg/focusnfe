@@ -4,7 +4,7 @@ namespace Sysborg\FocusNFe\app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\Services\NCM;
+use Facades\Sysborg\FocusNFe\app\Services\NCM;
 
 class NcmController extends Controller
 {

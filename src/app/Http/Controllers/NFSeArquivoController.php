@@ -4,7 +4,7 @@ namespace Sysborg\FocusNFe\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNFe\app\Http\Requests\NFSeArquivoRequest;
-use Sysborg\FocusNFe\app\Services\NFSeArquivo;
+use Facades\Sysborg\FocusNFe\app\Services\NFSeArquivo;
 
 class NFSeArquivoController extends Controller
 {

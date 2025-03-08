@@ -4,7 +4,7 @@ namespace Sysborg\FocusNFe\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNFe\app\DTO\CTERecebidasDTO;
-use Sysborg\FocusNFe\app\Services\CTERecebidas;
+use Facades\Sysborg\FocusNFe\app\Services\CTERecebidas;
 use Sysborg\FocusNFe\app\Http\Requests\CTERecebidasRequest;
 
 class CTERecebidasController extends Controller

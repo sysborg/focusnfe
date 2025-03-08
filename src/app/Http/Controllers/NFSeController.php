@@ -6,7 +6,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Sysborg\FocusNFe\app\Http\Requests\NFSeRequest;
 use Sysborg\FocusNFe\app\DTO\NFSeDTO;
-use Sysborg\FocusNFe\app\Services\NFSe;
+use Facades\Sysborg\FocusNFe\app\Services\NFSe;
 
 class NFSeController extends Controller
 {

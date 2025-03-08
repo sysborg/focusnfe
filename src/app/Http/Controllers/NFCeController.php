@@ -5,7 +5,7 @@ namespace Sysborg\FocusNFe\app\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNFe\app\DTO\NFCeDTO;
-use Sysborg\FocusNFe\app\Services\NFCe;
+use Facades\Sysborg\FocusNFe\app\Services\NFCe;
 use Sysborg\FocusNFe\app\Http\Requests\NFCeRequest;
 
 class NFCeController extends Controller

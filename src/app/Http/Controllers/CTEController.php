@@ -5,7 +5,7 @@ namespace Sysborg\FocusNFe\app\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNFe\app\Http\Requests\CTeRequest;
 use Sysborg\FocusNFe\app\DTO\CTeDTO;
-use Sysborg\FocusNFe\app\Services\CTe;
+use Facades\Sysborg\FocusNFe\app\Services\CTe;
 use Illuminate\Http\JsonResponse;
 
 class CTeController extends Controller

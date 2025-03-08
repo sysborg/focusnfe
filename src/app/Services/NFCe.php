@@ -3,7 +3,7 @@ namespace Sysborg\FocusNFe\app\Services;
 
 use Log;
 use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\App\DTO\NFCeDTO;
+use Sysborg\FocusNFe\app\DTO\NFCeDTO;
 
 /**
  * Classe responsável por manipular as NFCe

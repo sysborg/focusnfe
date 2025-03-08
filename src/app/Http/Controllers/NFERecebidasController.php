@@ -4,7 +4,7 @@ namespace Sysborg\FocusNFe\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNFe\app\DTO\NFeRecebidasDTO;
-use Sysborg\FocusNFe\app\Services\NFeRecebidas;
+use Facades\Sysborg\FocusNFe\app\Services\NFeRecebidas;
 use Sysborg\FocusNFe\app\Http\Requests\NFeRecebidasRequest;
 
 class NFeRecebidasController extends Controller
