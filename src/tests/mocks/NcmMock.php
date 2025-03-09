@@ -15,7 +15,7 @@ trait NCMMock
      * @param int $times
      * @return void
      */
-    public function mockHttpNCM(string $url, int $status, int $times = 1): void
+    public function mockHttp(string $url, int $status, int $times = 1): void
     {
         Http::fake([
             $url => Http::response(NCMStub::consultaNCM(), $status)

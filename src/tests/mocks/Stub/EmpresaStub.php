@@ -105,9 +105,9 @@ class EmpresaStub {
   /**
    * Retorna dados mocados para parâmetros inválidos
    * 
-   * @return string
+   * @return array
    */
-  public static function erroParametrosInvalidos(): string
+  public static function erroParametrosInvalidos(): array
   {
     return [
       'codigo' => 'parametros_invalidos',
