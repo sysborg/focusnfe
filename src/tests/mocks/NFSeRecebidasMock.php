@@ -26,4 +26,38 @@ trait NFSeRecebidasMock {
             $url => Http::response(NFSeRecebidasStub::$stub(), $status)
         ]);
     }
+
+
+    /**
+     * Simula a busca por todas as NFSe recebidas de um CNPJ.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockTodasNFSeRecebidas(string $url): void
+    {
+        $this->mockHttp($url, 'todasNfseRecebidas', 200);
+    }
+
+    /**
+     * Simula a consulta de uma NFSe específica pela chave.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockConsultaNFSePorChave(string $url): void
+    {
+        $this->mockHttp($url, 'consultaNfsePorChave', 200);
+    }
+
+    /**
+     * Simula um erro quando a NFSe não for encontrada pela chave.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockErroChaveNaoEncontrada(string $url): void
+    {
+        $this->mockHttp($url, 'erroChaveNaoEncontrada', 404);
+    }
 }
