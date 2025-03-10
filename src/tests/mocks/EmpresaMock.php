@@ -23,4 +23,71 @@ trait EmpresaMock {
       $url => Http::response(EmpresaStub::$stub(), $status)
     ]);
   }
+
+  
+  /**
+     * Simula uma requisição de criação de empresa bem-sucedida.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockEmpresaCriada(string $url): void
+    {
+        $this->mockHttp($url, 'sucesso', 201);
+    }
+
+    /**
+     * Simula um erro de validação do certificado ao criar uma empresa.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockErroValidacaoCertificado(string $url): void
+    {
+        $this->mockHttp($url, 'erroValidacaoCertificado', 400);
+    }
+
+    /**
+     * Simula um erro de certificado não pertencente ao CNPJ informado.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockErroGeralCertificado(string $url): void
+    {
+        $this->mockHttp($url, 'erroGeralCertificado', 400);
+    }
+
+    /**
+     * Simula uma empresa não encontrada na API.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockEmpresaNaoEncontrada(string $url): void
+    {
+        $this->mockHttp($url, 'erroEmpresaNaoEncontrada', 404);
+    }
+
+    /**
+     * Simula um erro de permissão negada ao tentar acessar uma empresa.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockErroPermissaoNegada(string $url): void
+    {
+        $this->mockHttp($url, 'erroPermissaoNegada', 403);
+    }
+
+    /**
+     * Simula um erro de parâmetros inválidos na requisição.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockErroParametrosInvalidos(string $url): void
+    {
+        $this->mockHttp($url, 'erroParametrosInvalidos', 400);
+    }
 }

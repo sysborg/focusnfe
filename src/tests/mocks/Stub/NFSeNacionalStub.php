@@ -3,6 +3,45 @@
 namespace Sysborg\FocusNFe\tests\mocks\Stub;
 
 class NFSeNacionalStub {
+
+    /**
+     * Mock de request para a emissão de NFSe Nacional.
+     * 
+     * @return array
+     */
+    public static function request(): array
+    {
+        return [
+            'data_emissao' => '2024-05-07T07:34:56-0300',
+            'data_competencia' => '2024-05-07',
+            'codigo_municipio_emissora' => 4106902,
+
+            'cnpj_prestador' => '18765499000199',
+            'inscricao_municipal_prestador' => '12345',
+            'codigo_opcao_simples_nacional' => 2,
+            'regime_especial_tributacao' => 0,
+
+            'cnpj_tomador' => '07504505000132',
+            'razao_social_tomador' => 'Acras Tecnologia da Informação LTDA',
+            'codigo_municipio_tomador' => 4106902,
+            'cep_tomador' => '80045165',
+            'logradouro_tomador' => 'Rua Dias da Rocha Filho',
+            'numero_tomador' => '999',
+            'complemento_tomador' => 'Prédio 04 - Sala 34C',
+            'bairro_tomador' => 'Alto da XV',
+            'telefone_tomador' => '41 3256-8060',
+            'email_tomador' => 'contato@focusnfe.com.br',
+
+            'codigo_municipio_prestacao' => 4106902,
+            'codigo_tributacao_nacional_iss' => '010701',
+            'descricao_servico' => 'Nota emitida em caráter de TESTE',
+            'valor_servico' => 1.00,
+            'tributacao_iss' => 1,
+            'tipo_retencao_iss' => 1,
+        ];
+    }
+
+
     /**
      * Mock de envio processando autorização
      *

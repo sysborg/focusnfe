@@ -5,6 +5,36 @@ namespace Sysborg\FocusNFe\tests\mocks\Stub;
 class MDFeStub
 {
 
+
+    /**
+ * exemplo de request para MDFe
+ *
+ * @return array
+ */
+public static function request(): array
+{
+    return [
+        'emitente' => 1, 
+        'serie' => 1, 
+        'numero' => 1001, 
+        'uf_inicio' => 'SP', 
+        'uf_fim' => 'RJ', 
+        'cnpj_emitente' => '12345678000199', 
+        'cpf_emitente' => null, 
+        'inscricao_estadual_emitente' => '12345678901234', 
+        'nome_emitente' => 'Transportadora Teste Ltda', 
+        'nome_fantasia_emitente' => 'Transportes Teste', 
+        'logradouro_emitente' => 'Av. Brasil', 
+        'numero_emitente' => '500', 
+        'bairro_emitente' => 'Centro', 
+        'codigo_municipio_emitente' => 3550308, 
+        'municipio_emitente' => 'São Paulo', 
+        'uf_emitente' => 'SP', 
+        'valor_total_carga' => 100000.00, 
+        'codigo_unidade_medida_peso_bruto' => 1, 
+    ];
+}
+
     
 
 

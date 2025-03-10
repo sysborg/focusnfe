@@ -26,4 +26,37 @@ trait CEPMock {
             $url => Http::response(CEPStub::$stub(), $status)
         ]);
     }
+
+    /**
+     * Simula uma consulta de CEP bem-sucedida.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockCepSucesso(string $url): void
+    {
+        $this->mockHttp($url, 'sucesso', 200);
+    }
+
+    /**
+     * Simula uma tentativa de consulta para um CEP inexistente.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockCepNaoEncontrado(string $url): void
+    {
+        $this->mockHttp($url, 'cepNaoEncontrado', 404);
+    }
+
+    /**
+     * Simula uma requisição inválida ao tentar consultar um CEP.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockCepRequisicaoInvalida(string $url): void
+    {
+        $this->mockHttp($url, 'requisicaoInvalida', 400);
+    }
 }
