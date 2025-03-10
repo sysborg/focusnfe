@@ -5,6 +5,24 @@ namespace Sysborg\FocusNFe\tests\mocks\Stub;
 class NFCeStub
 {
 
+/**
+ * exemplo de request para a emissão de NFC-e.
+ *
+ * @return array
+ */
+public static function request(): array
+{
+    return [
+        'natureza_operacao' => 'VENDA AO CONSUMIDOR',
+        'data_emissao' => '2015-11-19T13:54:31-02:00',
+        'presenca_comprador' => 1,
+        'cnpj_emitente' => '05953016000132',
+        'modalidade_frete' => 9,
+        'local_destino' => 1,
+    ];
+}
+
+
       /**
      * Retorna um exemplo de resposta para o registro de conciliação financeira da NFC-e 
      *

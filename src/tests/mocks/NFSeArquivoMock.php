@@ -26,4 +26,26 @@ trait NFSeArquivoMock
             $url => Http::response(NFSeArquivoStub::$stub(), $status)
         ]);
     }
+
+     /**
+     * Simula a resposta da API para o envio de NFSe via arquivo (sucesso).
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockEnviaNFSeArquivoSucesso(string $url): void
+    {
+        $this->mockHttp($url, 'EnviaNFSeArquivoSucesso', 201);
+    }
+
+    /**
+     * Simula a resposta da API para erro ao consultar NFSe enviada por arquivo (lote não encontrado).
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockConsultaNFSeArquivoErro(string $url): void
+    {
+        $this->mockHttp($url, 'consultaNFSeArquivoErro', 400);
+    }
 }

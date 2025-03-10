@@ -21,4 +21,17 @@ trait NCMMock
             $url => Http::response(NCMStub::consultaNCM(), $status)
         ]);
     }
+
+     /**
+     * Simula a consulta de todos os NCMs.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockConsultaNCM(string $url): void
+    {
+        $this->mockHttp($url, 'consultaNCM', 200);
+    }
+
+    
 }

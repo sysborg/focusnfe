@@ -25,4 +25,37 @@ trait ConsultaEmailsMock {
             $url => Http::response(ConsultaEmailsStub::$stub(), $status)
         ]);
     }
+
+    /**
+     * Simula a consulta de um e-mail bloqueado.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockEmailBloqueado(string $url): void
+    {
+        $this->mockHttp($url, 'emailBloqueado', 200);
+    }
+
+    /**
+     * Simula a consulta de um e-mail não encontrado na lista de bloqueios.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockEmailNaoEncontrado(string $url): void
+    {
+        $this->mockHttp($url, 'emailNaoEncontrado', 404);
+    }
+
+    /**
+     * Simula um erro ao tentar excluir um e-mail bloqueado por reclamação.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockRequisicaoInvalida(string $url): void
+    {
+        $this->mockHttp($url, 'requisicaoInvalida', 400);
+    }
 }

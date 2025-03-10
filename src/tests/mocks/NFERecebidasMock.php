@@ -25,4 +25,37 @@ trait NFeRecebidasMock {
             $url => Http::response(NFERecebidasStub::$stub(), $status)
         ]);
     }
+
+      /**
+     * Simula a resposta da API para registrar uma manifestação de NFe recebida.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockRegistrarManifestacaoErro(string $url): void
+    {
+        $this->mockHttp($url, 'registrarManifestacaoErro', 400);
+    }
+
+    /**
+     * Simula a resposta da API para a consulta de uma manifestação já registrada.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockConsultarManifestacao(string $url): void
+    {
+        $this->mockHttp($url, 'consultarManifestacao', 200);
+    }
+
+    /**
+     * Simula a resposta da API para erro ao registrar uma manifestação inválida.
+     *
+     * @param string $url
+     * @return void
+     */
+    public function mockErroManifestacao(string $url): void
+    {
+        $this->mockHttp($url, 'erroManifestacao', 400);
+    }
 }
