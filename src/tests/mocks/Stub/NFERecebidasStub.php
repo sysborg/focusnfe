@@ -5,7 +5,7 @@ namespace Sysborg\FocusNFe\tests\mocks\Stub;
 class NFeRecebidasStub
 {
     /**
-     * Mock de request para registrar uma manifestação de NFe recebida
+     * Retorna dados mocados de requisição inválida para manifestação de NFe recebida
      * 
      * @return array
      */
@@ -19,7 +19,7 @@ class NFeRecebidasStub
 
    
     /**
-     * Mock de resposta da consulta de manifestação de NFe recebida
+     * Retorna dados mocados de uma manifestação já registrada para uma NFe recebida
      * 
      * @return array
      */
@@ -35,8 +35,8 @@ class NFeRecebidasStub
         ];
     }
 
-    /**
-     * Mock de erro ao registrar uma manifestação inválida
+      /**
+     * Retorna dados mocados de erro ao registrar manifestação da NFe recebida
      * 
      * @return array
      */
