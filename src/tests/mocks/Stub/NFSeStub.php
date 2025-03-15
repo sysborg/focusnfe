@@ -44,7 +44,7 @@ class NFSeStub {
 
     
   /**
-   * Mock de processando autorizacao
+   * Retorna dados mocados de NFSe processando autorização
    * 
    * @return string
    */
@@ -58,7 +58,7 @@ class NFSeStub {
   }
 
   /**
-   * Requisição inválida
+   * Retorna dados mocados de NFSe autorizada
    * 
    * @return string
    */
@@ -71,7 +71,7 @@ class NFSeStub {
   }
 
   /**
-   * Mock de NFSe autorizada
+   * Retorna dados mocados de NFSe cancelada
    * 
    * @return string
    */
@@ -91,8 +91,8 @@ class NFSeStub {
     ]);
   }
 
-  /**
-   * Mock de NFSe cancelada
+ /**
+   * Retorna dados mocados de NFSe cancelada
    * 
    * @return string
    */
@@ -114,7 +114,7 @@ class NFSeStub {
   }
 
   /**
-   * Mock de NFSe com erro na autorização
+   * Retorna dados mocados de erro na autorização da NFSe
    * 
    * @return string
    */
@@ -136,8 +136,8 @@ class NFSeStub {
     ]);
   }
 
-  /**
-   * Mock de NFSe processando autorização
+    /**
+   * Retorna dados mocados de NFSe processando autorização com erro
    * 
    * @return string
    */
@@ -152,8 +152,8 @@ class NFSeStub {
     ]);
   }
 
-  /**
-   * Mock de NFSe cancelada com sucesso
+/**
+   * Retorna dados mocados de NFSe cancelada com sucesso
    * 
    * @return string
    */
@@ -164,8 +164,8 @@ class NFSeStub {
     ]);
   }
 
-  /**
-   * Mock de NFSe com erro no cancelamento
+   /**
+   * Retorna dados mocados de erro no cancelamento
    * 
    * @return string
    */
@@ -184,7 +184,7 @@ class NFSeStub {
   }
 
   /**
-   * Mock de NFSe cancelamento quando NFSe já está cancelada
+   * Retorna dados mocados de NFSe já cancelada
    * 
    * @return string
    */

@@ -42,9 +42,10 @@ class NFSeNacionalStub {
     }
 
 
+   
     /**
-     * Mock de envio processando autorização
-     *
+     * Retorna dados mocados de NFSe com status processando autorização
+     * 
      * @return string
      */
     public static function processandoAutorizacaoEnvio(): string
@@ -56,9 +57,9 @@ class NFSeNacionalStub {
         ]);
     }
 
-    /**
-     * Mock de requisição inválida
-     *
+      /**
+     * Retorna dados mocados para requisição inválida
+     * 
      * @return string
      */
     public static function requisicaoInvalida(): string
@@ -69,9 +70,9 @@ class NFSeNacionalStub {
         ]);
     }
 
-    /**
-     * Mock de NFSe autorizada
-     *
+     /**
+     * Retorna dados mocados de NFSe autorizada
+     * 
      * @return string
      */
     public static function autorizada(): string
@@ -92,9 +93,9 @@ class NFSeNacionalStub {
         ]);
     }
 
-    /**
-     * Mock de NFSe cancelada
-     *
+     /**
+     * Retorna dados mocados de NFSe cancelada
+     * 
      * @return string
      */
     public static function cancelada(): string
