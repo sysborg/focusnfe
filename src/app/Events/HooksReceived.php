@@ -13,11 +13,11 @@ class HooksReceived {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public array $data;
-    public string $urlReferrer;
+    public string $url_referrer;
 
-    public function __construct(array $data, string $urlReferrer)
+    public function __construct(array $data, string $url_referrer)
     {
         $this->data = $data;
-        $this->urlReferrer = $urlReferrer;
+        $this->url_referrer = $url_referrer;
     }
 }
