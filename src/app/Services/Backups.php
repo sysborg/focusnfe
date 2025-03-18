@@ -6,11 +6,11 @@ use Log;
 
 class Backups {
   /**
-   * URL base da API CEP
+   * URL base da API Backups
    * 
    * @var string
    */
-  const URL = '/v2/backups/%s.json';
+  const URL = '/v2/backups/CNPJ.json';
 
   /**
    * Token de acesso

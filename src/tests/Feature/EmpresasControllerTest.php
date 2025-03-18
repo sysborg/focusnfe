@@ -3,7 +3,7 @@ namespace Sysborg\FocusNFe\tests\Feature;
 
 use Sysborg\FocusNFe\tests\mocks\EmpresaMock;
 use Sysborg\FocusNFe\tests\mocks\Stub\EmpresaStub;
-use Sysborg\FocusNFe\Services\Empresas;
+use Sysborg\FocusNFe\app\Services\Empresas;
 
 class EmpresasControllerTest extends Common {
   use EmpresaMock;

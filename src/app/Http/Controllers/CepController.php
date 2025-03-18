@@ -4,7 +4,7 @@ namespace Sysborg\FocusNFe\app\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNFe\app\Rules\CepRule;
-use Facades\Sysborg\FocusNFe\app\Services\CEP;
+use Sysborg\FocusNFe\app\Services\CEP;
 
 class CepController extends Controller
 {

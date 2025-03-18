@@ -15,7 +15,7 @@ class NFSeArquivo
      * 
      * @var string
      */
-    private const URL = '/v2/lotes_rps';
+     const URL = '/v2/lotes_rps';
 
     /**
      * Token de acesso à API

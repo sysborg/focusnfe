@@ -59,7 +59,7 @@ class EmpresaStub {
   /**
    * Retorna dados mocados de erro de senha ou de cnpj de o utra empresa do certificado digital
    * 
-   * @return string
+   * @return array
    */
   public static function erroGeralCertificado(): array
   {
