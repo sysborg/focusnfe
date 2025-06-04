@@ -27,6 +27,7 @@ use Sysborg\FocusNFe\app\Services\{
 use Illuminate\Support\Facades\Validator;
 use Sysborg\FocusNFe\app\Events\HooksReceived;
 use Sysborg\FocusNFe\app\Rules\{CepRule, CnaeRule, CnpjRule};
+use Illuminate\Support\Facades\Event;
 
 class SBFocusNFeProvider extends ServiceProvider
 {
