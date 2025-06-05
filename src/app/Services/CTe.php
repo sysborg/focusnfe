@@ -21,13 +21,21 @@ class CTe{
     private string $token;
 
     /**
+     * Ambiente de produção ou sandbox
+     * 
+     * @var string
+     */
+    private string $ambiente;
+
+    /**
      * Construtor da classe
      * 
      * @param string $token
      */
-    public function __construct(string $token)
+    public function __construct(string $token, string $ambiente)
     {
         $this->token = $token;
+        $this->ambiente = $ambiente;
     }
 
     /**
@@ -41,7 +49,7 @@ class CTe{
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->post(config('focusnfe.URL.production') . self::URL . "?ref=$referencia", $data);
+        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref=$referencia", $data);
     
         if ($request->failed()) {
             Log::error('FocusNFe.CTe: Erro ao enviar CTe', [
@@ -62,7 +70,7 @@ class CTe{
      */
     public function consulta(string $referencia): array
     {
-        $url = config('focusnfe.URL.production') . self::URL . "/$referencia";
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
 
         $request = Http::withHeaders([
             'Authorization' => $this->token,
@@ -86,7 +94,7 @@ class CTe{
      */
     public function cancela(string $referencia): array
     {
-        $url = config('focusnfe.URL.production') . self::URL . "/$referencia";
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
 
         $request = Http::withHeaders([
             'Authorization' => $this->token,
@@ -113,7 +121,7 @@ class CTe{
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->post(config('focusnfe.URL.production') . self::URL . "/$referencia/carta_correcao", $data);
+        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/carta_correcao", $data);
 
         if ($request->failed()) {
             Log::error('FocusNFe.CTe: Erro ao enviar Carta de Correção', [

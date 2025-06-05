@@ -25,14 +25,22 @@ class CTERecebidas {
     private string $token;
 
     /**
+     * Ambiente de produção ou sandbox
+     * 
+     * @var string
+     */
+    private string $ambiente;
+
+    /**
      * Construtor da classe
      * 
      * @param string $token
      * @return void
      */
-    public function __construct(string $token)
+    public function __construct(string $token, string $ambiente)
     {
         $this->token = $token;
+        $this->ambiente = $ambiente;
     }
 
     /**
@@ -45,7 +53,7 @@ class CTERecebidas {
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->get(config('focusnfe.URL.production') . self::URL . "?cnpj=$cnpj");
+        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?cnpj=$cnpj");
 
         return $request->json();
     }
@@ -60,7 +68,7 @@ class CTERecebidas {
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->get(config('focusnfe.URL.production') . self::URL . "/$chave");
+        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave");
 
         return $request->json();
     }
@@ -75,7 +83,7 @@ class CTERecebidas {
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->post(config('focusnfe.URL.production') . self::URL . "/$chave/desacordo", [
+        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/desacordo", [
             'observacoes' => $data->observacoes
         ]);
 
@@ -92,7 +100,7 @@ class CTERecebidas {
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->get(config('focusnfe.URL.production') . self::URL . "/$chave/desacordo");
+        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/desacordo");
 
         return $request->json();
     }

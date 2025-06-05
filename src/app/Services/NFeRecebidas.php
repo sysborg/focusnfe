@@ -16,6 +16,13 @@ class NFeRecebidas
     const URL = '/v2/nfes_recebidas';
 
     /**
+     * Ambiente de produção ou sandbox
+     * 
+     * @var string
+     */
+    private string $ambiente;
+
+    /**
      * Token de acesso
      * 
      * @var string
@@ -28,9 +35,10 @@ class NFeRecebidas
      * @param string $token
      * @return void
      */
-    public function __construct(string $token)
+    public function __construct(string $token, string $ambiente)
     {
         $this->token = $token;
+        $this->ambiente = $ambiente;
     }
 
     /**
@@ -43,7 +51,7 @@ class NFeRecebidas
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->get(config('focusnfe.URL.production') . self::URL . "?cnpj=$cnpj");
+        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?cnpj=$cnpj");
 
         if ($request->failed()) {
             Log::error('FocusNFe.NFeRecebidas: Erro ao listar NFe Recebidas', [
@@ -67,7 +75,7 @@ class NFeRecebidas
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->post(config('focusnfe.URL.production') . self::URL . "/$chave/manifesto", $data);
+        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/manifesto", $data);
 
         return $request->json();
     }
@@ -82,7 +90,7 @@ class NFeRecebidas
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->get(config('focusnfe.URL.production') . self::URL . "/$chave/manifesto");
+        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/manifesto");
 
         return $request->json();
     }

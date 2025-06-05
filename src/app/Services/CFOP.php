@@ -20,14 +20,22 @@ class CFOP {
   private string $token;
 
   /**
+   * Ambiente de produção ou sandbox
+   * 
+   * @var string
+   */
+  private string $ambiente;
+
+  /**
    * Construtor da classe
    * 
    * @param string $token
    * @return void
    */
-  public function __construct(string $token)
+  public function __construct(string $token, string $ambiente)
   {
     $this->token = $token;
+    $this->ambiente = $ambiente;
   }
 
   /**
@@ -43,7 +51,7 @@ class CFOP {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
 
     if ($request->failed()) {
       Log::error('FocusNFe.CFOP: Erro ao listar CFOPs', [

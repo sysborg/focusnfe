@@ -18,6 +18,13 @@ class NFSeArquivo
      const URL = '/v2/lotes_rps';
 
     /**
+     * Ambiente de produção ou sandbox
+     * 
+     * @var string
+     */
+    private string $ambiente;
+
+    /**
      * Token de acesso à API
      * 
      * @var string
@@ -29,9 +36,10 @@ class NFSeArquivo
      * 
      * @param string $token
      */
-    public function __construct(string $token)
+    public function __construct(string $token, string $ambiente)
     {
         $this->token = $token;
+        $this->ambiente = $ambiente;
     }
 
     /**
@@ -49,7 +57,7 @@ class NFSeArquivo
             'arquivo',
             file_get_contents($arquivo->getPathname()),
             $arquivo->getClientOriginalName()
-        )->post(config('focusnfe.URL.production') . self::URL . "?ref={$referencia}");
+        )->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref={$referencia}");
     
         if ($request->failed()) {
             Log::error('FocusNFe.NFSeArquivo: Erro ao enviar arquivo NFSe', [
@@ -63,21 +71,20 @@ class NFSeArquivo
     
 
     public function get(string $referencia): array
-{
-    $request = Http::withHeaders([
-        'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "/$referencia");
+    {
+        $request = Http::withHeaders([
+            'Authorization' => $this->token,
+        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-    if ($request->failed()) {
-        Log::error('FocusNFe.LotesRPS: Erro ao buscar lote RPS', [
-            'response' => $request->json(),
-            'data' => [
-                'referencia' => $referencia,
-            ]
-        ]);
+        if ($request->failed()) {
+            Log::error('FocusNFe.LotesRPS: Erro ao buscar lote RPS', [
+                'response' => $request->json(),
+                'data' => [
+                    'referencia' => $referencia,
+                ]
+            ]);
+        }
+
+        return $request->json();
     }
-
-    return $request->json();
-}
-
 }

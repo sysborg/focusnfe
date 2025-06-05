@@ -20,14 +20,22 @@ class Backups {
   private string $token;
 
   /**
+   * Ambiente de produção ou sandbox
+   * 
+   * @var string
+   */
+  private string $ambiente;
+
+  /**
    * Construtor da classe
    * 
    * @param string $token
    * @return void
    */
-  public function __construct(string $token)
+  public function __construct(string $token, string $ambiente)
   {
     $this->token = $token;
+    $this->ambiente = $ambiente;
   }
 
   /**
@@ -40,7 +48,7 @@ class Backups {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . sprintf(self::URL, $cnpj));
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . sprintf(self::URL, $cnpj));
 
     if ($request->failed()) {
       Log::error('FocusNFe.Backups: Erro ao consultar backup do CNPJ', [

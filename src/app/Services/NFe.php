@@ -25,14 +25,22 @@ class NFe {
     private string $token;
 
     /**
+     * Ambiente de produção ou sandbox
+     * 
+     * @var string
+     */
+    private string $ambiente;
+
+    /**
      * Construtor da classe
      * 
      * @param string $token
      * @return void
      */
-    public function __construct(string $token)
+    public function __construct(string $token, string $ambiente)
     {
         $this->token = $token;
+        $this->ambiente = $ambiente;
     }
 
     /**
@@ -46,7 +54,7 @@ class NFe {
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->post(config('focusnfe.URL.production') . self::URL . "?ref=$referencia", $data->toArray());
+        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref=$referencia", $data->toArray());
 
         if ($request->failed()) {
             Log::error('FocusNFe.NFe: Erro ao enviar NFe', [
@@ -68,7 +76,7 @@ class NFe {
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->get(config('focusnfe.URL.production') . self::URL . "/$referencia");
+        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
         if ($request->failed()) {
             Log::error('FocusNFe.NFe: Erro ao consultar NFe', [
@@ -90,7 +98,7 @@ class NFe {
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->delete(config('focusnfe.URL.production') . self::URL . "/$referencia");
+        ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
         if ($request->failed()) {
             Log::error('FocusNFe.NFe: Erro ao cancelar NFe', [
@@ -113,7 +121,7 @@ class NFe {
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->post(config('focusnfe.URL.production') . self::URL . "/$referencia/carta_correcao", $data);
+        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/carta_correcao", $data);
 
         if ($request->failed()) {
             Log::error('FocusNFe.NFe: Erro ao criar carta de correção', [
@@ -134,7 +142,7 @@ class NFe {
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->get(config('focusnfe.URL.production') . self::URL . "/inutilizacoes");
+        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/inutilizacoes");
 
         if ($request->failed()) {
             Log::error('FocusNFe.NFe: Erro ao consultar inutilizações', [

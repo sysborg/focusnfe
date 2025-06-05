@@ -26,14 +26,22 @@ class NFSeNacional {
   private string $token;
 
   /**
+   * Ambiente de produção ou sandbox
+   * 
+   * @var string
+   */
+  private string $ambiente;
+
+  /**
    * Construtor da classe
    * 
    * @param string $token
    * @return void
    */
-  public function __construct(string $token)
+  public function __construct(string $token, string $ambiente)
   {
     $this->token = $token;
+    $this->ambiente = $ambiente;
   }
 
   /**
@@ -46,7 +54,7 @@ class NFSeNacional {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->post(config('focusnfe.URL.production') . self::URL, $data->toArray());
+    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
     if ($request->failed()) {
       Log::error('FocusNFe.NFSeN: Erro ao enviar NFSe Nacional', [
@@ -68,7 +76,7 @@ class NFSeNacional {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "/$referencia");
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     if ($request->failed()) {
       Log::error('FocusNFe.NFSeN: Erro ao consultar NFSe Nacional', [
@@ -90,7 +98,7 @@ class NFSeNacional {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->delete(config('focusnfe.URL.production') . self::URL . "/$referencia");
+    ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     if ($request->failed()) {
       Log::error('FocusNFe.NFSeN: Erro ao cancelar NFSe Nacional', [

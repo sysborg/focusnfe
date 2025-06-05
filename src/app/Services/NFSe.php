@@ -21,6 +21,13 @@ class NFSe extends EventHelper {
   const URL = '/v2/nfse';
 
   /**
+   * Ambiente de produção ou sandbox
+   * 
+   * @var string
+   */
+  private string $ambiente;
+
+  /**
    * Token de acesso
    * 
    * @var string
@@ -33,9 +40,10 @@ class NFSe extends EventHelper {
    * @param string $token
    * @return void
    */
-  public function __construct(string $token)
+  public function __construct(string $token, string $ambiente)
   {
     $this->token = $token;
+    $this->ambiente = $ambiente;
   }
 
   /**
@@ -48,7 +56,7 @@ class NFSe extends EventHelper {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->post(config('focusnfe.URL.production') . self::URL, $data->toArray());
+    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
     $this->dispatchEvent($request, NFSeEnviada::class);
     if ($request->failed()) {
@@ -73,7 +81,7 @@ class NFSe extends EventHelper {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "/$referencia");
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     if ($request->failed()) {
       Log::error('FocusNFe.NFSe: Erro ao consultar NFSe', [
@@ -95,7 +103,7 @@ class NFSe extends EventHelper {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->delete(config('focusnfe.URL.production') . self::URL . "/$referencia");
+    ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     $this->dispatchEvent($request, NFSeCancelada::class);
     if ($request->failed()) {
@@ -119,7 +127,7 @@ class NFSe extends EventHelper {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->post(config('focusnfe.URL.production') . self::URL . "/$referencia/$email");
+    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email");
 
     if ($request->failed()) {
       Log::error('FocusNFe.NFSe: Erro ao reenviar email da NFSe', [

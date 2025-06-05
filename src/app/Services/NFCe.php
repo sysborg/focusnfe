@@ -25,14 +25,22 @@ class NFCe {
   private string $token;
 
   /**
+   * Ambiente de produção ou sandbox
+   * 
+   * @var string
+   */
+  private string $ambiente;
+
+  /**
    * Construtor da classe
    * 
    * @param string $token
    * @return void
    */
-  public function __construct(string $token)
+  public function __construct(string $token, string $ambiente)
   {
     $this->token = $token;
+    $this->ambiente = $ambiente;
   }
 
   /**
@@ -45,7 +53,7 @@ class NFCe {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->post(config('focusnfe.URL.production') . self::URL, $data->toArray());
+    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
     if ($request->failed()) {
       Log::error('FocusNFe.NFCe: Erro ao enviar NFCe', [
@@ -67,7 +75,7 @@ class NFCe {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "/$referencia");
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     if ($request->failed()) {
       Log::error('FocusNFe.NFCe: Erro ao consultar NFCe', [
@@ -89,7 +97,7 @@ class NFCe {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->delete(config('focusnfe.URL.production') . self::URL . "/$referencia");
+    ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     if ($request->failed()) {
       Log::error('FocusNFe.NFCe: Erro ao cancelar NFCe', [
@@ -110,7 +118,7 @@ class NFCe {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "/inutilizacoes");
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/inutilizacoes");
 
     return $request->json();
   }
@@ -126,7 +134,7 @@ class NFCe {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->post(config('focusnfe.URL.production') . self::URL . "/$referencia/econf", $data);
+    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf", $data);
 
     return $request->json();
   }
@@ -143,7 +151,7 @@ class NFCe {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "/$referencia/econf/$protocolo");
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo");
 
     return $request->json();
   }
@@ -160,9 +168,8 @@ class NFCe {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->delete(config('focusnfe.URL.production') . self::URL . "/$referencia/econf/$protocolo");
+    ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo");
 
     return $request->json();
   }
 }
-

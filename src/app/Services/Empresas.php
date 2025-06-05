@@ -25,14 +25,22 @@ class Empresas extends EventHelper
   private string $token;
 
   /**
+   * Ambiente de produção ou sandbox
+   * 
+   * @var string
+   */
+  private string $ambiente;
+
+  /**
    * Construtor da classe
    * 
    * @param string $token
    * @return void
    */
-  public function __construct(string $token)
+  public function __construct(string $token, string $ambiente)
   {
     $this->token = $token;
+    $this->ambiente = $ambiente;
   }
 
   /**
@@ -45,7 +53,7 @@ class Empresas extends EventHelper
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->post(config('focusnfe.URL.production') . self::URL, $data->toArray());
+    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
     $this->dispatch(EmpresaCreated::class, $request);
     if ($request->failed()) {
@@ -70,7 +78,7 @@ class Empresas extends EventHelper
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "?offset=$offset&cnpj=$cnpj&cpf=$cpf");
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&cnpj=$cnpj&cpf=$cpf");
 
     if ($request->failed()) {
       Log::error('FocusNFe.Empresa: Erro ao listar empresas', [
@@ -96,7 +104,7 @@ class Empresas extends EventHelper
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "/$id");
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id");
 
     if ($request->failed()) {
       Log::error('FocusNFe.Empresa: Erro ao pegar empresa', [
@@ -121,7 +129,7 @@ class Empresas extends EventHelper
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->put(config('focusnfe.URL.production') . self::URL . "/$id", $data->toArray());
+    ])->put(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id", $data->toArray());
 
     $this->dispatch(EmpresaUpdated::class, $request);
     if ($request->failed()) {
@@ -147,7 +155,7 @@ class Empresas extends EventHelper
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->delete(config('focusnfe.URL.production') . self::URL . "/$id");
+    ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id");
 
     $this->dispatch(EmpresaDeleted::class, $request);
     if ($request->failed()) {

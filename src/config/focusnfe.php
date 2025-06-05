@@ -15,6 +15,8 @@ return [
 
   'token' => env('FOCUSNFE_TOKEN'),
 
+  'ambiente' => env('FOCUSNFE_AMBIENTE', 'production'),
+
   'cte' => [
     'modal_aereo' => [
       'classe_tarifa' => [

@@ -18,11 +18,19 @@ class CNAE
     private string $token;
 
     /**
+     * Ambiente de produção ou sandbox
+     * 
+     * @var string
+     */
+    private string $ambiente;
+
+    /**
      * Construtor da classe
      */
-    public function __construct(string $token)
+    public function __construct(string $token, string $ambiente)
     {
         $this->token = $token;
+        $this->ambiente = $ambiente;
     }
 
     /**
@@ -32,7 +40,7 @@ class CNAE
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->get(config('focusnfe.URL.production') . self::URL . "?offset=$offset");
+        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset");
 
         $data = $request->json();
 
@@ -57,7 +65,7 @@ class CNAE
     {
         $request = Http::withHeaders([
             'Authorization' => $this->token,
-        ])->get(config('focusnfe.URL.production') . self::URL . "/$codigo");
+        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
 
         $data = $request->json();
 

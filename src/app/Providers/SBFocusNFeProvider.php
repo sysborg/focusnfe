@@ -68,79 +68,79 @@ class SBFocusNFeProvider extends ServiceProvider
         }, (new CnaeRule())->message());
 
         $this->app->singleton('focusnfe.Backups', function ($app) {
-            return new Backups(config('focusnfe.token'));
+            return new Backups(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.CEP', function ($app) {
-            return new CEP(config('focusnfe.token'));
+            return new CEP(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.CFOP', function ($app) {
-            return new CFOP(config('focusnfe.token'));
+            return new CFOP(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.cnae', function ($app) {
-            return new CNAE(config('focusnfe.token'));
+            return new CNAE(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.cnpjs', function ($app) {
-            return new CNPJs(config('focusnfe.token'));
+            return new CNPJs(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.consultaEmails', function ($app) {
-            return new ConsultaEmails(config('focusnfe.token'));
+            return new ConsultaEmails(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.cte', function ($app) {
-            return new CTe(config('focusnfe.token'));
+            return new CTe(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.cteRecebidas', function ($app) {
-            return new CTeRecebidas(config('focusnfe.token'));
+            return new CTeRecebidas(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.empresas', function ($app) {
-            return new Empresas(config('focusnfe.token'));
+            return new Empresas(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.mdfe', function ($app) {
-            return new MDFe(config('focusnfe.token'));
+            return new MDFe(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.municipios', function ($app) {
-            return new Municipios(config('focusnfe.token'));
+            return new Municipios(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.ncm', function ($app) {
-            return new NCM(config('focusnfe.token'));
+            return new NCM(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.nfce', function ($app) {
-            return new NFCe(config('focusnfe.token'));
+            return new NFCe(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.nfe', function ($app) {
-            return new NFe(config('focusnfe.token'));
+            return new NFe(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.nfeRecebidas', function ($app) {
-            return new NFeRecebidas(config('focusnfe.token'));
+            return new NFeRecebidas(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.nfse', function ($app) {
-            return new NFSe(config('focusnfe.token'));
+            return new NFSe(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.nfseArquivos', function ($app) {
-            return new NFSeArquivos(config('focusnfe.token'));
+            return new NFSeArquivos(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.nfse_nacional', function ($app) {
-            return new NFSeNacional(config('focusnfe.token'));
+            return new NFSeNacional(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton('focusnfe.nfseRecebidas', function ($app) {
-            return new NFSeRecebidas(config('focusnfe.token'));
+            return new NFSeRecebidas(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         Event::listen(HooksReceived::class, [

@@ -40,6 +40,22 @@ class NFeRequest extends FormRequest
             'indicador_inscricao_estadual_destinatario' => 'required|integer',
             
             'itens' => 'required|array',
+            'itens.*.numero_item' => 'required|integer',
+            'itens.*.codigo_produto' => 'required|string',
+            'itens.*.descricao' => 'required|string',
+            'itens.*.cfop' => 'required|string',
+            'itens.*.unidade_comercial' => 'required|string',
+            'itens.*.valor_unitario_comercial' => 'required|numeric',
+            'itens.*.valor_unitario_tributavel' => 'required|numeric',
+            'itens.*.unidade_tributavel' => 'required|string',
+            'itens.*.codigo_ncm' => 'required|string',
+            'itens.*.quantidade_tributavel' => 'required|numeric',
+            'itens.*.quantidade_comercial' => 'required|numeric',
+            'itens.*.valor_bruto' => 'required|numeric',
+            'itens.*.icms_situacao_tributaria' => 'required|integer',
+            'itens.*.icms_origem' => 'required|integer',
+            'itens.*.pis_situacao_tributaria' => 'required|string',
+            'itens.*.cofins_situacao_tributaria' => 'required|string',
         ];
     }
 }

@@ -20,14 +20,22 @@ class NCM {
   private string $token;
 
   /**
+   * Ambiente de produção ou sandbox
+   * 
+   * @var string
+   */
+  private string $ambiente;
+
+  /**
    * Construtor da classe
    * 
    * @param string $token
    * @return void
    */
-  public function __construct(string $token)
+  public function __construct(string $token, string $ambiente)
   {
     $this->token = $token;
+    $this->ambiente = $ambiente;
   }
 
   /**
@@ -43,7 +51,7 @@ class NCM {
   {
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
 
     if ($request->failed()) {
       Log::error('FocusNFe.NCM: Erro ao listar NCMs', [
@@ -60,30 +68,28 @@ class NCM {
   }
 
   /**
- * Retorna o NCM pelo código exato
- *
- * @param string $codigo
- * @return array
- */
-public function get(string $codigo): array
-{
+   * Retorna o NCM pelo código exato
+   *
+   * @param string $codigo
+   * @return array
+   */
+  public function get(string $codigo): array
+  {
 
-    $request = Http::withHeaders([
-        'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "/$codigo");
+      $request = Http::withHeaders([
+          'Authorization' => $this->token,
+      ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
 
-    if ($request->failed()) {
-        Log::error('FocusNFe.NCM: Erro ao buscar NCM', [
-          'response' => $request->json(),
-          'data' => [
-            'ncm' => $codigo
-          ]
-        ]);
-      }
+      if ($request->failed()) {
+          Log::error('FocusNFe.NCM: Erro ao buscar NCM', [
+            'response' => $request->json(),
+            'data' => [
+              'ncm' => $codigo
+            ]
+          ]);
+        }
 
 
-    return $request->json();
-      }
-    
-
+      return $request->json();
+    }
 }
