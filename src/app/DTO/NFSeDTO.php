@@ -3,7 +3,6 @@
 namespace Sysborg\FocusNfe\app\DTO;
 
 use Carbon\Carbon;
-use Sysborg\FocusNFe\app\DTO\ServicoDTO;
 
 class NFSeDTO extends DTO {
     public function __construct(
