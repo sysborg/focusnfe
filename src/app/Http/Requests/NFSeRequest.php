@@ -38,6 +38,7 @@ class NFSeRequest extends FormRequest
             'servico.item_lista_servico' => 'required|string',
             'servico.codigo_tributario_municipio' => 'required|string',
             'servico.valor_servicos' => 'required|numeric',
+            'servico.codigo_cnae' => 'nullable|string',
         ];
     }
 }
