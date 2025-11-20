@@ -1,7 +1,7 @@
 <?php
 
 namespace Sysborg\FocusNFe\app\Services;
-use Log;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Sysborg\FocusNFe\app\DTO\EmpresaDTO;
 use Sysborg\FocusNFe\app\Events\EmpresaCreated;
@@ -51,9 +51,16 @@ class Empresas extends EventHelper
    */
   public function create(EmpresaDTO $data): array
   {
+    $url = config('focusnfe.URL.' . $this->ambiente) . self::URL;
+
+    Log::info('FocusNFe.Empresa: Criando nova empresa', [
+      'url' => $url,
+      'data' => $data->toArray(),
+    ]);
+
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
+    ])->post($url, $data->toArray());
 
     $this->dispatch(EmpresaCreated::class, $request);
     if ($request->failed()) {
@@ -62,6 +69,11 @@ class Empresas extends EventHelper
         'data' => $data->toArray()
       ]);
     }
+
+    Log::info('FocusNFe.Empresa: Empresa criada com sucesso', [
+      'response' => $request->json(),
+      'data' => $data->toArray(),
+    ]);
 
     return $request->json();
   }
@@ -76,9 +88,20 @@ class Empresas extends EventHelper
    */
   public function list(int $offset = 1, ?string $cnpj = NULL, ?string $cpf = NULL): array
   {
+    $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&cnpj=$cnpj&cpf=$cpf";
+
+    Log::info('FocusNFe.Empresa: Listando empresas', [
+      'url' => $url,
+      'data' => [
+        'offset' => $offset,
+        'cnpj' => $cnpj,
+        'cpf' => $cpf
+      ]
+    ]);
+
     $request = Http::withHeaders([
       'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&cnpj=$cnpj&cpf=$cpf");
+    ])->get($url);
 
     if ($request->failed()) {
       Log::error('FocusNFe.Empresa: Erro ao listar empresas', [
