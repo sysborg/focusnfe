@@ -2,8 +2,8 @@
 
 return [
   'URL' => [
-    'production' => 'https://api.focusnfe.com.br/',
-    'sandbox' => 'https://homologacao.focusnfe.com.br/'
+    'production' => 'https://api.focusnfe.com.br',
+    'sandbox' => 'https://homologacao.focusnfe.com.br'
   ],
 
   'regimeTributario' => [
