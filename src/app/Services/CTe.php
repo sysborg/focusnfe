@@ -48,7 +48,7 @@ class CTe{
     public function envia(array $data, string $referencia): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref=$referencia", $data);
     
         if ($request->failed()) {
@@ -73,7 +73,7 @@ class CTe{
         $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
 
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get($url);
 
         if ($request->failed()) {
@@ -97,7 +97,7 @@ class CTe{
         $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
 
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->delete($url);
 
         if ($request->failed()) {
@@ -120,7 +120,7 @@ class CTe{
     public function cartaCorrecao(string $referencia, array $data): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/carta_correcao", $data);
 
         if ($request->failed()) {

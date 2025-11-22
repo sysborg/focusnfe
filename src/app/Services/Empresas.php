@@ -59,7 +59,7 @@ class Empresas extends EventHelper
     ]);
 
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->post($url, $data->toArray());
 
     $this->dispatch(EmpresaCreated::class, $request);
@@ -100,7 +100,7 @@ class Empresas extends EventHelper
     ]);
 
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get($url);
 
     if ($request->failed()) {
@@ -113,9 +113,19 @@ class Empresas extends EventHelper
           'cpf' => $cpf
         ]
       ]);
+
+      return [
+        'total' => $request->header('X-Total-Count', 0),
+        'data' => [],
+        'status' => $request->status(),
+      ];
     }
 
-    return $request->json();
+    return [
+      'total' => $request->header('X-Total-Count', 0),
+      'data' => $request->json(),
+      'status' => $request->status(),
+    ];
   }
 
   /**
@@ -127,7 +137,7 @@ class Empresas extends EventHelper
   public function get(int $id): array
   {
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id");
 
     if ($request->failed()) {
@@ -152,7 +162,7 @@ class Empresas extends EventHelper
   public function update(int $id, EmpresaDTO $data): array
   {
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->put(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id", $data->toArray());
 
     $this->dispatch(EmpresaUpdated::class, $request);
@@ -178,7 +188,7 @@ class Empresas extends EventHelper
   public function delete(int $id): array
   {
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id");
 
     $this->dispatch(EmpresaDeleted::class, $request);

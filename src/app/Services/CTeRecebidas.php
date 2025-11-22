@@ -52,7 +52,7 @@ class CTERecebidas {
     public function consulta(string $cnpj): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?cnpj=$cnpj");
 
         return $request->json();
@@ -67,7 +67,7 @@ class CTERecebidas {
     public function consultaCTE(string $chave): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave");
 
         return $request->json();
@@ -82,7 +82,7 @@ class CTERecebidas {
     public function informarDesacordo(string $chave, CTERecebidasDTO $data): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/desacordo", [
             'observacoes' => $data->observacoes
         ]);
@@ -99,7 +99,7 @@ class CTERecebidas {
     public function consultaDesacordo(string $chave): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/desacordo");
 
         return $request->json();

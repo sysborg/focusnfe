@@ -53,7 +53,7 @@ class MDFe
     public function envia(array $data): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data);
 
         if ($request->failed()) {
@@ -75,7 +75,7 @@ class MDFe
     public function consulta(string $referencia): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
         if ($request->failed()) {
@@ -97,7 +97,7 @@ class MDFe
     public function cancela(string $referencia): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
         if ($request->failed()) {
@@ -120,7 +120,7 @@ class MDFe
     public function incluiCondutor(string $referencia, array $data): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/inclusao_condutor", $data);
 
         if ($request->failed()) {
@@ -144,7 +144,7 @@ class MDFe
     public function incluiDFe(string $referencia, array $data): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/inclusao_dfe", $data);
 
         if ($request->failed()) {
@@ -167,7 +167,7 @@ class MDFe
     public function encerra(string $referencia): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/encerrar");
 
         if ($request->failed()) {

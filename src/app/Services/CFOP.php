@@ -50,7 +50,7 @@ class CFOP {
   public function list(int $offset = 1, ?string $codigo = NULL, ?string $descricao = NULL): array
   {
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
 
     if ($request->failed()) {
@@ -76,7 +76,7 @@ class CFOP {
   public function get(string $codigo): array
   {
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.production') . self::URL . "/$codigo");
 
     if ($request->failed()) {

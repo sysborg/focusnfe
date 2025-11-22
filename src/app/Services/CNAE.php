@@ -39,7 +39,7 @@ class CNAE
     public function list(int $offset = 1): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset");
 
         $data = $request->json();
@@ -64,7 +64,7 @@ class CNAE
     public function get(string $codigo): array
     {
         $request = Http::withHeaders([
-            'Authorization' => 'Basic ' . $this->token,
+            'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
 
         $data = $request->json();

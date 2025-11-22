@@ -47,7 +47,7 @@ class Backups {
   public function get(string $cnpj): string
   {
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . sprintf(self::URL, $cnpj));
 
     if ($request->failed()) {

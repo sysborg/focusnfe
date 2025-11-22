@@ -55,7 +55,7 @@ class NFSe extends EventHelper {
   public function envia(NFSeDTO $data): array
   {
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
     $this->dispatchEvent($request, NFSeEnviada::class);
@@ -80,7 +80,7 @@ class NFSe extends EventHelper {
   public function get(string $referencia): array
   {
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     if ($request->failed()) {
@@ -102,7 +102,7 @@ class NFSe extends EventHelper {
   public function cancela(string $referencia): array
   {
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     $this->dispatchEvent($request, NFSeCancelada::class);
@@ -126,7 +126,7 @@ class NFSe extends EventHelper {
   public function reenviaEmail(string $referencia, string $email): array
   {
     $request = Http::withHeaders([
-      'Authorization' => 'Basic ' . $this->token,
+      'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email");
 
     if ($request->failed()) {
