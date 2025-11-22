@@ -15,9 +15,9 @@ abstract class EventHelper
     public function dispatch(string $event, Response $response): void
     {
         event(new $event([
-            'status' => $request->status(),
-            'data' => $request->json(),
-            'success' => $request->ok(),
+            'status' => $response->status(),
+            'data' => $response->json(),
+            'success' => $response->ok(),
         ]));
     }
 }
