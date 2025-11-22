@@ -7,7 +7,7 @@ use Illuminate\Validation\ValidationException;
 class EmpresaDTO extends DTO
 {
   public function __construct(
-    public string $razao_social,
+    public string $nome,
     public string $nome_fantasia,
     public string $bairro,
     public int $cep,
