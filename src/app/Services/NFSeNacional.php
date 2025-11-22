@@ -53,7 +53,7 @@ class NFSeNacional {
   public function envia(NFSenDTO $data): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
     if ($request->failed()) {
@@ -75,7 +75,7 @@ class NFSeNacional {
   public function consulta(string $referencia): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     if ($request->failed()) {
@@ -97,7 +97,7 @@ class NFSeNacional {
   public function cancela(string $referencia): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     if ($request->failed()) {

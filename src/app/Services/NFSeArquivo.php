@@ -52,7 +52,7 @@ class NFSeArquivo
     public function envia(string $referencia, $arquivo): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->attach(
             'arquivo',
             file_get_contents($arquivo->getPathname()),
@@ -73,7 +73,7 @@ class NFSeArquivo
     public function get(string $referencia): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
         if ($request->failed()) {

@@ -59,7 +59,7 @@ class Empresas extends EventHelper
     ]);
 
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->post($url, $data->toArray());
 
     $this->dispatch(EmpresaCreated::class, $request);
@@ -100,7 +100,7 @@ class Empresas extends EventHelper
     ]);
 
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->get($url);
 
     if ($request->failed()) {
@@ -127,7 +127,7 @@ class Empresas extends EventHelper
   public function get(int $id): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id");
 
     if ($request->failed()) {
@@ -152,7 +152,7 @@ class Empresas extends EventHelper
   public function update(int $id, EmpresaDTO $data): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->put(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id", $data->toArray());
 
     $this->dispatch(EmpresaUpdated::class, $request);
@@ -178,7 +178,7 @@ class Empresas extends EventHelper
   public function delete(int $id): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id");
 
     $this->dispatch(EmpresaDeleted::class, $request);

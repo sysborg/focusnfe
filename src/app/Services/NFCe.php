@@ -52,7 +52,7 @@ class NFCe {
   public function envia(NFCeDTO $data): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
     if ($request->failed()) {
@@ -74,7 +74,7 @@ class NFCe {
   public function get(string $referencia): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     if ($request->failed()) {
@@ -96,7 +96,7 @@ class NFCe {
   public function cancela(string $referencia): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
     if ($request->failed()) {
@@ -117,7 +117,7 @@ class NFCe {
   public function inutilizacoes(): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/inutilizacoes");
 
     return $request->json();
@@ -133,7 +133,7 @@ class NFCe {
   public function registraEconf(string $referencia, array $data): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf", $data);
 
     return $request->json();
@@ -150,7 +150,7 @@ class NFCe {
   public function consultaEconf(string $referencia, string $protocolo): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo");
 
     return $request->json();
@@ -167,7 +167,7 @@ class NFCe {
   public function cancelaEconf(string $referencia, string $protocolo): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo");
 
     return $request->json();

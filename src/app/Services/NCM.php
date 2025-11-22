@@ -50,7 +50,7 @@ class NCM {
   public function list(int $offset = 1, ?string $codigo = NULL, ?string $descricao = NULL): array
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
 
     if ($request->failed()) {
@@ -77,7 +77,7 @@ class NCM {
   {
 
       $request = Http::withHeaders([
-          'Authorization' => $this->token,
+          'Authorization' => 'Basic ' . $this->token,
       ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
 
       if ($request->failed()) {

@@ -50,7 +50,7 @@ class NFeRecebidas
     public function listByCnpj(string $cnpj): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?cnpj=$cnpj");
 
         if ($request->failed()) {
@@ -74,7 +74,7 @@ class NFeRecebidas
     public function manifestar(string $chave, NFeRecebidasDTO $data): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/manifesto", $data);
 
         return $request->json();
@@ -89,7 +89,7 @@ class NFeRecebidas
     public function consultarManifesto(string $chave): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/manifesto");
 
         return $request->json();

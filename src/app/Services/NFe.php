@@ -53,7 +53,7 @@ class NFe {
     public function envia(NFeDTO $data, string $referencia): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref=$referencia", $data->toArray());
 
         if ($request->failed()) {
@@ -75,7 +75,7 @@ class NFe {
     public function get(string $referencia): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
         if ($request->failed()) {
@@ -97,7 +97,7 @@ class NFe {
     public function cancela(string $referencia): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
         if ($request->failed()) {
@@ -120,7 +120,7 @@ class NFe {
     public function cartaCorrecao(string $referencia, array $data): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/carta_correcao", $data);
 
         if ($request->failed()) {
@@ -141,7 +141,7 @@ class NFe {
     public function inutilizacoes(): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/inutilizacoes");
 
         if ($request->failed()) {

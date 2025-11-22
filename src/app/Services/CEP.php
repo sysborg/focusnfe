@@ -47,7 +47,7 @@ class CEP {
   public function get(string $cep): string
   {
     $request = Http::withHeaders([
-      'Authorization' => $this->token,
+      'Authorization' => 'Basic ' . $this->token,
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$cep");
 
     if ($request->failed()) {

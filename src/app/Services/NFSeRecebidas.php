@@ -41,7 +41,7 @@ class NFSeRecebidas
     public function listByCnpj(string $cnpj): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.production') . self::URL . "?cnpj=$cnpj");
 
         if ($request->failed()) {
@@ -63,7 +63,7 @@ class NFSeRecebidas
     public function getByChave(string $chave): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.production') . self::URL . "/$chave");
 
         if ($request->failed()) {

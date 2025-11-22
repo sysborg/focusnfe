@@ -52,7 +52,7 @@ class Municipios
     public function list(int $offset = 1, ?string $codigo = null, ?string $descricao = null): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
 
         if ($request->failed()) {
@@ -80,7 +80,7 @@ class Municipios
     public function get(string $codigo): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
 
         if ($request->failed()) {
@@ -106,7 +106,7 @@ class Municipios
     public function getListaServico(string $codigoMunicipio, string $codigoServico): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigoMunicipio/itens_lista_servico/$codigoServico");
 
         if ($request->failed()) {
@@ -132,7 +132,7 @@ class Municipios
     public function getCodigosTributarios(string $codigoMunicipio, string $codigoTributario): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigoMunicipio/codigos_tributarios_municipio/$codigoTributario");
 
         if ($request->failed()) {

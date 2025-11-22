@@ -48,7 +48,7 @@ class Cnpjs {
     public function get(string $cnpj): string
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.' . $this->ambiente ) . self::URL . "/$cnpj");
 
         if ($request->failed()) {

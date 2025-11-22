@@ -48,7 +48,7 @@ class ConsultaEmails {
     public function get(string $email): array
     {
         $request = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$email");
 
         if ($request->failed()) {
@@ -94,7 +94,7 @@ class ConsultaEmails {
     public function delete(string $email): array
     {
         $response = Http::withHeaders([
-            'Authorization' => $this->token,
+            'Authorization' => 'Basic ' . $this->token,
         ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$email");
 
         $data = $response->json();
