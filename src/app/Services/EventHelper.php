@@ -1,6 +1,7 @@
 <?php
 
 namespace Sysborg\FocusNFe\app\Services;
+use Illuminate\Http\Client\Response;
 
 abstract class EventHelper
 {
@@ -11,7 +12,7 @@ abstract class EventHelper
      * @param array $data
      * @return void
      */
-    public function dispatch(string $event, Illuminate\Http\Client\Response $response): void
+    public function dispatch(string $event, Response $response): void
     {
         event(new $event([
             'status' => $request->status(),
