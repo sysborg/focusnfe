@@ -24,12 +24,14 @@ class EmpresaDTO extends DTO
     public string $uf,
     public bool $habilita_nfe,
     public bool $habilita_nfce,
+    public bool $habilita_nfse,
     public string $arquivo_certificado,
     public string $senha_certificado,
     public string $csc_nfce_producao,
     public string $id_token_nfce_producao,
     public bool $envia_email_destinatario = true,
     public bool $discrimina_imposto = true,
+    public bool $certificado_especifico = false,
   ) {}
 
   /**
@@ -58,12 +60,14 @@ class EmpresaDTO extends DTO
         $data['uf'],
         $data['habilita_nfe'],
         $data['habilita_nfce'],
+        $data['habilita_nfse'] ?? false,
         $data['arquivo_certificado'] ?? '',
         $data['senha_certificado'] ?? '',
         $data['csc_nfce_producao'] ?? '',
         $data['id_token_nfce_producao'] ?? '',
         $data['envia_email_destinatario'],
         $data['discrimina_imposto'],
+        $data['certificado_especifico'] ?? false,
     );
   }
 }
