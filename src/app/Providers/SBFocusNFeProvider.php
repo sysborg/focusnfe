@@ -99,7 +99,7 @@ class SBFocusNFeProvider extends ServiceProvider
             return new CTeRecebidas(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
-        $this->app->singleton('focusnfe.empresas', function ($app) {
+        $this->app->singleton(Empresas::class, function ($app) {
             return new Empresas(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
@@ -127,7 +127,7 @@ class SBFocusNFeProvider extends ServiceProvider
             return new NFeRecebidas(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
-        $this->app->singleton('focusnfe.nfse', function ($app) {
+        $this->app->singleton(NFSe::class, function ($app) {
             return new NFSe(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
