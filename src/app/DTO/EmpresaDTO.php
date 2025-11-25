@@ -80,10 +80,10 @@ class EmpresaDTO extends DTO
       'idTokenNfceProducao' => 'required_if:habilitaNfce,true|string|max:10',
       'arquivoCertificado' => 'required_if:certificadoEspecifico,true|string',
       'senhaCertificado' => 'required_if:certificadoEspecifico,true|string|max:100',
-      'nomeFantasia' => 'nullable|string|max:255',
+      'nomeFantasia' => 'required|string|max:255',
       'complemento' => 'nullable|string|max:100',
-      'inscricaoEstadual' => 'nullable|string|max:20',
-      'inscricaoMunicipal' => 'nullable|string|max:20',
+      'inscricaoEstadual' => 'required_if:habilitaNfe,true|required_if:habilitaNfce,true|nullable|string|max:20',
+      'inscricaoMunicipal' => 'required_if:habilitaNfse,true|string|max:20',
     ];
   }
 
