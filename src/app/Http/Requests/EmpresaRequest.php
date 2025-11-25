@@ -3,6 +3,7 @@
 namespace Sysborg\FocusNFe\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Sysborg\FocusNfe\app\DTO\EmpresaDTO;
 
 class EmpresaRequest extends FormRequest
 {
@@ -13,32 +14,16 @@ class EmpresaRequest extends FormRequest
      */
     public function rules(): array
     {
-        $regimeTributario = array_keys(config('focusnfe.regimeTributario'));
+        return EmpresaDTO::rules();
+    }
 
-        return [
-            'razaoSocial' => 'required|string',
-            'nomeFantasia' => 'required|string',
-            'bairro' => 'required|string',
-            'cep' => 'required|integer',
-            'cnpj' => 'required|string',
-            'complemento' => 'required|string',
-            'email' => 'required|email',
-            'inscricaoEstadual' => 'required|string',
-            'inscricaoMunicipal' => 'required|string',
-            'logradouro' => 'required|string',
-            'numero' => 'required|integer',
-            'regimeTributario' => 'required|integer|in:' . implode(',', $regimeTributario),
-            'telefone' => 'required|string',
-            'municipio' => 'required|string',
-            'uf' => 'required|string',
-            'habilitaNfe' => 'required|boolean',
-            'habilitaNfce' => 'required|boolean',
-            'arquivoCertificado' => 'required|string',
-            'senhaCertificado' => 'required|string',
-            'cscNfceProducao' => 'required|string',
-            'idTokenNfceProducao' => 'required|string',
-            'enviaEmailDestinatario' => 'required|boolean',
-            'discriminaImposto' => 'required|boolean',
-        ];
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return EmpresaDTO::messages();
     }
 }
