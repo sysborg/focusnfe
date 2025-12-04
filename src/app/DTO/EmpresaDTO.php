@@ -57,7 +57,8 @@ class EmpresaDTO extends DTO
    */
   protected function validate(): void
   {
-    $validator = Validator::make($this->toArray(), self::rules(), self::messages());
+    // Valida os dados em camelCase (antes da conversão para snake_case)
+    $validator = Validator::make(get_object_vars($this), self::rules(), self::messages());
 
     if ($validator->fails()) {
       throw new ValidationException($validator);
@@ -91,7 +92,7 @@ class EmpresaDTO extends DTO
       'certificadoEspecifico' => 'boolean',
       'cscNfceProducao' => 'required_if:habilitaNfce,true|string|max:100',
       'idTokenNfceProducao' => 'required_if:habilitaNfce,true|string|max:10',
-      'arquivoCertificadoBase64' => 'required_if:certificadoEspecifico,true|string',
+      'arquivoCertificado' => 'required_if:certificadoEspecifico,true|string',
       'senhaCertificado' => 'required_if:certificadoEspecifico,true|string|max:100',
       'nomeFantasia' => 'required|string|max:255',
       'complemento' => 'nullable|string|max:100',
