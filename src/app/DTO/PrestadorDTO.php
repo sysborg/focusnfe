@@ -2,14 +2,15 @@
 
 namespace Sysborg\FocusNfe\app\DTO;
 
-use InvalidArgumentException;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class PrestadorDTO extends DTO
 {
     public function __construct(
         public string $cnpj,
-        public string $inscricao_municipal,
-        public string $codigo_municipio
+        public string $inscricaoMunicipal,
+        public string $codigoMunicipio
     ) {
         $this->validate();
     }
@@ -17,36 +18,64 @@ class PrestadorDTO extends DTO
     /**
      * Valida os dados do PrestadorDTO
      *
-     * @throws InvalidArgumentException
+     * @throws ValidationException
      * @return void
      */
-    public function validate(): void
+    protected function validate(): void
     {
-        if (empty($this->cnpj)) {
-            throw new InvalidArgumentException('O campo cnpj é obrigatório');
-        }
+        $validator = Validator::make(get_object_vars($this), self::rules(), self::messages());
 
-        if (empty($this->inscricao_municipal)) {
-            throw new InvalidArgumentException('O campo inscricao_municipal é obrigatório');
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+    }
 
-        if (empty($this->codigo_municipio)) {
-            throw new InvalidArgumentException('O campo codigo_municipio é obrigatório');
-        }
+    /**
+     * Regras de validação
+     *
+     * @return array
+     */
+    public static function rules(): array
+    {
+        return [
+            'cnpj' => 'required|string|cnpj',
+            'inscricaoMunicipal' => 'required|string|max:20',
+            'codigoMunicipio' => 'required|string|max:10',
+        ];
+    }
+
+    /**
+     * Mensagens de validação customizadas
+     *
+     * @return array
+     */
+    public static function messages(): array
+    {
+        return [
+            'cnpj.required' => 'O CNPJ do prestador é obrigatório',
+            'cnpj.string' => 'O CNPJ do prestador deve ser um texto',
+            'cnpj.cnpj' => 'O CNPJ do prestador é inválido',
+            'inscricaoMunicipal.required' => 'A inscrição municipal é obrigatória',
+            'inscricaoMunicipal.string' => 'A inscrição municipal deve ser um texto',
+            'inscricaoMunicipal.max' => 'A inscrição municipal não pode ter mais de 20 caracteres',
+            'codigoMunicipio.required' => 'O código do município é obrigatório',
+            'codigoMunicipio.string' => 'O código do município deve ser um texto',
+            'codigoMunicipio.max' => 'O código do município não pode ter mais de 10 caracteres',
+        ];
     }
 
     /**
      * Cria um objeto PrestadorDTO a partir de um array
      *
-     * @param array $data
+     * @param array $data Array com os dados em camelCase
      * @return PrestadorDTO
      */
     public static function fromArray(array $data): self
     {
         return new self(
             $data['cnpj'],
-            $data['inscricao_municipal'],
-            $data['codigo_municipio']
+            $data['inscricaoMunicipal'],
+            $data['codigoMunicipio']
         );
     }
 }
