@@ -58,7 +58,7 @@ class NFSe extends EventHelper {
   {
     $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
-    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
+    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . '?ref=' . $ref, $data->toArray());
 
     if (!($response instanceof Response)) {
       Log::error('FocusNFe.NFSe: Resposta inválida ao enviar NFSe', [
