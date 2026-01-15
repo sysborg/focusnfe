@@ -1,8 +1,8 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\mocks;
+namespace Sysborg\FocusNfe\tests\mocks;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\NFSeArquivoStub;
+use Sysborg\FocusNfe\tests\mocks\Stub\NFSeArquivoStub;
 use Illuminate\Support\Facades\Http;
 
 trait NFSeArquivoMock

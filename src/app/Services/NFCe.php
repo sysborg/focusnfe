@@ -1,9 +1,9 @@
 <?php
-namespace Sysborg\FocusNFe\app\Services;
+namespace Sysborg\FocusNfe\app\Services;
 
 use Log;
 use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\app\DTO\NFCeDTO;
+use Sysborg\FocusNfe\app\DTO\NFCeDTO;
 
 /**
  * Classe responsável por manipular as NFCe

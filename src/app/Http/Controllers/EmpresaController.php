@@ -1,11 +1,11 @@
 <?php 
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\DTO\EmpresaDTO;
-use Sysborg\FocusNFe\app\Http\Requests\EmpresaRequest;
+use Sysborg\FocusNfe\app\DTO\EmpresaDTO;
+use Sysborg\FocusNfe\app\Http\Requests\EmpresaRequest;
 use Sysborg\FocusNfe\app\Services\Empresas;
 
 class EmpresaController extends Controller

@@ -1,6 +1,6 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Unit\DTO;
+namespace Sysborg\FocusNfe\tests\Unit\DTO;
 
 use PHPUnit\Framework\TestCase;
 use Sysborg\FocusNfe\app\DTO\EnderecoDTO;

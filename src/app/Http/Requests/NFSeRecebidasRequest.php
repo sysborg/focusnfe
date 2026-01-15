@@ -1,8 +1,8 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Http\Requests;
+namespace Sysborg\FocusNfe\app\Http\Requests;
 
-use Sysborg\FocusNFe\app\Rules\CnpjRule;
+use Sysborg\FocusNfe\app\Rules\CnpjRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class NFSeRecebidasRequest extends FormRequest

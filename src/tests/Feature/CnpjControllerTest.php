@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\CnpjStub;
-use Sysborg\FocusNFe\app\Services\Cnpjs;
-use Sysborg\FocusNFe\tests\mocks\CnpjMock;
+use Sysborg\FocusNfe\tests\mocks\Stub\CnpjStub;
+use Sysborg\FocusNfe\app\Services\Cnpjs;
+use Sysborg\FocusNfe\tests\mocks\CnpjMock;
 
 class CnpjControllerTest extends Common
 {

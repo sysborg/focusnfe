@@ -1,9 +1,9 @@
 <?php 
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\Services\Backups;
+use Sysborg\FocusNfe\app\Services\Backups;
 use Log;
 
 class BackupControllerr extends Controller

@@ -29,7 +29,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Sysborg\\FocusNFe\\app\\Providers\\SBFocusNFeProvider"
+                "Sysborg\\FocusNfe\\app\\Providers\\SBFocusNFeProvider"
             ]
         }
     }

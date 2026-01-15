@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Services;
+namespace Sysborg\FocusNfe\app\Services;
 
 use Log;
 use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\app\DTO\NFeDTO;
+use Sysborg\FocusNfe\app\DTO\NFeDTO;
 
 /**
  * Classe responsável por manipular as NFe

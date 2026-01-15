@@ -24,7 +24,7 @@ prática, basta implementar o Swagger no seu projeto Laravel para oferecer uma r
 
 ### Evento quando a rota de webhook é estimulada
 ```
-use \Sysborg\FocusNFe\app\Events\HooksReceived
+use \Sysborg\FocusNfe\app\Events\HooksReceived
 ```
 
 O retorno é transparente e idêntico ao que a FocusNFe fornece.
@@ -48,7 +48,7 @@ Todos os eventos abaixo retornam a mesma estrutura de dados.
 
 #### Criação da empresa
 ```
-use \Sysborg\FocusNFe\app\Events\EmpresaCreated
+use \Sysborg\FocusNfe\app\Events\EmpresaCreated
 ```
 
 Os dados enviados pelo evento são explicados no início da sessão eventos.
@@ -56,7 +56,7 @@ Os dados enviados pelo evento são explicados no início da sessão eventos.
 
 #### Alteração da empresa
 ```
-use \Sysborg\FocusNFe\app\Events\EmpresaUpdated
+use \Sysborg\FocusNfe\app\Events\EmpresaUpdated
 ```
 
 Os dados enviados pelo evento são explicados no início da sessão eventos.
@@ -64,7 +64,7 @@ Os dados enviados pelo evento são explicados no início da sessão eventos.
 
 #### Exclusão da empresa
 ```
-use \Sysborg\FocusNFe\app\Events\EmpresaCreated
+use \Sysborg\FocusNfe\app\Events\EmpresaCreated
 ```
 
 Os dados enviados pelo evento são explicados no início da sessão eventos.
@@ -72,7 +72,7 @@ Os dados enviados pelo evento são explicados no início da sessão eventos.
 
 #### NFSe - Enviada
 ```
-use \Sysborg\FocusNFe\app\Events\NFSeEnviada
+use \Sysborg\FocusNfe\app\Events\NFSeEnviada
 ```
 
 Os dados enviados pelo evento são explicados no início da sessão eventos.
@@ -80,7 +80,7 @@ Os dados enviados pelo evento são explicados no início da sessão eventos.
 
 #### NFSe - Cancelada
 ```
-use \Sysborg\FocusNFe\app\Events\NFSeCancelada
+use \Sysborg\FocusNfe\app\Events\NFSeCancelada
 ```
 
 Os dados enviados pelo evento são explicados no início da sessão eventos.

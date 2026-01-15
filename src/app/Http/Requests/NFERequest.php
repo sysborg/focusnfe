@@ -1,6 +1,6 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Http\Requests;
+namespace Sysborg\FocusNfe\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

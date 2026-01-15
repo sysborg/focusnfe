@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\Http\Requests\NFSeArquivoRequest;
-use Facades\Sysborg\FocusNFe\app\Services\NFSeArquivo;
+use Sysborg\FocusNfe\app\Http\Requests\NFSeArquivoRequest;
+use Facades\Sysborg\FocusNfe\app\Services\NFSeArquivo;
 
 class NFSeArquivoController extends Controller
 {

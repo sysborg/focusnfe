@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Services;
+namespace Sysborg\FocusNfe\app\Services;
 
 use Log;
 use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\app\DTO\CTERecebidasDTO;
+use Sysborg\FocusNfe\app\DTO\CTERecebidasDTO;
 
 /**
  * Classe responsável por manipular as CTE Recebidas

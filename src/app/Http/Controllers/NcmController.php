@@ -1,10 +1,10 @@
 <?php 
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Facades\Sysborg\FocusNFe\app\Services\NCM;
+use Facades\Sysborg\FocusNfe\app\Services\NCM;
 
 class NcmController extends Controller
 {

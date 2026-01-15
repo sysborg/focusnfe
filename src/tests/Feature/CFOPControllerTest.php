@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\CFOPStub;
-use Sysborg\FocusNFe\app\Services\CFOP;
-use Sysborg\FocusNFe\tests\mocks\CFOPMock;
+use Sysborg\FocusNfe\tests\mocks\Stub\CFOPStub;
+use Sysborg\FocusNfe\app\Services\CFOP;
+use Sysborg\FocusNfe\tests\mocks\CFOPMock;
 
 class CFOPControllerTest extends Common
 {

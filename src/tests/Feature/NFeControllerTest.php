@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\NFeStub;
-use Sysborg\FocusNFe\tests\mocks\NFeMock;
-use Sysborg\FocusNFe\app\Services\NFe;
+use Sysborg\FocusNfe\tests\mocks\Stub\NFeStub;
+use Sysborg\FocusNfe\tests\mocks\NFeMock;
+use Sysborg\FocusNfe\app\Services\NFe;
 
 class NFeControllerTest extends Common
 {

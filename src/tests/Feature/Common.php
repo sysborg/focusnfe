@@ -1,5 +1,5 @@
 <?php
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
 use PHPUnit\Framework\TestCase;
 
