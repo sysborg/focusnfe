@@ -1,6 +1,6 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Traits;
+namespace Sysborg\FocusNfe\tests\Traits;
 
 use Illuminate\Support\Facades\Http;
 

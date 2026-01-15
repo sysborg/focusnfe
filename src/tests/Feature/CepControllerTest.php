@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\CEPStub;
-use Sysborg\FocusNFe\app\Services\CEP;
-use Sysborg\FocusNFe\tests\mocks\CEPMock;
+use Sysborg\FocusNfe\tests\mocks\Stub\CEPStub;
+use Sysborg\FocusNfe\app\Services\CEP;
+use Sysborg\FocusNfe\tests\mocks\CEPMock;
 
 class CEPControllerTest extends Common
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\NFSeArquivoStub;
-use Sysborg\FocusNFe\app\Services\NFSeArquivo;
-use Sysborg\FocusNFe\tests\mocks\NFSeArquivoMock;
+use Sysborg\FocusNfe\tests\mocks\Stub\NFSeArquivoStub;
+use Sysborg\FocusNfe\app\Services\NFSeArquivo;
+use Sysborg\FocusNfe\tests\mocks\NFSeArquivoMock;
 
 class NFSeArquivoControllerTest extends Common
 {

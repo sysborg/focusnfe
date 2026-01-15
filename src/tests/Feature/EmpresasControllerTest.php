@@ -1,9 +1,9 @@
 <?php
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNFe\tests\mocks\EmpresaMock;
-use Sysborg\FocusNFe\tests\mocks\Stub\EmpresaStub;
-use Sysborg\FocusNFe\app\Services\Empresas;
+use Sysborg\FocusNfe\tests\mocks\EmpresaMock;
+use Sysborg\FocusNfe\tests\mocks\Stub\EmpresaStub;
+use Sysborg\FocusNfe\app\Services\Empresas;
 
 class EmpresasControllerTest extends Common {
   use EmpresaMock;

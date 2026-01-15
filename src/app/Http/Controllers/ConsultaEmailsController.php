@@ -1,9 +1,9 @@
 <?php 
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Facades\Sysborg\FocusNFe\app\Services\ConsultaEmails;
+use Facades\Sysborg\FocusNfe\app\Services\ConsultaEmails;
 
 class ConsultaEmailsController extends Controller
 {

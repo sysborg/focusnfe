@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\CTeStub;
-use Sysborg\FocusNFe\tests\mocks\CTeMock;
-use Sysborg\FocusNFe\app\Services\CTe;
+use Sysborg\FocusNfe\tests\mocks\Stub\CTeStub;
+use Sysborg\FocusNfe\tests\mocks\CTeMock;
+use Sysborg\FocusNfe\app\Services\CTe;
 
 class CTeControllerTest extends Common
 {

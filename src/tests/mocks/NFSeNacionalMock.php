@@ -1,7 +1,7 @@
 <?php
-namespace Sysborg\FocusNFe\tests\mocks;
+namespace Sysborg\FocusNfe\tests\mocks;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\NFSeNacionalStub;
+use Sysborg\FocusNfe\tests\mocks\Stub\NFSeNacionalStub;
 use Illuminate\Support\Facades\Http;
 
 trait NFSeNacionalMock {

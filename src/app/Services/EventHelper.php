@@ -1,6 +1,6 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Services;
+namespace Sysborg\FocusNfe\app\Services;
 use Illuminate\Http\Client\Response;
 
 abstract class EventHelper

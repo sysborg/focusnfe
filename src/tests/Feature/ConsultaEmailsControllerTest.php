@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\ConsultaEmailsStub;
-use Sysborg\FocusNFe\app\Services\ConsultaEmails;
-use Sysborg\FocusNFe\tests\mocks\ConsultaEmailsMock;
+use Sysborg\FocusNfe\tests\mocks\Stub\ConsultaEmailsStub;
+use Sysborg\FocusNfe\app\Services\ConsultaEmails;
+use Sysborg\FocusNfe\tests\mocks\ConsultaEmailsMock;
 
 class ConsultaEmailsControllerTest extends Common
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Unit\Services;
+namespace Sysborg\FocusNfe\tests\Unit\Services;
 
 use PHPUnit\Framework\TestCase;
-use Sysborg\FocusNFe\app\Services\NFSe;
-use Sysborg\FocusNFe\tests\Traits\NFSeDataTrait;
-use Sysborg\FocusNFe\tests\Traits\MockHttpResponseTrait;
+use Sysborg\FocusNfe\app\Services\NFSe;
+use Sysborg\FocusNfe\tests\Traits\NFSeDataTrait;
+use Sysborg\FocusNfe\tests\Traits\MockHttpResponseTrait;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Event;
 

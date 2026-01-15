@@ -1,11 +1,11 @@
 <?php 
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\Rules\CnaeRule;
-use Facades\Sysborg\FocusNFe\app\Services\CNAE;
+use Sysborg\FocusNfe\app\Rules\CnaeRule;
+use Facades\Sysborg\FocusNfe\app\Services\CNAE;
 
 class CnaeController extends Controller
 {
