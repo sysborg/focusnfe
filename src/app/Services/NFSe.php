@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Sysborg\FocusNfe\app\DTO\NFSeDTO;
 use Sysborg\FocusNfe\app\Events\NFSeEnviada;
 use Sysborg\FocusNfe\app\Events\NFSeCancelada;
+use Illuminate\Http\Client\Response;
 
 /**
  * Classe responsável por manipular as NFSe
@@ -54,14 +55,29 @@ class NFSe extends EventHelper {
    */
   public function envia(NFSeDTO $data): array
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
-    $this->dispatch($request, NFSeEnviada::class);
-    if ($request->failed()) {
+    if (!($response instanceof Response)) {
+      Log::error('FocusNFe.NFSe: Resposta inválida ao enviar NFSe', [
+        'data' => $data->toArray(),
+        'response' => $response
+      ]);
+
+      throw new \Exception('Resposta inválida ao enviar NFSe: ' . print_r($response, true));
+    }
+
+    Log::debug('FocusNFe.NFSe: Enviando NFSe', [
+      'url' => config('focusnfe.URL.' . $this->ambiente) . self::URL,
+      'data' => $data->toArray(),
+      'response' => $response
+    ]);
+
+    $this->dispatch($response, NFSeEnviada::class);
+    if ($response->failed()) {
       Log::error('FocusNFe.NFSe: Erro ao enviar NFSe', [
-        'response' => $request->json(),
+        'response' => $response->json(),
         'data' => $data->toArray()
       ]);
     }
