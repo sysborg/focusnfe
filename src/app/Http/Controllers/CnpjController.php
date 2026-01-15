@@ -1,11 +1,11 @@
 <?php 
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\Rules\CnpjRule;
-use Facades\Sysborg\FocusNFe\app\Services\Cnpjs;
+use Sysborg\FocusNfe\app\Rules\CnpjRule;
+use Facades\Sysborg\FocusNfe\app\Services\Cnpjs;
 
 class CnpjController extends Controller
 {

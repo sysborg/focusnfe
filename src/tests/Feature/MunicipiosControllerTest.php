@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\MunicipioStub;
-use Sysborg\FocusNFe\app\Services\Municipios;
-use Sysborg\FocusNFe\tests\mocks\MunicipioMock;
+use Sysborg\FocusNfe\tests\mocks\Stub\MunicipioStub;
+use Sysborg\FocusNfe\app\Services\Municipios;
+use Sysborg\FocusNfe\tests\mocks\MunicipioMock;
 
 class MunicipioControllerTest extends Common
 {

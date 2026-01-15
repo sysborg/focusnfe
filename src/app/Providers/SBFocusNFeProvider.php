@@ -1,9 +1,9 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Providers;
+namespace Sysborg\FocusNfe\app\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Sysborg\FocusNFe\app\Services\{
+use Sysborg\FocusNfe\app\Services\{
     Backups,
     CEP,
     CFOP,
@@ -25,8 +25,8 @@ use Sysborg\FocusNFe\app\Services\{
     NFSeRecebidas
 };
 use Illuminate\Support\Facades\Validator;
-use Sysborg\FocusNFe\app\Events\HooksReceived;
-use Sysborg\FocusNFe\app\Rules\{CepRule, CnaeRule, CnpjRule};
+use Sysborg\FocusNfe\app\Events\HooksReceived;
+use Sysborg\FocusNfe\app\Rules\{CepRule, CnaeRule, CnpjRule};
 use Illuminate\Support\Facades\Event;
 
 class SBFocusNFeProvider extends ServiceProvider

@@ -1,7 +1,7 @@
 <?php
-namespace Sysborg\FocusNFe\tests\mocks;
+namespace Sysborg\FocusNfe\tests\mocks;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\CTeStub;
+use Sysborg\FocusNfe\tests\mocks\Stub\CTeStub;
 use Illuminate\Support\Facades\Http;
 
 trait CTeMock {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\NFeRecebidasStub;
-use Sysborg\FocusNFe\app\Services\NFeRecebidas;
-use Sysborg\FocusNFe\tests\mocks\NFeRecebidasMock;
+use Sysborg\FocusNfe\tests\mocks\Stub\NFeRecebidasStub;
+use Sysborg\FocusNfe\app\Services\NFeRecebidas;
+use Sysborg\FocusNfe\tests\mocks\NFeRecebidasMock;
 
 class NFeRecebidasControllerTest extends Common
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\mocks;
+namespace Sysborg\FocusNfe\tests\mocks;
 
 use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\tests\mocks\Stub\NFERecebidasStub;
+use Sysborg\FocusNfe\tests\mocks\Stub\NFERecebidasStub;
 
 trait NFeRecebidasMock {
     /**

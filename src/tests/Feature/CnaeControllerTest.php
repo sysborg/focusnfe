@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\Feature;
+namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\CnaeStub;
-use Sysborg\FocusNFe\app\Services\Cnae;
-use Sysborg\FocusNFe\tests\mocks\CnaeMock;
+use Sysborg\FocusNfe\tests\mocks\Stub\CnaeStub;
+use Sysborg\FocusNfe\app\Services\Cnae;
+use Sysborg\FocusNfe\tests\mocks\CnaeMock;
 
 class CnaeControllerTest extends Common
 {

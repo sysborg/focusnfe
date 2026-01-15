@@ -1,5 +1,5 @@
 <?php
-namespace Sysborg\FocusNFe\tests\mocks\Stub;
+namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
 class EmpresaStub {
   /**

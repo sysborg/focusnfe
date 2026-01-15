@@ -1,11 +1,11 @@
 <?php
-namespace Sysborg\FocusNFe\app\Services;
+namespace Sysborg\FocusNfe\app\Services;
 
 use Log;
 use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\app\DTO\NFSeDTO;
-use Sysborg\FocusNFe\app\Events\NFSeEnviada;
-use Sysborg\FocusNFe\app\Events\NFSeCancelada;
+use Sysborg\FocusNfe\app\DTO\NFSeDTO;
+use Sysborg\FocusNfe\app\Events\NFSeEnviada;
+use Sysborg\FocusNfe\app\Events\NFSeCancelada;
 
 /**
  * Classe responsável por manipular as NFSe

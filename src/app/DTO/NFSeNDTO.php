@@ -1,9 +1,9 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\DTO;
+namespace Sysborg\FocusNfe\app\DTO;
 
 use Carbon\Carbon;
-use Sysborg\FocusNFe\app\DTO\ServicoDTO;
+use Sysborg\FocusNfe\app\DTO\ServicoDTO;
 
 class NFSenDTO extends DTO 
 {

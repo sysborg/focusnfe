@@ -1,8 +1,8 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Services;
+namespace Sysborg\FocusNfe\app\Services;
 
-use Sysborg\FocusNFe\app\DTO\NFeRecebidasDTO;
+use Sysborg\FocusNfe\app\DTO\NFeRecebidasDTO;
 use Illuminate\Support\Facades\Http;
 use Log;
 

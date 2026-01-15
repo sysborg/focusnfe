@@ -1,12 +1,12 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Services;
+namespace Sysborg\FocusNfe\app\Services;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\app\DTO\EmpresaDTO;
-use Sysborg\FocusNFe\app\Events\EmpresaCreated;
-use Sysborg\FocusNFe\app\Events\EmpresaUpdated;
-use Sysborg\FocusNFe\app\Events\EmpresaDeleted;
+use Sysborg\FocusNfe\app\DTO\EmpresaDTO;
+use Sysborg\FocusNfe\app\Events\EmpresaCreated;
+use Sysborg\FocusNfe\app\Events\EmpresaUpdated;
+use Sysborg\FocusNfe\app\Events\EmpresaDeleted;
 
 class Empresas extends EventHelper
 {
