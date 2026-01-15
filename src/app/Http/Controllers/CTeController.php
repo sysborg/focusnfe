@@ -1,11 +1,11 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\Http\Requests\CTeRequest;
-use Sysborg\FocusNFe\app\DTO\CTeDTO;
-use Facades\Sysborg\FocusNFe\app\Services\CTe;
+use Sysborg\FocusNfe\app\Http\Requests\CTeRequest;
+use Sysborg\FocusNfe\app\DTO\CTeDTO;
+use Facades\Sysborg\FocusNfe\app\Services\CTe;
 use Illuminate\Http\JsonResponse;
 
 class CTeController extends Controller

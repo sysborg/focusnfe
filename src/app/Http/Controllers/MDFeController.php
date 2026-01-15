@@ -1,11 +1,11 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNfe\app\DTO\MDFeDTO;
-use Sysborg\FocusNFe\app\Services\MDFe;
-use Sysborg\FocusNFe\app\Http\Requests\MDFeRequest;
+use Sysborg\FocusNfe\app\Services\MDFe;
+use Sysborg\FocusNfe\app\Http\Requests\MDFeRequest;
 
 class MDFeController extends Controller
 {

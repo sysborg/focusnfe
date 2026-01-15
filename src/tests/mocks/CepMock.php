@@ -1,8 +1,8 @@
 <?php
 
-namespace Sysborg\FocusNFe\tests\mocks;
+namespace Sysborg\FocusNfe\tests\mocks;
 
-use Sysborg\FocusNFe\tests\mocks\Stub\CEPStub;
+use Sysborg\FocusNfe\tests\mocks\Stub\CEPStub;
 use Illuminate\Support\Facades\Http;
 
 trait CEPMock {

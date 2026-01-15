@@ -1,24 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Sysborg\FocusNFe\app\Http\Controllers\EmpresaController;
-use Sysborg\FocusNFe\app\Http\Controllers\NFSeController;
-use Sysborg\FocusNFe\app\Http\Controllers\HooksController;
-use Sysborg\FocusNFe\app\Http\Controllers\CTeController;
-use Sysborg\FocusNFe\app\Http\Controllers\CTERecebidasController;
-use Sysborg\FocusNFe\app\Http\Controllers\NFeController;
-use Sysborg\FocusNFe\app\Http\Controllers\NFeRecebidasController;
-use Sysborg\FocusNFe\app\Http\Controllers\NFSeArquivoController;
-use Sysborg\FocusNFe\app\Http\Controllers\NFSeNacionalController;
-use Sysborg\FocusNFe\app\Http\Controllers\NFSeRecebidasController;
-use Sysborg\FocusNFe\app\Http\Controllers\MDFeController;
-use Sysborg\FocusNFe\app\Http\Controllers\NcmController;
-use Sysborg\FocusNFe\app\Http\Controllers\CfopController;
-use Sysborg\FocusNFe\app\Http\Controllers\MunicipiosController;
-use Sysborg\FocusNFe\app\Http\Controllers\ConsultaEmailsController;
-use Sysborg\FocusNFe\app\Http\Controllers\CepController;
-use Sysborg\FocusNFe\app\Http\Controllers\CnaeController;
-use Sysborg\FocusNFe\app\Http\Controllers\CnpjController;
+use Sysborg\FocusNfe\app\Http\Controllers\EmpresaController;
+use Sysborg\FocusNfe\app\Http\Controllers\NFSeController;
+use Sysborg\FocusNfe\app\Http\Controllers\HooksController;
+use Sysborg\FocusNfe\app\Http\Controllers\CTeController;
+use Sysborg\FocusNfe\app\Http\Controllers\CTERecebidasController;
+use Sysborg\FocusNfe\app\Http\Controllers\NFeController;
+use Sysborg\FocusNfe\app\Http\Controllers\NFeRecebidasController;
+use Sysborg\FocusNfe\app\Http\Controllers\NFSeArquivoController;
+use Sysborg\FocusNfe\app\Http\Controllers\NFSeNacionalController;
+use Sysborg\FocusNfe\app\Http\Controllers\NFSeRecebidasController;
+use Sysborg\FocusNfe\app\Http\Controllers\MDFeController;
+use Sysborg\FocusNfe\app\Http\Controllers\NcmController;
+use Sysborg\FocusNfe\app\Http\Controllers\CfopController;
+use Sysborg\FocusNfe\app\Http\Controllers\MunicipiosController;
+use Sysborg\FocusNfe\app\Http\Controllers\ConsultaEmailsController;
+use Sysborg\FocusNfe\app\Http\Controllers\CepController;
+use Sysborg\FocusNfe\app\Http\Controllers\CnaeController;
+use Sysborg\FocusNfe\app\Http\Controllers\CnpjController;
 
 Route::apiResource('empresas', EmpresaController::class);
 Route::apiResource('nfse', NFSeController::class);

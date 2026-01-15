@@ -1,10 +1,10 @@
 <?php 
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\Http\Requests\HooksRequest;
-use Sysborg\FocusNFe\app\Events\HooksReceived;
+use Sysborg\FocusNfe\app\Http\Requests\HooksRequest;
+use Sysborg\FocusNfe\app\Events\HooksReceived;
 use Log;
 
 class HooksController extends Controller

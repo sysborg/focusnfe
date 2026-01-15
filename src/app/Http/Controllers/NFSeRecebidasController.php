@@ -1,10 +1,10 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Facades\Sysborg\FocusNFe\app\Services\NFSeRecebidas;
-use Sysborg\FocusNFe\app\Http\Requests\NFSeRecebidasRequest;
+use Facades\Sysborg\FocusNfe\app\Services\NFSeRecebidas;
+use Sysborg\FocusNfe\app\Http\Requests\NFSeRecebidasRequest;
 
 class NFSeRecebidasController extends Controller
 {

@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Sysborg\\FocusNFe\\": "src/"
+            "Sysborg\\FocusNfe\\": "src/"
         }
     },
     "authors": [
@@ -29,7 +29,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Sysborg\\FocusNFe\\app\\Providers\\SBFocusNFeProvider"
+                "Sysborg\\FocusNfe\\app\\Providers\\SBFocusNFeProvider"
             ]
         }
     }

@@ -1,12 +1,12 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\DTO\NFSenDTO;
-use Facades\Sysborg\FocusNFe\app\Services\NFSeNacional;
-use Sysborg\FocusNFe\app\Http\Requests\NFSeNacionalRequest;
+use Sysborg\FocusNfe\app\DTO\NFSenDTO;
+use Facades\Sysborg\FocusNfe\app\Services\NFSeNacional;
+use Sysborg\FocusNfe\app\Http\Requests\NFSeNacionalRequest;
 
 
 class NFSeNacionalController extends Controller

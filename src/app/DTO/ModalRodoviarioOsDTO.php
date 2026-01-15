@@ -1,6 +1,6 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\DTO;
+namespace Sysborg\FocusNfe\app\DTO;
 
 use Carbon\Carbon;
 

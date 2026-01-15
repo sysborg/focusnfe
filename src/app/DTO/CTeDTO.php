@@ -1,13 +1,13 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\DTO;
+namespace Sysborg\FocusNfe\app\DTO;
 
-use Sysborg\FocusNFe\app\DTO\ModalAereoDTO;
-use Sysborg\FocusNFe\app\DTO\ModalAquaviarioDTO;
-use Sysborg\FocusNFe\app\DTO\ModalDutoviarioDTO;
-use Sysborg\FocusNFe\app\DTO\ModalMultimodalDTO;
-use Sysborg\FocusNFe\app\DTO\ModalRodoviarioDTO;
-use Sysborg\FocusNFe\app\DTO\ModalFerroviarioDTO;
+use Sysborg\FocusNfe\app\DTO\ModalAereoDTO;
+use Sysborg\FocusNfe\app\DTO\ModalAquaviarioDTO;
+use Sysborg\FocusNfe\app\DTO\ModalDutoviarioDTO;
+use Sysborg\FocusNfe\app\DTO\ModalMultimodalDTO;
+use Sysborg\FocusNfe\app\DTO\ModalRodoviarioDTO;
+use Sysborg\FocusNfe\app\DTO\ModalFerroviarioDTO;
 
 
 

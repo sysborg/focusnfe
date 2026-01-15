@@ -1,10 +1,10 @@
 <?php 
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\Rules\CepRule;
-use Sysborg\FocusNFe\app\Services\CEP;
+use Sysborg\FocusNfe\app\Rules\CepRule;
+use Sysborg\FocusNfe\app\Services\CEP;
 
 class CepController extends Controller
 {

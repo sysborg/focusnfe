@@ -1,12 +1,12 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\DTO\NFCeDTO;
-use Facades\Sysborg\FocusNFe\app\Services\NFCe;
-use Sysborg\FocusNFe\app\Http\Requests\NFCeRequest;
+use Sysborg\FocusNfe\app\DTO\NFCeDTO;
+use Facades\Sysborg\FocusNfe\app\Services\NFCe;
+use Sysborg\FocusNfe\app\Http\Requests\NFCeRequest;
 
 class NFCeController extends Controller
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Sysborg\FocusNFe\app\Http\Controllers;
+namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNFe\app\DTO\CTERecebidasDTO;
-use Facades\Sysborg\FocusNFe\app\Services\CTERecebidas;
-use Sysborg\FocusNFe\app\Http\Requests\CTERecebidasRequest;
+use Sysborg\FocusNfe\app\DTO\CTERecebidasDTO;
+use Facades\Sysborg\FocusNfe\app\Services\CTERecebidas;
+use Sysborg\FocusNfe\app\Http\Requests\CTERecebidasRequest;
 
 class CTERecebidasController extends Controller
 {

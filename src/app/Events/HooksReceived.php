@@ -1,5 +1,5 @@
 <?php
-namespace Sysborg\FocusNFe\app\Events;
+namespace Sysborg\FocusNfe\app\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
