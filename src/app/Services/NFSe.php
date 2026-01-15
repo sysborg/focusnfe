@@ -51,9 +51,10 @@ class NFSe extends EventHelper {
    * Envia uma NFSe
    * 
    * @param NFSeDTO $data
+   * @param string $ref - Número interno da NFSe para referência
    * @return array
    */
-  public function envia(NFSeDTO $data): array
+  public function envia(NFSeDTO $data, string $ref): array
   {
     $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
@@ -84,8 +85,6 @@ class NFSe extends EventHelper {
 
     return $request->json();
   }
-
-  
 
   /**
    * Consulta uma NFSe
