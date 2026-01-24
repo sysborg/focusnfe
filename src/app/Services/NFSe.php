@@ -75,7 +75,7 @@ class NFSe extends EventHelper {
       'response' => $response
     ]);
 
-    $this->dispatch($response, NFSeEnviada::class);
+    $this->dispatch(NFSeEnviada::class, $response);
     if ($response->failed()) {
       Log::error('FocusNFe.NFSe: Erro ao enviar NFSe', [
         'response' => $response->json(),
@@ -120,7 +120,7 @@ class NFSe extends EventHelper {
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-    $this->dispatch($request, NFSeCancelada::class);
+    $this->dispatch(NFSeCancelada::class, $request);
     if ($request->failed()) {
       Log::error('FocusNFe.NFSe: Erro ao cancelar NFSe', [
         'response' => $request->json(),
