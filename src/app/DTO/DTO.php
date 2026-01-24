@@ -27,14 +27,19 @@ abstract class DTO {
       $result = [];
 
       foreach ($data as $key => $value) {
-          // Se existe mapeamento específico, usa ele
-          if (isset($mapping[$key])) {
-              $result[$mapping[$key]] = $value;
-          } else {
-              // Senão, converte automaticamente para snake_case
-              $snakeKey = $this->camelToSnake($key);
-              $result[$snakeKey] = $value;
-          }
+        $calculatedValue = $value;
+        $specialCases = $this->specialCases ?? null;
+
+        if (is_array($specialCases) && isset($specialCases[$key]) && is_callable($specialCases[$key])) {
+            $calculatedValue = $specialCases[$key]($value);
+        }
+
+        if (isset($mapping[$key])) {
+            $result[$mapping[$key]] = $calculatedValue;
+        } else {
+            $snakeKey = $this->camelToSnake($key);
+            $result[$snakeKey] = $calculatedValue;
+        }
       }
 
       return $result;
