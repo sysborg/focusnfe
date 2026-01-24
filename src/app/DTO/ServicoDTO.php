@@ -7,17 +7,6 @@ use Illuminate\Validation\ValidationException;
 
 class ServicoDTO extends DTO
 {
-    /**
-     * Special cases
-     * 
-     * @var array
-     */
-    protected array $specialCases = [
-        'issRetido' => function ($value) {
-            return $value ? 'true' : 'false';
-        }
-    ];
-
     public function __construct(
         public float $aliquota,
         public string $discriminacao,
