@@ -83,7 +83,7 @@ class NFSe extends EventHelper {
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
@@ -94,18 +94,18 @@ class NFSe extends EventHelper {
    */
   public function get(string $referencia): array
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-    if ($request->failed()) {
+    if ($response->failed()) {
       Log::error('FocusNFe.NFSe: Erro ao consultar NFSe', [
-        'response' => $request->json(),
+        'response' => $response->json(),
         'referencia' => $referencia
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
@@ -116,19 +116,19 @@ class NFSe extends EventHelper {
    */
   public function cancela(string $referencia): array
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-    $this->dispatch(NFSeCancelada::class, $request);
-    if ($request->failed()) {
+    $this->dispatch(NFSeCancelada::class, $response);
+    if ($response->failed()) {
       Log::error('FocusNFe.NFSe: Erro ao cancelar NFSe', [
-        'response' => $request->json(),
+        'response' => $response->json(),
         'referencia' => $referencia
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
@@ -140,18 +140,18 @@ class NFSe extends EventHelper {
    */
   public function reenviaEmail(string $referencia, string $email): array
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email");
 
-    if ($request->failed()) {
+    if ($response->failed()) {
       Log::error('FocusNFe.NFSe: Erro ao reenviar email da NFSe', [
-        'response' => $request->json(),
+        'response' => $response->json(),
         'referencia' => $referencia,
         'email' => $email
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 }
