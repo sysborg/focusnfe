@@ -1,8 +1,10 @@
 <?php
 
 namespace Sysborg\FocusNfe\app\Services;
+
 use Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 
 class NCM {
   /**
@@ -40,22 +42,21 @@ class NCM {
 
   /**
    * Lista todos os NCMs
-   * 
-   * 
+   *
    * @param int $offset
-   * @param string|null $cnpj
-   * @param string|null $cpf
-   * @return array
+   * @param string|null $codigo
+   * @param string|null $descricao
+   * @return Response
    */
-  public function list(int $offset = 1, ?string $codigo = NULL, ?string $descricao = NULL): array
+  public function list(int $offset = 1, ?string $codigo = NULL, ?string $descricao = NULL): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.NCM: Erro ao listar NCMs', [
-        'response' => $request->json(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.NCM: Erro ao listar NCMs', [
+        'response' => $response->json(),
         'data' => [
           'offset' => $offset,
           'codigo' => $codigo,
@@ -64,32 +65,30 @@ class NCM {
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
    * Retorna o NCM pelo código exato
    *
    * @param string $codigo
-   * @return array
+   * @return Response
    */
-  public function get(string $codigo): array
+  public function get(string $codigo): Response
   {
-
-      $request = Http::withHeaders([
+      $response = Http::withHeaders([
           'Authorization' => 'Basic ' . base64_encode($this->token),
       ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
 
-      if ($request->failed()) {
-          Log::error('FocusNFe.NCM: Erro ao buscar NCM', [
-            'response' => $request->json(),
+      if ($response->failed()) {
+          Log::error('FocusNfe.NCM: Erro ao buscar NCM', [
+            'response' => $response->json(),
             'data' => [
               'ncm' => $codigo
             ]
           ]);
         }
 
-
-      return $request->json();
+      return $response;
     }
 }

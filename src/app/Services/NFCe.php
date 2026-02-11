@@ -3,37 +3,38 @@ namespace Sysborg\FocusNfe\app\Services;
 
 use Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 use Sysborg\FocusNfe\app\DTO\NFCeDTO;
 
 /**
  * Classe responsável por manipular as NFCe
- * 
+ *
  */
 class NFCe {
   /**
    * URL base da API NFCe
-   * 
+   *
    * @var string
    */
   const URL = '/v2/nfce';
 
   /**
    * Token de acesso
-   * 
+   *
    * @var string
    */
   private string $token;
 
   /**
    * Ambiente de produção ou sandbox
-   * 
+   *
    * @var string
    */
   private string $ambiente;
 
   /**
    * Construtor da classe
-   * 
+   *
    * @param string $token
    * @return void
    */
@@ -45,131 +46,160 @@ class NFCe {
 
   /**
    * Envia uma NFCe
-   * 
+   *
    * @param NFCeDTO $data
-   * @return array
+   * @return Response
    */
-  public function envia(NFCeDTO $data): array
+  public function envia(NFCeDTO $data): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
-    if ($request->failed()) {
+    if ($response->failed()) {
       Log::error('FocusNFe.NFCe: Erro ao enviar NFCe', [
-        'response' => $request->json(),
+        'response' => $response->json(),
         'data' => $data->toArray()
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
    * Consulta uma NFCe
-   * 
+   *
    * @param string $referencia
-   * @return array
+   * @return Response
    */
-  public function get(string $referencia): array
+  public function get(string $referencia): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-    if ($request->failed()) {
+    if ($response->failed()) {
       Log::error('FocusNFe.NFCe: Erro ao consultar NFCe', [
-        'response' => $request->json(),
+        'response' => $response->json(),
         'referencia' => $referencia
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
    * Cancela uma NFCe
-   * 
+   *
    * @param string $referencia
-   * @return array
+   * @return Response
    */
-  public function cancela(string $referencia): array
+  public function cancela(string $referencia): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-    if ($request->failed()) {
+    if ($response->failed()) {
       Log::error('FocusNFe.NFCe: Erro ao cancelar NFCe', [
-        'response' => $request->json(),
+        'response' => $response->json(),
         'referencia' => $referencia
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
    * Consulta numerações inutilizadas
-   * 
-   * @return array
+   *
+   * @return Response
    */
-  public function inutilizacoes(): array
+  public function inutilizacoes(): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/inutilizacoes");
 
-    return $request->json();
+    if ($response->failed()) {
+      Log::error('FocusNFe.NFCe: Erro ao consultar inutilizações', [
+        'response' => $response->json()
+      ]);
+    }
+
+    return $response;
   }
 
   /**
    * Registra um evento de Conciliação Financeira - ECONF
-   * 
+   *
    * @param string $referencia
    * @param array $data
-   * @return array
+   * @return Response
    */
-  public function registraEconf(string $referencia, array $data): array
+  public function registraEconf(string $referencia, array $data): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf", $data);
 
-    return $request->json();
+    if ($response->failed()) {
+      Log::error('FocusNFe.NFCe: Erro ao registrar ECONF', [
+        'response' => $response->json(),
+        'referencia' => $referencia
+      ]);
+    }
+
+    return $response;
   }
 
 
   /**
    * Consulta um evento de Conciliação Financeira - ECONF
-   * 
+   *
    * @param string $referencia
    * @param string $protocolo
-   * @return array
+   * @return Response
    */
-  public function consultaEconf(string $referencia, string $protocolo): array
+  public function consultaEconf(string $referencia, string $protocolo): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo");
 
-    return $request->json();
+    if ($response->failed()) {
+      Log::error('FocusNFe.NFCe: Erro ao consultar ECONF', [
+        'response' => $response->json(),
+        'referencia' => $referencia,
+        'protocolo' => $protocolo
+      ]);
+    }
+
+    return $response;
   }
 
 
   /**
    * Cancela um evento de Conciliação Financeira - ECONF
-   * 
+   *
    * @param string $referencia
    * @param string $protocolo
-   * @return array
+   * @return Response
    */
-  public function cancelaEconf(string $referencia, string $protocolo): array
+  public function cancelaEconf(string $referencia, string $protocolo): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo");
 
-    return $request->json();
+    if ($response->failed()) {
+      Log::error('FocusNFe.NFCe: Erro ao cancelar ECONF', [
+        'response' => $response->json(),
+        'referencia' => $referencia,
+        'protocolo' => $protocolo
+      ]);
+    }
+
+    return $response;
   }
 }

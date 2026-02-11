@@ -1,8 +1,10 @@
 <?php
 
 namespace Sysborg\FocusNfe\app\Services;
-use Illuminate\Support\Facades\Log;
+
+use Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 use Sysborg\FocusNfe\app\DTO\EmpresaDTO;
 use Sysborg\FocusNfe\app\Events\EmpresaCreated;
 use Sysborg\FocusNfe\app\Events\EmpresaUpdated;
@@ -45,52 +47,52 @@ class Empresas extends EventHelper
 
   /**
    * Cria uma nova empresa
-   * 
+   *
    * @param EmpresaDTO $data
-   * @return array
+   * @return Response
    */
-  public function create(EmpresaDTO $data): array
+  public function create(EmpresaDTO $data): Response
   {
     $url = config('focusnfe.URL.' . $this->ambiente) . self::URL;
 
-    Log::info('FocusNFe.Empresa: Criando nova empresa', [
+    Log::info('FocusNfe.Empresa: Criando nova empresa', [
       'url' => $url,
       'data' => $data->toArray(),
     ]);
 
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->post($url, $data->toArray());
 
-    $this->dispatch(EmpresaCreated::class, $request);
-    if ($request->failed()) {
-      Log::error('FocusNFe.Empresa: Erro ao criar empresa', [
-        'response' => $request->json(),
+    $this->dispatch(EmpresaCreated::class, $response);
+    if ($response->failed()) {
+      Log::error('FocusNfe.Empresa: Erro ao criar empresa', [
+        'response' => $response->json(),
         'data' => $data->toArray()
       ]);
     }
 
-    Log::info('FocusNFe.Empresa: Empresa criada com sucesso', [
-      'response' => $request->json(),
+    Log::info('FocusNfe.Empresa: Empresa criada com sucesso', [
+      'response' => $response->json(),
       'data' => $data->toArray(),
     ]);
 
-    return $request->json();
+    return $response;
   }
 
   /**
    * Lista todas as empresas
-   * 
+   *
    * @param int $offset
    * @param string|null $cnpj
    * @param string|null $cpf
-   * @return array
+   * @return Response
    */
-  public function list(int $offset = 1, ?string $cnpj = NULL, ?string $cpf = NULL): array
+  public function list(int $offset = 1, ?string $cnpj = NULL, ?string $cpf = NULL): Response
   {
     $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&cnpj=$cnpj&cpf=$cpf";
 
-    Log::info('FocusNFe.Empresa: Listando empresas', [
+    Log::info('FocusNfe.Empresa: Listando empresas', [
       'url' => $url,
       'data' => [
         'offset' => $offset,
@@ -99,76 +101,66 @@ class Empresas extends EventHelper
       ]
     ]);
 
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get($url);
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.Empresa: Erro ao listar empresas', [
-        'response' => $request->json(),
-        'status' => $request->status(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.Empresa: Erro ao listar empresas', [
+        'response' => $response->json(),
+        'status' => $response->status(),
         'data' => [
           'offset' => $offset,
           'cnpj' => $cnpj,
           'cpf' => $cpf
         ]
       ]);
-
-      return [
-        'total' => $request->header('X-Total-Count', 0),
-        'data' => [],
-        'status' => $request->status(),
-      ];
     }
 
-    return [
-      'total' => $request->header('X-Total-Count', 0),
-      'data' => $request->json(),
-      'status' => $request->status(),
-    ];
+    return $response;
   }
 
   /**
    * Pega uma empresa por id
-   * 
+   *
    * @param int $id
-   * @return array
+   * @return Response
    */
-  public function get(int $id): array
+  public function get(int $id): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id");
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.Empresa: Erro ao pegar empresa', [
-        'response' => $request->json(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.Empresa: Erro ao pegar empresa', [
+        'response' => $response->json(),
         'data' => [
           'id' => $id
         ]
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
    * Atualiza uma empresa
-   * 
+   *
    * @param int $id
    * @param EmpresaDTO $data
-   * @return array
+   * @return Response
    */
-  public function update(int $id, EmpresaDTO $data): array
+  public function update(int $id, EmpresaDTO $data): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->put(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id", $data->toArray());
 
-    $this->dispatch(EmpresaUpdated::class, $request);
-    if ($request->failed()) {
-      Log::error('FocusNFe.Empresa: Erro ao atualizar empresa', [
-        'response' => $request->json(),
+    $this->dispatch(EmpresaUpdated::class, $response);
+    if ($response->failed()) {
+      Log::error('FocusNfe.Empresa: Erro ao atualizar empresa', [
+        'response' => $response->json(),
         'data' => [
           'id' => $id,
           'data' => $data->toArray()
@@ -176,31 +168,31 @@ class Empresas extends EventHelper
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
    * Deleta uma empresa
-   * 
+   *
    * @param int $id
-   * @return array
+   * @return Response
    */
-  public function delete(int $id): array
+  public function delete(int $id): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id");
 
-    $this->dispatch(EmpresaDeleted::class, $request);
-    if ($request->failed()) {
-      Log::error('FocusNFe.Empresa: Erro ao deletar empresa', [
-        'response' => $request->json(),
+    $this->dispatch(EmpresaDeleted::class, $response);
+    if ($response->failed()) {
+      Log::error('FocusNfe.Empresa: Erro ao deletar empresa', [
+        'response' => $response->json(),
         'data' => [
           'id' => $id
         ]
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 }

@@ -1,8 +1,10 @@
 <?php
 
 namespace Sysborg\FocusNfe\app\Services;
-use Illuminate\Support\Facades\Http;
+
 use Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 
 class Backups {
   /**
@@ -40,23 +42,23 @@ class Backups {
 
   /**
    * Pega os backups de um determinado CNPJ
-   * 
+   *
    * @param string $cnpj
-   * @return array
+   * @return Response
    */
-  public function get(string $cnpj): string
+  public function get(string $cnpj): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . sprintf(self::URL, $cnpj));
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.Backups: Erro ao consultar backup do CNPJ', [
-        'response' => $request->json(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.Backups: Erro ao consultar backup do CNPJ', [
+        'response' => $response->json(),
         'cnpj' => $cnpj
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 }

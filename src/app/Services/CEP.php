@@ -1,8 +1,10 @@
 <?php
 
 namespace Sysborg\FocusNfe\app\Services;
-use Illuminate\Support\Facades\Http;
+
 use Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 
 class CEP {
   /**
@@ -40,25 +42,25 @@ class CEP {
 
   /**
    * Pega um cep por sua numeração
-   * 
+   *
    * @param string $cep
-   * @return array
+   * @return Response
    */
-  public function get(string $cep): string
+  public function get(string $cep): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$cep");
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.Cep: Erro ao consultar CEP', [
-        'response' => $request->json(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.Cep: Erro ao consultar CEP', [
+        'response' => $response->json(),
         'data' => [
           'cep' => $cep
         ]
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 }

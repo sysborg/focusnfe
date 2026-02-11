@@ -2,7 +2,7 @@
 
 namespace Sysborg\FocusNfe\tests\Feature;
 
-use Sysborg\FocusNfe\tests\mocks\Stub\MunicipioStub;
+use Sysborg\FocusNfe\tests\mocks\Stub\MunicipiosStub;
 use Sysborg\FocusNfe\app\Services\Municipios;
 use Sysborg\FocusNfe\tests\mocks\MunicipioMock;
 
@@ -17,7 +17,7 @@ class MunicipioControllerTest extends Common
      */
     public function test_consulta_municipios_sucesso(): void
     {
-        $expectedKeys = array_keys(MunicipioStub::consultaMunicipios()[0]);
+        $expectedKeys = array_keys(MunicipiosStub::consultaMunicipios()[0]);
 
         $this->mockHttp(
             config('focusnfe.URL.production') . Municipios::URL,
@@ -38,7 +38,7 @@ class MunicipioControllerTest extends Common
     public function test_consulta_municipio_unico_sucesso(): void
     {
         $codigoMunicipio = "4106902";
-        $expectedKeys = array_keys(MunicipioStub::consultaMunicipioUnico());
+        $expectedKeys = array_keys(MunicipiosStub::consultaMunicipioUnico());
 
         $this->mockHttp(
             config('focusnfe.URL.production') . Municipios::URL . '/' . $codigoMunicipio,
@@ -59,7 +59,7 @@ class MunicipioControllerTest extends Common
     public function test_consulta_lista_servico_sucesso(): void
     {
         $codigoMunicipio = "4106902";
-        $expectedKeys = array_keys(MunicipioStub::consultaListaServico()[0]);
+        $expectedKeys = array_keys(MunicipiosStub::consultaListaServico()[0]);
 
         $this->mockHttp(
             config('focusnfe.URL.production') . Municipios::URL . '/' . $codigoMunicipio . '/servicos',

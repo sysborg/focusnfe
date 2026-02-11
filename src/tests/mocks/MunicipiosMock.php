@@ -2,7 +2,7 @@
 
 namespace Sysborg\FocusNfe\tests\mocks;
 
-use Sysborg\FocusNfe\tests\mocks\Stub\MunicipioStub;
+use Sysborg\FocusNfe\tests\mocks\Stub\MunicipiosStub;
 use Illuminate\Support\Facades\Http;
 
 trait MunicipioMock
@@ -18,7 +18,7 @@ trait MunicipioMock
     public function mockHttp(string $url, int $status, int $times = 1): void
     {
         Http::fake([
-            $url => Http::response(MunicipioStub::consultaMunicipios(), $status)
+            $url => Http::response(MunicipiosStub::consultaMunicipios(), $status)
         ]);
     }
 

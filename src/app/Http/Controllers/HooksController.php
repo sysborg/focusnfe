@@ -15,7 +15,7 @@ class HooksController extends Controller
             event(new HooksReceived($request->all(), $request->header('referer') ?? ''));
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
-            Log::error('FocusNFe.Webhooks: Erro ao processar o webhook: ' . $e->getMessage(), [
+            Log::error('FocusNfe.Webhooks: Erro ao processar o webhook: ' . $e->getMessage(), [
                 'exception' => $e,
                 'request' => $request->all(),
             ]);

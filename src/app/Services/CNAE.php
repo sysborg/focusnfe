@@ -1,9 +1,10 @@
-<?php 
+<?php
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Illuminate\Support\Facades\Http;
 use Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 
 class CNAE
 {
@@ -19,7 +20,7 @@ class CNAE
 
     /**
      * Ambiente de produção ou sandbox
-     * 
+     *
      * @var string
      */
     private string $ambiente;
@@ -34,54 +35,38 @@ class CNAE
     }
 
     /**
-     * Lista todos os CNAEs 
+     * Lista todos os CNAEs
      */
-    public function list(int $offset = 1): array
+    public function list(int $offset = 1): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset");
 
-        $data = $request->json();
-
-        if ($request->failed() || isset($data['codigo']) && $data['codigo'] === 'nao_encontrado') {
+        if ($response->failed()) {
             Log::error('FocusNFe.CNAE: Erro ao listar CNAEs', [
-                'response' => $data,
+                'response' => $response->json(),
                 'offset' => $offset
             ]);
-
-            return [
-                'erro' => 'Falha ao listar os CNAEs.',
-                'mensagem' => $data['mensagem'] ?? 'Erro desconhecido.',
-                'status_http' => $request->status()
-            ];
         }
 
-        return $data;
+        return $response;
     }
 
- 
-    public function get(string $codigo): array
+
+    public function get(string $codigo): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
 
-        $data = $request->json();
-
-        if ($request->failed() || isset($data['codigo']) && $data['codigo'] === 'nao_encontrado') {
+        if ($response->failed()) {
             Log::error('FocusNFe.CNAE: Erro ao buscar CNAE', [
-                'response' => $data,
+                'response' => $response->json(),
                 'codigo' => $codigo
             ]);
-
-            return [
-                'erro' => 'Falha ao buscar o CNAE.',
-                'mensagem' => $data['mensagem'] ?? 'Erro desconhecido.',
-                'status_http' => $request->status()
-            ];
         }
 
-        return $data;
+        return $response;
     }
 }

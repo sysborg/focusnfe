@@ -6,7 +6,7 @@ use Illuminate\Routing\Controller;
 use Sysborg\FocusNfe\app\Services\Backups;
 use Log;
 
-class BackupControllerr extends Controller
+class BackupController extends Controller
 {
     public function request(Request $request)
     {

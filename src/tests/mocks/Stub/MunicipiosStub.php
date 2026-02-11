@@ -2,7 +2,7 @@
 
 namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
-class MunicipioStub
+class MunicipiosStub
 {
     /**
      * Retorna um exemplo de resposta para a consulta de municípios

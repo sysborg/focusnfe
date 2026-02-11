@@ -4,6 +4,7 @@ namespace Sysborg\FocusNfe\app\Services;
 
 use Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 
 
 class Municipios
@@ -24,7 +25,7 @@ class Municipios
 
     /**
      * Ambiente de produção ou sandbox
-     * 
+     *
      * @var string
      */
     private string $ambiente;
@@ -47,52 +48,50 @@ class Municipios
      * @param int $offset
      * @param string|null $codigo
      * @param string|null $descricao
-     * @return array
+     * @return Response
      */
-    public function list(int $offset = 1, ?string $codigo = null, ?string $descricao = null): array
+    public function list(int $offset = 1, ?string $codigo = null, ?string $descricao = null): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.Municipios: Erro ao listar municípios', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'data' => [
                     'offset' => $offset,
                     'codigo' => $codigo,
                     'descricao' => $descricao
                 ]
             ]);
-
-            return ['erro' => 'Falha ao buscar municípios.'];
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
      * Retorna os detalhes de um município específico pelo código
      *
      * @param string $codigo
-     * @return array
+     * @return Response
      */
-    public function get(string $codigo): array
+    public function get(string $codigo): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.Municipios: Erro ao buscar município', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'data' => [
                     'codigo' => $codigo
                 ]
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
 
@@ -101,17 +100,17 @@ class Municipios
      *
      * @param string $codigoMunicipio
      * @param string $codigoServico
-     * @return array
+     * @return Response
      */
-    public function getListaServico(string $codigoMunicipio, string $codigoServico): array
+    public function getListaServico(string $codigoMunicipio, string $codigoServico): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigoMunicipio/itens_lista_servico/$codigoServico");
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.Municipios: Erro ao buscar itens de serviço', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'data' => [
                     'codigoMunicipio' => $codigoMunicipio,
                     'codigoServico' => $codigoServico
@@ -119,7 +118,7 @@ class Municipios
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
@@ -127,17 +126,17 @@ class Municipios
      *
      * @param string $codigoMunicipio
      * @param string $codigoTributario
-     * @return array
+     * @return Response
      */
-    public function getCodigosTributarios(string $codigoMunicipio, string $codigoTributario): array
+    public function getCodigosTributarios(string $codigoMunicipio, string $codigoTributario): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigoMunicipio/codigos_tributarios_municipio/$codigoTributario");
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.Municipios: Erro ao buscar códigos tributários', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'data' => [
                     'codigoMunicipio' => $codigoMunicipio,
                     'codigoTributario' => $codigoTributario
@@ -145,6 +144,6 @@ class Municipios
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 }

@@ -4,6 +4,7 @@ namespace Sysborg\FocusNfe\app\Services;
 
 use Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 use Sysborg\FocusNfe\app\DTO\NFeDTO;
 
 /**
@@ -45,111 +46,111 @@ class NFe {
 
     /**
      * Envia uma NFe
-     * 
+     *
      * @param NFeDTO $data
      * @param string $referencia
-     * @return array
+     * @return Response
      */
-    public function envia(NFeDTO $data, string $referencia): array
+    public function envia(NFeDTO $data, string $referencia): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref=$referencia", $data->toArray());
 
-        if ($request->failed()) {
-            Log::error('FocusNFe.NFe: Erro ao enviar NFe', [
-                'response' => $request->json(),
+        if ($response->failed()) {
+            Log::error('FocusNfe.NFe: Erro ao enviar NFe', [
+                'response' => $response->json(),
                 'referencia' => $referencia
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
      * Consulta uma NFe
-     * 
+     *
      * @param string $referencia
-     * @return array
+     * @return Response
      */
-    public function get(string $referencia): array
+    public function get(string $referencia): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-        if ($request->failed()) {
-            Log::error('FocusNFe.NFe: Erro ao consultar NFe', [
-                'response' => $request->json(),
+        if ($response->failed()) {
+            Log::error('FocusNfe.NFe: Erro ao consultar NFe', [
+                'response' => $response->json(),
                 'referencia' => $referencia
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
      * Cancela uma NFe
-     * 
+     *
      * @param string $referencia
-     * @return array
+     * @return Response
      */
-    public function cancela(string $referencia): array
+    public function cancela(string $referencia): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-        if ($request->failed()) {
-            Log::error('FocusNFe.NFe: Erro ao cancelar NFe', [
-                'response' => $request->json(),
+        if ($response->failed()) {
+            Log::error('FocusNfe.NFe: Erro ao cancelar NFe', [
+                'response' => $response->json(),
                 'referencia' => $referencia
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
      * Cria uma carta de correção
-     * 
+     *
      * @param string $referencia
      * @param array $data
-     * @return array
+     * @return Response
      */
-    public function cartaCorrecao(string $referencia, array $data): array
+    public function cartaCorrecao(string $referencia, array $data): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/carta_correcao", $data);
 
-        if ($request->failed()) {
-            Log::error('FocusNFe.NFe: Erro ao criar carta de correção', [
-                'response' => $request->json(),
+        if ($response->failed()) {
+            Log::error('FocusNfe.NFe: Erro ao criar carta de correção', [
+                'response' => $response->json(),
                 'referencia' => $referencia
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
      * Consulta numerações inutilizadas
-     * 
-     * @return array
+     *
+     * @return Response
      */
-    public function inutilizacoes(): array
+    public function inutilizacoes(): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/inutilizacoes");
 
-        if ($request->failed()) {
-            Log::error('FocusNFe.NFe: Erro ao consultar inutilizações', [
-                'response' => $request->json()
+        if ($response->failed()) {
+            Log::error('FocusNfe.NFe: Erro ao consultar inutilizações', [
+                'response' => $response->json()
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 }

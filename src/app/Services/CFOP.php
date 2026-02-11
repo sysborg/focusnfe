@@ -1,8 +1,10 @@
 <?php
 
 namespace Sysborg\FocusNfe\app\Services;
+
 use Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 
 class CFOP {
   /**
@@ -40,22 +42,21 @@ class CFOP {
 
   /**
    * Lista todos os CFOPs
-   * https://focusnfe.com.br/doc/?php#consulta-de-cfop
-   * 
+   *
    * @param int $offset
-   * @param string|null $cnpj
-   * @param string|null $cpf
-   * @return array
+   * @param string|null $codigo
+   * @param string|null $descricao
+   * @return Response
    */
-  public function list(int $offset = 1, ?string $codigo = NULL, ?string $descricao = NULL): array
+  public function list(int $offset = 1, ?string $codigo = NULL, ?string $descricao = NULL): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
     ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.CFOP: Erro ao listar CFOPs', [
-        'response' => $request->json(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.CFOP: Erro ao listar CFOPs', [
+        'response' => $response->json(),
         'data' => [
           'offset' => $offset,
           'codigo' => $codigo,
@@ -64,30 +65,30 @@ class CFOP {
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
    * Retorna o CFOP pelo código
-   * 
+   *
    * @param string $codigo
-   * @return array
+   * @return Response
    */
-  public function get(string $codigo): array
+  public function get(string $codigo): Response
   {
-    $request = Http::withHeaders([
+    $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
-    ])->get(config('focusnfe.URL.production') . self::URL . "/$codigo");
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.CFOP: Erro ao buscar CFOP', [
-        'response' => $request->json(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.CFOP: Erro ao buscar CFOP', [
+        'response' => $response->json(),
         'data' => [
           'codigo' => $codigo
         ]
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 }

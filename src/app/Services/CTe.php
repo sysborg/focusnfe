@@ -2,34 +2,35 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Illuminate\Support\Facades\Http;
 use Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 
-class CTe{
+class CTe {
     /**
      * URL base da API CTe
-     * 
+     *
      * @var string
      */
     const URL = '/v2/cte';
 
     /**
      * Token de acesso
-     * 
+     *
      * @var string
      */
     private string $token;
 
     /**
      * Ambiente de produção ou sandbox
-     * 
+     *
      * @var string
      */
     private string $ambiente;
 
     /**
      * Construtor da classe
-     * 
+     *
      * @param string $token
      */
     public function __construct(string $token, string $ambiente)
@@ -40,74 +41,74 @@ class CTe{
 
     /**
      * Envia uma CTe
-     * 
+     *
      * @param array $data
      * @param string $referencia
-     * @return array
+     * @return Response
      */
-    public function envia(array $data, string $referencia): array
+    public function envia(array $data, string $referencia): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref=$referencia", $data);
-    
-        if ($request->failed()) {
+
+        if ($response->failed()) {
             Log::error('FocusNFe.CTe: Erro ao enviar CTe', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'data' => $data,
                 'referencia' => $referencia
             ]);
         }
-    
-        return $request->json();
+
+        return $response;
     }
 
     /**
      * Consulta uma CTe
-     * 
+     *
      * @param string $referencia
-     * @return array
+     * @return Response
      */
-    public function consulta(string $referencia): array
+    public function consulta(string $referencia): Response
     {
         $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
 
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get($url);
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.CTe: Erro ao consultar CTe', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'referencia' => $referencia
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
      * Cancela uma CTe
-     * 
+     *
      * @param string $referencia
-     * @return array
+     * @return Response
      */
-    public function cancela(string $referencia): array
+    public function cancela(string $referencia): Response
     {
         $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
 
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->delete($url);
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.CTe: Erro ao cancelar CTe', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'referencia' => $referencia
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
      /**
@@ -115,22 +116,22 @@ class CTe{
      *
      * @param string $referencia
      * @param array $data
-     * @return array
+     * @return Response
      */
-    public function cartaCorrecao(string $referencia, array $data): array
+    public function cartaCorrecao(string $referencia, array $data): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/carta_correcao", $data);
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.CTe: Erro ao enviar Carta de Correção', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'referencia' => $referencia,
                 'data' => $data
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 }

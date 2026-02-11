@@ -4,37 +4,38 @@ namespace Sysborg\FocusNfe\app\Services;
 
 use Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 
 /**
  * Classe responsável por manipular o MDF-e
- * 
+ *
  */
 class MDFe
 {
     /**
      * URL base da API MDF-e
-     * 
+     *
      * @var string
      */
     const URL = '/v2/mdfe';
 
     /**
      * Token de acesso
-     * 
+     *
      * @var string
      */
     private string $token;
 
     /**
      * Ambiente de produção ou sandbox
-     * 
+     *
      * @var string
      */
     private string $ambiente;
 
     /**
      * Construtor da classe
-     * 
+     *
      * @param string $token
      * @return void
      */
@@ -46,137 +47,137 @@ class MDFe
 
     /**
      * Envia um MDF-e para processamento
-     * 
+     *
      * @param array $data
-     * @return array
+     * @return Response
      */
-    public function envia(array $data): array
+    public function envia(array $data): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data);
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.MDFe: Erro ao enviar MDF-e', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'data' => $data
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
      * Consulta um MDF-e pelo ID
-     * 
+     *
      * @param string $referencia
-     * @return array
+     * @return Response
      */
-    public function consulta(string $referencia): array
+    public function consulta(string $referencia): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.MDFe: Erro ao consultar MDF-e', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'referencia' => $referencia
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
      * Cancela um MDF-e
-     * 
+     *
      * @param string $referencia
-     * @return array
+     * @return Response
      */
-    public function cancela(string $referencia): array
+    public function cancela(string $referencia): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.MDFe: Erro ao cancelar MDF-e', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'referencia' => $referencia
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
      * Inclui um condutor no MDF-e
-     * 
+     *
      * @param string $referencia
      * @param array $data
-     * @return array
+     * @return Response
      */
-    public function incluiCondutor(string $referencia, array $data): array
+    public function incluiCondutor(string $referencia, array $data): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/inclusao_condutor", $data);
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.MDFe: Erro ao incluir condutor no MDF-e', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'referencia' => $referencia,
                 'data' => $data
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
      * Inclui um DFe no MDF-e
-     * 
+     *
      * @param string $referencia
      * @param array $data
-     * @return array
+     * @return Response
      */
-    public function incluiDFe(string $referencia, array $data): array
+    public function incluiDFe(string $referencia, array $data): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/inclusao_dfe", $data);
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.MDFe: Erro ao incluir DFe no MDF-e', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'referencia' => $referencia,
                 'data' => $data
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 
     /**
      * Encerra um MDF-e
-     * 
+     *
      * @param string $referencia
-     * @return array
+     * @return Response
      */
-    public function encerra(string $referencia): array
+    public function encerra(string $referencia): Response
     {
-        $request = Http::withHeaders([
+        $response = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($this->token),
         ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/encerrar");
 
-        if ($request->failed()) {
+        if ($response->failed()) {
             Log::error('FocusNFe.MDFe: Erro ao encerrar MDF-e', [
-                'response' => $request->json(),
+                'response' => $response->json(),
                 'referencia' => $referencia
             ]);
         }
 
-        return $request->json();
+        return $response;
     }
 }
