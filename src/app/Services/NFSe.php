@@ -54,7 +54,7 @@ class NFSe extends EventHelper {
    * @param string $ref - Número interno da NFSe para referência
    * @return array
    */
-  public function envia(NFSeDTO $data, string $ref): array
+  public function envia(NFSeDTO $data, string $ref): Response
   {
     $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
@@ -92,7 +92,7 @@ class NFSe extends EventHelper {
    * @param string $referencia
    * @return array
    */
-  public function get(string $referencia): array
+  public function get(string $referencia): Response
   {
     $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
@@ -114,7 +114,7 @@ class NFSe extends EventHelper {
    * @param string $referencia
    * @return array
    */
-  public function cancela(string $referencia): array
+  public function cancela(string $referencia): Response
   {
     $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
@@ -138,7 +138,7 @@ class NFSe extends EventHelper {
    * @param string $email
    * @return array
    */
-  public function reenviaEmail(string $referencia, string $email): array
+  public function reenviaEmail(string $referencia, string $email): Response
   {
     $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
