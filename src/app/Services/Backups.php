@@ -1,0 +1,64 @@
+<?php
+
+namespace Sysborg\FocusNfe\app\Services;
+
+use Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
+
+class Backups {
+  /**
+   * URL base da API Backups
+   * 
+   * @var string
+   */
+  const URL = '/v2/backups/CNPJ.json';
+
+  /**
+   * Token de acesso
+   * 
+   * @var string
+   */
+  private string $token;
+
+  /**
+   * Ambiente de produção ou sandbox
+   * 
+   * @var string
+   */
+  private string $ambiente;
+
+  /**
+   * Construtor da classe
+   * 
+   * @param string $token
+   * @return void
+   */
+  public function __construct(string $token, string $ambiente)
+  {
+    $this->token = $token;
+    $this->ambiente = $ambiente;
+  }
+
+  /**
+   * Pega os backups de um determinado CNPJ
+   *
+   * @param string $cnpj
+   * @return Response
+   */
+  public function get(string $cnpj): Response
+  {
+    $response = Http::withHeaders([
+      'Authorization' => 'Basic ' . base64_encode($this->token),
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . sprintf(self::URL, $cnpj));
+
+    if ($response->failed()) {
+      Log::error('FocusNfe.Backups: Erro ao consultar backup do CNPJ', [
+        'response' => $response->json(),
+        'cnpj' => $cnpj
+      ]);
+    }
+
+    return $response;
+  }
+}

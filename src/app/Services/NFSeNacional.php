@@ -1,16 +1,17 @@
 <?php
-namespace Sysborg\FocusNFe\App\Services;
+namespace Sysborg\FocusNfe\app\Services;
 
-use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\App\DTO\NFSeNDTO;
 use Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
+use Sysborg\FocusNfe\app\DTO\NFSeNDTO;
 
 /**
  * Classe responsável por manipular as NFSe Nacional
- * https://focusnfe.com.br/doc/?php#nfse-nacional_envio
+ * 
  */
 
-class NFSen {
+class NFSeNacional {
   /**
    * URL base da API NFSe Nacional
    * 
@@ -26,79 +27,87 @@ class NFSen {
   private string $token;
 
   /**
+   * Ambiente de produção ou sandbox
+   * 
+   * @var string
+   */
+  private string $ambiente;
+
+  /**
    * Construtor da classe
    * 
    * @param string $token
    * @return void
    */
-  public function __construct(string $token)
+  public function __construct(string $token, string $ambiente)
   {
     $this->token = $token;
+    $this->ambiente = $ambiente;
   }
 
   /**
    * Envia uma NFSe Nacional
-   * 
+   *
    * @param NFSeNDTO $data
-   * @return array
+   * @return Response
    */
-  public function envia(NFSeNDTO $data): array
+  public function envia(NFSeNDTO $data): Response
   {
-    $request = Http::withHeaders([
-      'Authorization' => $this->token,
-    ])->post(config('focusnfe.URL.production') . self::URL, $data->toArray());
+    $response = Http::withHeaders([
+      'Authorization' => 'Basic ' . base64_encode($this->token),
+    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.NFSeN: Erro ao enviar NFSe Nacional', [
-        'response' => $request->json(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.NFSeN: Erro ao enviar NFSe Nacional', [
+        'response' => $response->json(),
         'data' => $data->toArray()
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
    * Consulta uma NFSe Nacional
-   * 
+   *
    * @param string $referencia
-   * @return array
+   * @return Response
    */
-  public function consulta(string $referencia): array
+  public function consulta(string $referencia): Response
   {
-    $request = Http::withHeaders([
-      'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "/$referencia");
+    $response = Http::withHeaders([
+      'Authorization' => 'Basic ' . base64_encode($this->token),
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.NFSeN: Erro ao consultar NFSe Nacional', [
-        'response' => $request->json(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.NFSeN: Erro ao consultar NFSe Nacional', [
+        'response' => $response->json(),
         'referencia' => $referencia
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
    * Cancela uma NFSe Nacional
-   * 
+   *
    * @param string $referencia
-   * @return array
+   * @return Response
    */
-  public function cancela(string $referencia): array
+  public function cancela(string $referencia): Response
   {
-    $request = Http::withHeaders([
-      'Authorization' => $this->token,
-    ])->delete(config('focusnfe.URL.production') . self::URL . "/$referencia");
+    $response = Http::withHeaders([
+      'Authorization' => 'Basic ' . base64_encode($this->token),
+    ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.NFSeN: Erro ao cancelar NFSe Nacional', [
-        'response' => $request->json(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.NFSeN: Erro ao cancelar NFSe Nacional', [
+        'response' => $response->json(),
         'referencia' => $referencia
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 }

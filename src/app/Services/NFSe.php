@@ -1,22 +1,32 @@
 <?php
-namespace Sysborg\FocusNFe\App\Services;
+namespace Sysborg\FocusNfe\app\Services;
 
-use Illuminate\Support\Facades\Http;
-use Sysborg\FocusNFe\App\DTO\NFSeDTO;
 use Log;
+use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\DTO\NFSeDTO;
+use Sysborg\FocusNfe\app\Events\NFSeEnviada;
+use Sysborg\FocusNfe\app\Events\NFSeCancelada;
+use Illuminate\Http\Client\Response;
 
 /**
  * Classe responsável por manipular as NFSe
  * https://focusnfe.com.br/doc/?php#nfse
  */
 
-class NFSe {
+class NFSe extends EventHelper {
   /**
    * URL base da API NFSe
    * 
    * @var string
    */
   const URL = '/v2/nfse';
+
+  /**
+   * Ambiente de produção ou sandbox
+   * 
+   * @var string
+   */
+  private string $ambiente;
 
   /**
    * Token de acesso
@@ -31,31 +41,49 @@ class NFSe {
    * @param string $token
    * @return void
    */
-  public function __construct(string $token)
+  public function __construct(string $token, string $ambiente)
   {
     $this->token = $token;
+    $this->ambiente = $ambiente;
   }
 
   /**
    * Envia uma NFSe
    * 
    * @param NFSeDTO $data
+   * @param string $ref - Número interno da NFSe para referência
    * @return array
    */
-  public function envia(NFSeDTO $data): array
+  public function envia(NFSeDTO $data, string $ref): Response
   {
-    $request = Http::withHeaders([
-      'Authorization' => $this->token,
-    ])->post(config('focusnfe.URL.production') . self::URL, $data->toArray());
+    $response = Http::withHeaders([
+      'Authorization' => 'Basic ' . base64_encode($this->token),
+    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . '?ref=' . $ref, $data->toArray());
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.NFSe: Erro ao enviar NFSe', [
-        'response' => $request->json(),
+    if (!($response instanceof Response)) {
+      Log::error('FocusNfe.NFSe: Resposta inválida ao enviar NFSe', [
+        'data' => $data->toArray(),
+        'response' => $response
+      ]);
+
+      throw new \Exception('Resposta inválida ao enviar NFSe: ' . print_r($response, true));
+    }
+
+    Log::debug('FocusNfe.NFSe: Enviando NFSe', [
+      'url' => config('focusnfe.URL.' . $this->ambiente) . self::URL,
+      'data' => $data->toArray(),
+      'response' => $response
+    ]);
+
+    $this->dispatch(NFSeEnviada::class, $response);
+    if ($response->failed()) {
+      Log::error('FocusNfe.NFSe: Erro ao enviar NFSe', [
+        'response' => $response->json(),
         'data' => $data->toArray()
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
@@ -64,20 +92,20 @@ class NFSe {
    * @param string $referencia
    * @return array
    */
-  public function consulta(string $referencia): array
+  public function get(string $referencia): Response
   {
-    $request = Http::withHeaders([
-      'Authorization' => $this->token,
-    ])->get(config('focusnfe.URL.production') . self::URL . "/$referencia");
+    $response = Http::withHeaders([
+      'Authorization' => 'Basic ' . base64_encode($this->token),
+    ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.NFSe: Erro ao consultar NFSe', [
-        'response' => $request->json(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.NFSe: Erro ao consultar NFSe', [
+        'response' => $response->json(),
         'referencia' => $referencia
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
@@ -86,20 +114,21 @@ class NFSe {
    * @param string $referencia
    * @return array
    */
-  public function cancela(string $referencia): array
+  public function cancela(string $referencia): Response
   {
-    $request = Http::withHeaders([
-      'Authorization' => $this->token,
-    ])->delete(config('focusnfe.URL.production') . self::URL . "/$referencia");
+    $response = Http::withHeaders([
+      'Authorization' => 'Basic ' . base64_encode($this->token),
+    ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.NFSe: Erro ao cancelar NFSe', [
-        'response' => $request->json(),
+    $this->dispatch(NFSeCancelada::class, $response);
+    if ($response->failed()) {
+      Log::error('FocusNfe.NFSe: Erro ao cancelar NFSe', [
+        'response' => $response->json(),
         'referencia' => $referencia
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 
   /**
@@ -109,20 +138,20 @@ class NFSe {
    * @param string $email
    * @return array
    */
-  public function reenviaEmail(string $referencia, string $email): array
+  public function reenviaEmail(string $referencia, string $email): Response
   {
-    $request = Http::withHeaders([
-      'Authorization' => $this->token,
-    ])->post(config('focusnfe.URL.production') . self::URL . "/$referencia/$email");
+    $response = Http::withHeaders([
+      'Authorization' => 'Basic ' . base64_encode($this->token),
+    ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email");
 
-    if ($request->failed()) {
-      Log::error('FocusNFe.NFSe: Erro ao reenviar email da NFSe', [
-        'response' => $request->json(),
+    if ($response->failed()) {
+      Log::error('FocusNfe.NFSe: Erro ao reenviar email da NFSe', [
+        'response' => $response->json(),
         'referencia' => $referencia,
         'email' => $email
       ]);
     }
 
-    return $request->json();
+    return $response;
   }
 }

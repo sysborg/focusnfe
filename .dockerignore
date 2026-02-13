@@ -1,0 +1,47 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+.dockerignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*.swn
+.DS_Store
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Composer
+vendor/
+
+# Build artifacts
+*.log
+*.cache
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Tests
+.phpunit.result.cache
+coverage/
+
+# Documentation
+TEST_README.md
+README.md
+CHANGELOG.md
+docs/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml

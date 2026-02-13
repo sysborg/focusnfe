@@ -1,5 +1,5 @@
 <?php
-namespace Sysborg\FocusNFe\App\Rules;
+namespace Sysborg\FocusNfe\app\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
