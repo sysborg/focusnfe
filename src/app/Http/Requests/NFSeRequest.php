@@ -2,14 +2,13 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Sysborg\FocusNfe\app\DTO\NFSeDTO;
 use Sysborg\FocusNfe\app\DTO\PrestadorDTO;
 use Sysborg\FocusNfe\app\DTO\TomadorDTO;
 use Sysborg\FocusNfe\app\DTO\ServicoDTO;
 use Sysborg\FocusNfe\app\DTO\EnderecoDTO;
 
-class NFSeRequest extends FormRequest
+class NFSeRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.

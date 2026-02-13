@@ -117,10 +117,9 @@ class CnaeController extends Controller
      */
     public function show(Request $request, string $codigo)
     {
-
-        $request->validate([
-            'cnae' => ['required', 'string', new CnaeRule($codigo)]
-        ]);
+        validator(['cnae' => $codigo], [
+            'cnae' => ['required', 'string', new CnaeRule()]
+        ])->validate();
 
         return response()->json(CNAE::get($codigo));
 

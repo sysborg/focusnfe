@@ -21,6 +21,6 @@ class NFSeArquivoController extends Controller
      */
     public function show(string $referencia)
     {
-        return response()->json(NFSeArquivo::consulta($referencia));
+        return response()->json(NFSeArquivo::get($referencia));
     }
 }

@@ -66,11 +66,13 @@ class NcmController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json(Ncm::list(
+        $response = Ncm::list(
             $request->query('offset', 1),
             $request->query('codigo', null),
             $request->query('descricao', null)
-        ));
+        );
+
+        return response()->json($response->json(), $response->status());
     }
 
     /**

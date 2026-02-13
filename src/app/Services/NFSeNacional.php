@@ -4,7 +4,7 @@ namespace Sysborg\FocusNfe\app\Services;
 use Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
-use Sysborg\FocusNfe\app\DTO\NFSenDTO;
+use Sysborg\FocusNfe\app\DTO\NFSeNDTO;
 
 /**
  * Classe responsável por manipular as NFSe Nacional
@@ -48,10 +48,10 @@ class NFSeNacional {
   /**
    * Envia uma NFSe Nacional
    *
-   * @param NFSenDTO $data
+   * @param NFSeNDTO $data
    * @return Response
    */
-  public function envia(NFSenDTO $data): Response
+  public function envia(NFSeNDTO $data): Response
   {
     $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),

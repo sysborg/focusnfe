@@ -2,9 +2,8 @@
 
 namespace Sysborg\FocusNfe\app\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNfe\app\DTO\NFSenDTO;
+use Sysborg\FocusNfe\app\DTO\NFSeNDTO;
 use Facades\Sysborg\FocusNfe\app\Services\NFSeNacional;
 use Sysborg\FocusNfe\app\Http\Requests\NFSeNacionalRequest;
 

@@ -5,7 +5,7 @@ namespace Sysborg\FocusNfe\app\DTO;
 use Carbon\Carbon;
 use Sysborg\FocusNfe\app\DTO\ServicoDTO;
 
-class NFSenDTO extends DTO 
+class NFSeNDTO extends DTO
 {
     public function __construct(
         public Carbon $data_emissao,

@@ -4,7 +4,7 @@ namespace Sysborg\FocusNfe\app\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNfe\app\Rules\CepRule;
-use Sysborg\FocusNfe\app\Services\CEP;
+use Facades\Sysborg\FocusNfe\app\Services\CEP;
 
 class CepController extends Controller
 {
@@ -86,9 +86,9 @@ class CepController extends Controller
      */
     public function consultar(Request $request, string $cep)
     {
-        $request->validate([
-            'cep' => ['required', 'string', new CepRule($cep)]
-        ]);
+        validator(['cep' => $cep], [
+            'cep' => ['required', 'string', new CepRule()]
+        ])->validate();
 
         return response()->json(Cep::get($cep));
     }

@@ -2,10 +2,9 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Sysborg\FocusNfe\app\DTO\EmpresaDTO;
 
-class EmpresaRequest extends FormRequest
+class EmpresaRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.

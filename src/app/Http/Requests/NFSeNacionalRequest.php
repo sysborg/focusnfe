@@ -2,9 +2,8 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 
-class NFSeNacionalRequest extends FormRequest
+class NFSeNacionalRequest extends BaseRequest
 {
 
     

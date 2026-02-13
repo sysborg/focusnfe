@@ -2,9 +2,8 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 
-class NFCeRequest extends FormRequest
+class NFCeRequest extends BaseRequest
 {
     
     public function rules()

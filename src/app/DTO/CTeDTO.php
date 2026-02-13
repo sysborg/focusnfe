@@ -8,10 +8,10 @@ use Sysborg\FocusNfe\app\DTO\ModalDutoviarioDTO;
 use Sysborg\FocusNfe\app\DTO\ModalMultimodalDTO;
 use Sysborg\FocusNfe\app\DTO\ModalRodoviarioDTO;
 use Sysborg\FocusNfe\app\DTO\ModalFerroviarioDTO;
+use Sysborg\FocusNfe\app\DTO\ModalRodoviarioOsDTO;
 
 
-
-class CTEDTO extends DTO
+class CTeDTO extends DTO
 {
     public function __construct(
         public ?ModalAereoDTO $modal_aereo,
@@ -24,10 +24,10 @@ class CTEDTO extends DTO
     ) {}
 
     /**
-     * Cria um objeto CTEDTO a partir de um array.
+     * Cria um objeto CTeDTO a partir de um array.
      * 
      * @param array $data
-     * @return CTEDTO
+     * @return CTeDTO
      */
     public static function fromArray(array $data): self
     {
@@ -58,19 +58,20 @@ class CTEDTO extends DTO
 
         $modal_rodoviario = null;
         if (isset($data['modal_rodoviario'])) {
-            $modal_rodoviario = $data['modal_rodoviario']['tipo'] === 'CTe' ? 
+            $modalType = $data['modal_rodoviario']['type'] ?? ($data['modal_rodoviario']['tipo'] ?? null);
+            $modal_rodoviario = $modalType === 'CTe' ?
                 ModalRodoviarioDTO::fromArray($data['modal_rodoviario']) :
-                ModalRodoviarioOSDTO::fromArray($data['modal_rodoviario']);
+                ModalRodoviarioOsDTO::fromArray($data['modal_rodoviario']);
         }
 
         return new self(
-            $data['referencia'],
             $modal_aereo,
             $modal_aquaviario,
             $modal_dutoviario,
             $modal_ferroviario,
             $modal_multimodal,
-            $modal_rodoviario
+            $modal_rodoviario,
+            $data['referencia']
         );
     }
 }

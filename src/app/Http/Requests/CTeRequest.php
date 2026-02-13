@@ -2,15 +2,23 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 /**
  * @doc https://focusnfe.com.br/doc/#cte-e-cte-os_urls
  */
 
-class CTeRequest extends FormRequest
+class CTeRequest extends BaseRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $modalRodoviario = $this->input('modal_rodoviario');
+
+        if (is_array($modalRodoviario) && !isset($modalRodoviario['type']) && isset($modalRodoviario['tipo'])) {
+            $modalRodoviario['type'] = $modalRodoviario['tipo'];
+            $this->merge(['modal_rodoviario' => $modalRodoviario]);
+        }
+    }
+
     public function rules(): array
     {
         return [
@@ -21,7 +29,7 @@ class CTeRequest extends FormRequest
                 'sometimes',
                 'array',
                 function ($attribute, $value, $fail) {
-                    if (request('modal_rodoviario.tipo') !== 'CTe') {
+                    if (request('modal_rodoviario.type') !== 'CTe') {
                         $fail('O campo ' . $attribute . ' somente é permitido para CTe');
                     }
                 },

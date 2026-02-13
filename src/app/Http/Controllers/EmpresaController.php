@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNfe\app\DTO\EmpresaDTO;
 use Sysborg\FocusNfe\app\Http\Requests\EmpresaRequest;
-use Sysborg\FocusNfe\app\Services\Empresas;
+use Facades\Sysborg\FocusNfe\app\Services\Empresas;
 
 class EmpresaController extends Controller
 {

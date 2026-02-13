@@ -3,7 +3,7 @@
 namespace Sysborg\FocusNfe\app\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sysborg\FocusNfe\app\Services\Backups;
+use Facades\Sysborg\FocusNfe\app\Services\Backups;
 use Log;
 
 class BackupController extends Controller

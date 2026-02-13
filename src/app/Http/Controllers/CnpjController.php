@@ -62,9 +62,9 @@ class CnpjController extends Controller
      */
     public function consultar(Request $request, string $cnpj)
     {
-        $request->validate([
-            'cnpj' => ['required', 'string', new CnpjRule($cnpj)]
-        ]);
+        validator(['cnpj' => $cnpj], [
+            'cnpj' => ['required', 'string', new CnpjRule()]
+        ])->validate();
 
         return response()->json(Cnpjs::get($cnpj));
     }

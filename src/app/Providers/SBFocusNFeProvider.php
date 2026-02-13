@@ -8,10 +8,10 @@ use Sysborg\FocusNfe\app\Services\{
     CEP,
     CFOP,
     CNAE,
-    CNPJs,
+    Cnpjs,
     ConsultaEmails,
     CTe,
-    CTeRecebidas,
+    CTERecebidas,
     Empresas,
     MDFe,
     Municipios,
@@ -20,7 +20,7 @@ use Sysborg\FocusNfe\app\Services\{
     NFe,
     NFeRecebidas,
     NFSe,
-    NFSeArquivos,
+    NFSeArquivo,
     NFSeNacional,
     NFSeRecebidas
 };
@@ -83,8 +83,8 @@ class SBFocusNFeProvider extends ServiceProvider
             return new CNAE(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
-        $this->app->singleton(CNPJs::class, function ($app) {
-            return new CNPJs(config('focusnfe.token'), config('focusnfe.ambiente'));
+        $this->app->singleton(Cnpjs::class, function ($app) {
+            return new Cnpjs(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton(ConsultaEmails::class, function ($app) {
@@ -95,8 +95,8 @@ class SBFocusNFeProvider extends ServiceProvider
             return new CTe(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
-        $this->app->singleton(CTeRecebidas::class, function ($app) {
-            return new CTeRecebidas(config('focusnfe.token'), config('focusnfe.ambiente'));
+        $this->app->singleton(CTERecebidas::class, function ($app) {
+            return new CTERecebidas(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton(Empresas::class, function ($app) {
@@ -131,8 +131,8 @@ class SBFocusNFeProvider extends ServiceProvider
             return new NFSe(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
-        $this->app->singleton(NFSeArquivos::class, function ($app) {
-            return new NFSeArquivos(config('focusnfe.token'), config('focusnfe.ambiente'));
+        $this->app->singleton(NFSeArquivo::class, function ($app) {
+            return new NFSeArquivo(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         $this->app->singleton(NFSeNacional::class, function ($app) {
