@@ -108,7 +108,6 @@ class Empresas extends EventHelper
     if ($response->failed()) {
       Log::error('FocusNfe.Empresa: Erro ao listar empresas', [
         'response' => $response->json(),
-        'status' => $response->status(),
         'data' => [
           'offset' => $offset,
           'cnpj' => $cnpj,
