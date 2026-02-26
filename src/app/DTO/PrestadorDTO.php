@@ -10,8 +10,7 @@ class PrestadorDTO extends DTO
     public function __construct(
         public string $cnpj,
         public string $inscricaoMunicipal,
-        public string $codigoMunicipio,
-        public bool $optanteSimplesNacional = true
+        public string $codigoMunicipio
     ) {
         $this->validate();
     }
@@ -42,7 +41,6 @@ class PrestadorDTO extends DTO
             'cnpj' => 'required|string|cnpj',
             'inscricaoMunicipal' => 'required|string|max:20',
             'codigoMunicipio' => 'required|string|max:10',
-            'optanteSimplesNacional' => 'required|boolean',
         ];
     }
 
@@ -63,8 +61,6 @@ class PrestadorDTO extends DTO
             'codigoMunicipio.required' => 'O código do município é obrigatório',
             'codigoMunicipio.string' => 'O código do município deve ser um texto',
             'codigoMunicipio.max' => 'O código do município não pode ter mais de 10 caracteres',
-            'optanteSimplesNacional.required' => 'O campo optante pelo Simples Nacional é obrigatório',
-            'optanteSimplesNacional.boolean' => 'O campo optante pelo Simples Nacional deve ser verdadeiro ou falso',
         ];
     }
 
@@ -79,8 +75,7 @@ class PrestadorDTO extends DTO
         return new self(
             $data['cnpj'],
             $data['inscricaoMunicipal'],
-            $data['codigoMunicipio'],
-            $data['optanteSimplesNacional'] ?? true
+            $data['codigoMunicipio']
         );
     }
 }

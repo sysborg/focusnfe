@@ -12,7 +12,8 @@ class NFSeDTO extends DTO
         public Carbon $dataEmissao,
         public PrestadorDTO $prestador,
         public TomadorDTO $tomador,
-        public ServicoDTO $servico
+        public ServicoDTO $servico,
+        public bool $optanteSimplesNacional = true
     ) {
         $this->validate();
     }
@@ -49,6 +50,7 @@ class NFSeDTO extends DTO
     {
         return [
             'dataEmissao' => 'required|date',
+            'optanteSimplesNacional' => 'required|boolean',
         ];
     }
 
@@ -62,6 +64,8 @@ class NFSeDTO extends DTO
         return [
             'dataEmissao.required' => 'A data de emissão é obrigatória',
             'dataEmissao.date' => 'A data de emissão deve ser uma data válida',
+            'optanteSimplesNacional.required' => 'O campo optante pelo Simples Nacional é obrigatório',
+            'optanteSimplesNacional.boolean' => 'O campo optante pelo Simples Nacional deve ser verdadeiro ou falso',
         ];
     }
 
@@ -78,7 +82,8 @@ class NFSeDTO extends DTO
             $data['dataEmissao'] instanceof Carbon ? $data['dataEmissao'] : new Carbon($data['dataEmissao']),
             PrestadorDTO::fromArray($data['prestador']),
             TomadorDTO::fromArray($data['tomador']),
-            ServicoDTO::fromArray($data['servico'])
+            ServicoDTO::fromArray($data['servico']),
+            $data['optanteSimplesNacional'] ?? true
         );
     }
 
@@ -92,6 +97,7 @@ class NFSeDTO extends DTO
         return [
             'data_emissao' => $this->dataEmissao->format('Y-m-d'),
             'prestador' => $this->prestador->toArray(),
+            'optante_simples_nacional' => $this->optanteSimplesNacional,
             'tomador' => [
                 'cnpj' => $this->tomador->cnpj,
                 'razao_social' => $this->tomador->razaoSocial,
