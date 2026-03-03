@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Http;
 
 trait MDFeMock
 {
-
     /**
      * Stub para requisição de cancelamento de MDF-e
      *
@@ -27,12 +26,12 @@ trait MDFeMock
         ]);
     }
 
-     /**
-     * Simula uma requisição bem-sucedida para consultar um MDF-e autorizado.
-     *
-     * @param string $url
-     * @return void
-     */
+    /**
+    * Simula uma requisição bem-sucedida para consultar um MDF-e autorizado.
+    *
+    * @param string $url
+    * @return void
+    */
     public function mockConsultaMDFe(string $url): void
     {
         $this->mockHttp($url, 'consultaMDFe', 200);

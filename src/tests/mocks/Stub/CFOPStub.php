@@ -2,8 +2,8 @@
 
 namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
-class CFOPStub {
-    
+class CFOPStub
+{
     /**
      * Retorna um stub de sucesso ao buscar um CFOP pelo código.
      *

@@ -6,8 +6,6 @@ use Sysborg\FocusNfe\app\Rules\CnpjRule;
 
 class NFSeRecebidasRequest extends BaseRequest
 {
-   
-
     public function rules(): array
     {
         return [
@@ -15,5 +13,5 @@ class NFSeRecebidasRequest extends BaseRequest
         ];
     }
 
-    
+
 }

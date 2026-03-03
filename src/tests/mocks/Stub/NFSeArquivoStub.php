@@ -4,7 +4,6 @@ namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
 class NFSeArquivoStub
 {
-
     /**
      * Retorna um exemplo de resposta para a  NFSe enviada por arquivo (sucesso)
      *

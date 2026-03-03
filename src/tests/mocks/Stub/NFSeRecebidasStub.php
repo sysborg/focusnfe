@@ -2,8 +2,8 @@
 
 namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
-class NFSeRecebidasStub {
-    
+class NFSeRecebidasStub
+{
     /**
      * Retorna uma resposta simulada de todas as NFSe recebidas para um CNPJ.
      *

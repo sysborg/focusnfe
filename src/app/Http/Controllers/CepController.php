@@ -1,6 +1,7 @@
-<?php 
+<?php
 
 namespace Sysborg\FocusNfe\app\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Sysborg\FocusNfe\app\Rules\CepRule;

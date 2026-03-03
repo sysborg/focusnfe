@@ -12,7 +12,7 @@ class CTeController extends Controller
 {
     /**
      * Envia um novo CTe para processamento.
-     * 
+     *
      * @param CTeRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -25,7 +25,7 @@ class CTeController extends Controller
 
     /**
      * Consulta um CTe pelo ID.
-     * 
+     *
      * @param string $referencia
      * @return \Illuminate\Http\JsonResponse
      */
@@ -36,7 +36,7 @@ class CTeController extends Controller
 
     /**
      * Cancela um CTe.
-     * 
+     *
      * @param string $referencia
      * @return \Illuminate\Http\JsonResponse
      */
@@ -45,9 +45,9 @@ class CTeController extends Controller
         return response()->json(CTe::cancela($referencia));
     }
 
-      /**
+    /**
      * Cria uma Carta de Correção para um CTe.
-     * 
+     *
      * @param string $referencia
      * @param CTeRequest $request
      * @return \Illuminate\Http\JsonResponse

@@ -173,18 +173,18 @@ class NFSeControllerTest extends Common
     /**
  * Teste de consulta NFSe processando autorização
  */
-public function test_consulta_nfse_processando_autorizacao(): void
-{
-    $expectedKeys = array_keys(json_decode(NFSeStub::erroProcessandoAutorizacao(), true));
+    public function test_consulta_nfse_processando_autorizacao(): void
+    {
+        $expectedKeys = array_keys(json_decode(NFSeStub::erroProcessandoAutorizacao(), true));
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFSe::URL . '/nfs-2',
-        'erroProcessandoAutorizacao',
-        200
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFSe::URL . '/nfs-2',
+            'erroProcessandoAutorizacao',
+            200
+        );
 
-    $response = $this->get($this->prefix . NFSe::URL . '/nfs-2');
-    $response->assertStatus(200);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->get($this->prefix . NFSe::URL . '/nfs-2');
+        $response->assertStatus(200);
+        $response->assertJsonStructure($expectedKeys);
+    }
 }

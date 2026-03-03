@@ -59,7 +59,7 @@ class MunicipiosStub
         ];
     }
 
-      /**
+    /**
      * Retorna um exemplo de resposta para a consulta de um único município pelo código
      *
      * @return array
@@ -85,5 +85,5 @@ class MunicipiosStub
     }
 
 
-   
+
 }

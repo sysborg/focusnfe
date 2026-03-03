@@ -2,11 +2,11 @@
 
 namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
-class CEPStub {
-  
+class CEPStub
+{
     /**
      * Mock de uma consulta bem-sucedida de CEP.
-     * 
+     *
      * @return string
      */
     public static function sucesso(): string
@@ -27,7 +27,7 @@ class CEPStub {
 
     /**
      * Mock para quando o CEP não é encontrado.
-     * 
+     *
      * @return string
      */
     public static function cepNaoEncontrado(): string
@@ -40,7 +40,7 @@ class CEPStub {
 
     /**
      * Mock para requisição inválida.
-     * 
+     *
      * @return string
      */
     public static function requisicaoInvalida(): string

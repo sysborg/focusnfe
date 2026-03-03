@@ -30,12 +30,12 @@ class NFSeCancelServiceTest extends TestCase
             ],
         ]));
         $container->instance('http', new HttpFactory());
-        $container->instance('events', new class {
+        $container->instance('events', new class () {
             public function dispatch($event): void
             {
             }
         });
-        $container->instance('log', new class {
+        $container->instance('log', new class () {
             public function error(string $message, array $context = []): void
             {
             }

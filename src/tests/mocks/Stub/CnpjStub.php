@@ -2,10 +2,11 @@
 
 namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
-class CnpjStub {
+class CnpjStub
+{
     /**
      * Retorna dados mocados de um CNPJ válido.
-     * 
+     *
      * @return string
      */
     public static function sucesso(): string
@@ -34,7 +35,7 @@ class CnpjStub {
 
     /**
      * Retorna dados mocados de erro para CNPJ não encontrado.
-     * 
+     *
      * @return string
      */
     public static function erroCnpjNaoEncontrado(): string

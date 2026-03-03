@@ -4,10 +4,9 @@ namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
 class CTeStub
 {
-
-      /**
+    /**
      * Mock de request para a emissão de CTe.
-     * 
+     *
      * @return array
      */
     public static function request(): array
@@ -118,11 +117,11 @@ class CTeStub
         ];
     }
 
- /**
-     * Retorna um exemplo de erro por requisição inválida 
-     *
-     * @return array
-     */
+    /**
+        * Retorna um exemplo de erro por requisição inválida
+        *
+        * @return array
+        */
     public static function erroRequisicaoInvalida(): array
     {
         return [
@@ -132,7 +131,7 @@ class CTeStub
     }
 
     /**
-     * Retorna um exemplo de resposta para a consulta do CT-e autorizado 
+     * Retorna um exemplo de resposta para a consulta do CT-e autorizado
      *
      * @return array
      */
@@ -154,7 +153,7 @@ class CTeStub
     }
 
     /**
-     * Retorna um exemplo de resposta para a requisição de cancelamento do CT-e 
+     * Retorna um exemplo de resposta para a requisição de cancelamento do CT-e
      *
      * @return array
      */
@@ -169,7 +168,7 @@ class CTeStub
     }
 
     /**
-     * Retorna um exemplo de resposta para a Carta de Correção Eletrônica (CC-e) do CT-e 
+     * Retorna um exemplo de resposta para a Carta de Correção Eletrônica (CC-e) do CT-e
      *
      * @return array
      */

@@ -12,7 +12,7 @@ class CnpjControllerTest extends Common
 
     /**
      * Teste de consulta de CNPJ com sucesso.
-     * 
+     *
      * @return void
      */
     public function test_consulta_cnpj_sucesso(): void
@@ -33,7 +33,7 @@ class CnpjControllerTest extends Common
 
     /**
      * Teste de erro ao consultar CNPJ não encontrado.
-     * 
+     *
      * @return void
      */
     public function test_consulta_cnpj_nao_encontrado(): void

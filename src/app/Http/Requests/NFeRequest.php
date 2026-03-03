@@ -2,10 +2,8 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
-
 class NFeRequest extends BaseRequest
 {
-  
     public function rules()
     {
         return [
@@ -16,7 +14,7 @@ class NFeRequest extends BaseRequest
             'finalidade_emissao' => 'required|integer',
             'consumidor_final' => 'required|integer|',
             'presenca_comprador' => 'required|integer',
-            
+
             'cnpj_emitente' => 'required_without:cpf_emitente|string',
             'cpf_emitente' => 'required_without:cnpj_emitente|string',
             'inscricao_estadual_emitente' => 'required|string',
@@ -26,7 +24,7 @@ class NFeRequest extends BaseRequest
             'municipio_emitente' => 'required|string',
             'uf_emitente' => 'required|string',
             'regime_tributario_emitente' => 'required|integer',
-            
+
             'nome_destinatario' => 'required|string',
             'cnpj_destinatario' => 'nullable|string',
             'cpf_destinatario' => 'nullable|string',
@@ -37,7 +35,7 @@ class NFeRequest extends BaseRequest
             'municipio_destinatario' => 'required|string',
             'uf_destinatario' => 'required|string',
             'indicador_inscricao_estadual_destinatario' => 'required|integer',
-            
+
             'itens' => 'required|array',
             'itens.*.numero_item' => 'required|integer',
             'itens.*.codigo_produto' => 'required|string',

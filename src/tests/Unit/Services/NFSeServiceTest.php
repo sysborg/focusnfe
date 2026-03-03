@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Event;
 
 class NFSeServiceTest extends TestCase
 {
-    use NFSeDataTrait, MockHttpResponseTrait;
+    use NFSeDataTrait;
+    use MockHttpResponseTrait;
 
     private NFSe $service;
     private string $token = 'test-token-123';

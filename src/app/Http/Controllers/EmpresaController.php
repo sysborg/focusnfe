@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Sysborg\FocusNfe\app\Http\Controllers;
 
@@ -103,7 +103,7 @@ class EmpresaController extends Controller
         $dto = EmpresaDTO::fromArray($request->validated());
         return response()->json(Empresas::create($dto), 201);
     }
-    
+
     /**
      * @OA\Get(
      *  path="/api/v1/empresas/{id}",
@@ -198,7 +198,7 @@ class EmpresaController extends Controller
         $dto = EmpresaDTO::fromArray($request->validated());
         return response()->json(Empresas::update($id, $dto));
     }
-    
+
     /**
      * @OA\Delete(
      *  path="/api/v1/empresas/{id}",

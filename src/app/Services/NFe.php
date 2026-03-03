@@ -10,31 +10,32 @@ use Sysborg\FocusNfe\app\DTO\NFeDTO;
 /**
  * Classe responsável por manipular as NFe
  */
-class NFe {
+class NFe
+{
     /**
      * URL base da API NFe
-     * 
+     *
      * @var string
      */
-    const URL = '/v2/nfe';
+    public const URL = '/v2/nfe';
 
     /**
      * Token de acesso
-     * 
+     *
      * @var string
      */
     private string $token;
 
     /**
      * Ambiente de produção ou sandbox
-     * 
+     *
      * @var string
      */
     private string $ambiente;
 
     /**
      * Construtor da classe
-     * 
+     *
      * @param string $token
      * @return void
      */

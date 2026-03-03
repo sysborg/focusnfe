@@ -5,7 +5,8 @@ namespace Sysborg\FocusNfe\tests\mocks;
 use Sysborg\FocusNfe\tests\mocks\Stub\CEPStub;
 use Illuminate\Support\Facades\Http;
 
-trait CEPMock {
+trait CEPMock
+{
     /**
      * Simula uma resposta da API de CEPs com base em um stub específico.
      *

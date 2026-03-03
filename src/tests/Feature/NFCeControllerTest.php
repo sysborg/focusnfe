@@ -17,7 +17,7 @@ class NFCeControllerTest extends Common
     {
         $inputData = NFCeStub::request();
         $expectedKeys = array_keys(NFCeStub::consultaNFCe());
-        
+
         $this->mockHttp(
             config('focusnfe.URL.production') . NFCe::URL . '?ref=' . $inputData['cnpj_emitente'] . '_NFCE_000001',
             'consultaNFCe',
@@ -35,7 +35,7 @@ class NFCeControllerTest extends Common
     public function test_cancelamento_nfce(): void
     {
         $expectedKeys = array_keys(NFCeStub::cancelamentoNFCe());
-        
+
         $this->mockHttp(
             config('focusnfe.URL.production') . NFCe::URL . '/ref123',
             'cancelamentoNFCe',
@@ -53,7 +53,7 @@ class NFCeControllerTest extends Common
     public function test_consulta_econf(): void
     {
         $expectedKeys = array_keys(NFCeStub::consultaEConf());
-        
+
         $this->mockHttp(
             config('focusnfe.URL.production') . NFCe::URL . '/ref123/econf/335250000000445',
             'consultaEConf',
@@ -71,7 +71,7 @@ class NFCeControllerTest extends Common
     public function test_registra_econf(): void
     {
         $expectedKeys = array_keys(NFCeStub::registraEConf());
-        
+
         $this->mockHttp(
             config('focusnfe.URL.production') . NFCe::URL . '/ref123/econf',
             'registraEConf',
@@ -89,7 +89,7 @@ class NFCeControllerTest extends Common
     public function test_cancelamento_econf(): void
     {
         $expectedKeys = array_keys(NFCeStub::cancelaEConf());
-        
+
         $this->mockHttp(
             config('focusnfe.URL.production') . NFCe::URL . '/ref123/econf/335250000000445',
             'cancelaEConf',
@@ -101,7 +101,7 @@ class NFCeControllerTest extends Common
         $response->assertJsonStructure($expectedKeys);
     }
 
-        /**
+    /**
      * Teste de inutilização de numeração da NFC-e
      */
     public function test_inutilizacao_nfce(): void
@@ -129,45 +129,45 @@ class NFCeControllerTest extends Common
     /**
  * Teste para erro na inutilização de numeração da NFC-e
  */
-public function test_erro_inutilizacao_nfce(): void
-{
-    $expectedKeys = array_keys(NFCeStub::erroInutilizacaoNFCe());
+    public function test_erro_inutilizacao_nfce(): void
+    {
+        $expectedKeys = array_keys(NFCeStub::erroInutilizacaoNFCe());
 
-    $payload = [
-        'serie' => '1',
-        'numero_inicial' => '1',
-        'numero_final' => '9',
-        'justificativa' => 'Teste erro inutilização'
-    ];
+        $payload = [
+            'serie' => '1',
+            'numero_inicial' => '1',
+            'numero_final' => '9',
+            'justificativa' => 'Teste erro inutilização'
+        ];
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFCe::URL . '/inutilizacao',
-        'erroInutilizacaoNFCe',
-        400
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFCe::URL . '/inutilizacao',
+            'erroInutilizacaoNFCe',
+            400
+        );
 
-    $response = $this->post($this->prefix . NFCe::URL . '/inutilizacao', $payload);
-    $response->assertStatus(400);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->post($this->prefix . NFCe::URL . '/inutilizacao', $payload);
+        $response->assertStatus(400);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
-/**
- * Teste para erro no cancelamento da NFC-e
- */
-public function test_erro_cancelamento_nfce(): void
-{
-    $expectedKeys = array_keys(NFCeStub::erroCancelamentoNFCe());
+    /**
+     * Teste para erro no cancelamento da NFC-e
+     */
+    public function test_erro_cancelamento_nfce(): void
+    {
+        $expectedKeys = array_keys(NFCeStub::erroCancelamentoNFCe());
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFCe::URL . '/ref123',
-        'erroCancelamentoNFCe',
-        400
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFCe::URL . '/ref123',
+            'erroCancelamentoNFCe',
+            400
+        );
 
-    $response = $this->delete($this->prefix . NFCe::URL . '/ref123');
-    $response->assertStatus(400);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->delete($this->prefix . NFCe::URL . '/ref123');
+        $response->assertStatus(400);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
-    
+
 }

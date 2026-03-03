@@ -31,7 +31,7 @@ class CEPServiceTest extends TestCase
             ],
         ]));
         $container->instance('http', new HttpFactory());
-        $container->instance('log', new class {
+        $container->instance('log', new class () {
             public function error(string $message, array $context = []): void
             {
             }

@@ -27,7 +27,7 @@ trait NFCeMock
         ]);
     }
 
-        /**
+    /**
      * Simula a emissão bem-sucedida de uma NFC-e.
      *
      * @param string $url

@@ -2,10 +2,8 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
-
 class CTERecebidasRequest extends BaseRequest
 {
-  
     public function rules()
     {
         return [

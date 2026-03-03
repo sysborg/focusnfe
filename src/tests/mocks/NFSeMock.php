@@ -5,10 +5,11 @@ namespace Sysborg\FocusNfe\tests\mocks;
 use Sysborg\FocusNfe\tests\mocks\Stub\NFSeStub;
 use Illuminate\Support\Facades\Http;
 
-trait NFSeMock {
+trait NFSeMock
+{
     /**
      * Stub de requisições HTTP para NFSe.
-     * 
+     *
      * @param string $url
      * @param string $stub
      * @param int $status

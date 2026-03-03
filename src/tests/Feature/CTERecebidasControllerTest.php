@@ -6,12 +6,13 @@ use Sysborg\FocusNfe\tests\mocks\CTERecebidasMock;
 use Sysborg\FocusNfe\tests\mocks\Stub\CTERecebidasStub;
 use Sysborg\FocusNfe\app\Services\CTERecebidas;
 
-class CTERecebidasControllerTest extends Common {
+class CTERecebidasControllerTest extends Common
+{
     use CTERecebidasMock;
 
     /**
      * Teste para consulta das CTEs recebidas por CNPJ com sucesso
-     * 
+     *
      * @return void
      */
     public function test_consulta_ctes_recebidas_sucesso(): void
@@ -32,7 +33,7 @@ class CTERecebidasControllerTest extends Common {
 
     /**
      * Teste para consulta individual de CTE recebida bem-sucedida.
-     * 
+     *
      * @return void
      */
     public function test_consulta_individual_cte_recebida(): void
@@ -53,7 +54,7 @@ class CTERecebidasControllerTest extends Common {
 
     /**
      * Teste para informar desacordo em CTE recebida.
-     * 
+     *
      * @return void
      */
     public function test_informar_desacordo_cte_recebida(): void
@@ -75,7 +76,7 @@ class CTERecebidasControllerTest extends Common {
 
     /**
      * Teste para consulta de desacordo já registrado em CTE recebida.
-     * 
+     *
      * @return void
      */
     public function test_consulta_desacordo_registrado(): void

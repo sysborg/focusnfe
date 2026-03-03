@@ -1,13 +1,14 @@
 <?php
 
 namespace Sysborg\FocusNfe\app\Services;
+
 use Illuminate\Http\Client\Response;
 
 abstract class EventHelper
 {
     /**
      * Dispara um evento
-     * 
+     *
      * @param string $event
      * @param array $data
      * @return void

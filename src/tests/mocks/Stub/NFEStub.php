@@ -4,12 +4,11 @@ namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
 class NFeStub
 {
-
-   /**
-     * Mock de request para a emissão de NFe.
-     * 
-     * @return array
-     */
+    /**
+      * Mock de request para a emissão de NFe.
+      *
+      * @return array
+      */
     public static function request(): array
     {
         return [
@@ -69,7 +68,7 @@ class NFeStub
     }
 
     /**
-     * Retorna um exemplo de resposta para o envio de NFe autorizado 
+     * Retorna um exemplo de resposta para o envio de NFe autorizado
      *
      * @return array
      */
@@ -90,7 +89,7 @@ class NFeStub
     }
 
     /**
-     * Retorna um exemplo de erro na validação do schema XML da NFe 
+     * Retorna um exemplo de erro na validação do schema XML da NFe
      *
      * @return array
      */
@@ -108,7 +107,7 @@ class NFeStub
         ];
     }
 
-      /**
+    /**
      * Retorna um exemplo de resposta para a consulta de NFe autorizada
      *
      * @return array
@@ -144,7 +143,7 @@ class NFeStub
     }
 
     /**
-     * Retorna um exemplo de resposta para erro de autorização da NFe 
+     * Retorna um exemplo de resposta para erro de autorização da NFe
      *
      * @return array
      */
@@ -184,7 +183,7 @@ class NFeStub
     }
 
     /**
-     * Retorna um exemplo de resposta para uma NFe cancelada 
+     * Retorna um exemplo de resposta para uma NFe cancelada
      *
      * @return array
      */
@@ -223,7 +222,7 @@ class NFeStub
     }
 
     /**
-     * Retorna um exemplo de erro para uma requisição inválida no cancelamento da NFe 
+     * Retorna um exemplo de erro para uma requisição inválida no cancelamento da NFe
      *
      * @return array
      */
@@ -235,8 +234,8 @@ class NFeStub
         ];
     }
 
-       /**
-     * Retorna um exemplo de resposta para o envio da Carta de Correção (CC-e) autorizado 
+    /**
+     * Retorna um exemplo de resposta para o envio da Carta de Correção (CC-e) autorizado
      *
      * @return array
      */
@@ -252,11 +251,11 @@ class NFeStub
         ];
     }
 
-     /**
-     * Retorna um exemplo de resposta para a inutilização de numeração da NFe autorizada (HTTP 200)
-     *
-     * @return array
-     */
+    /**
+    * Retorna um exemplo de resposta para a inutilização de numeração da NFe autorizada (HTTP 200)
+    *
+    * @return array
+    */
     public static function inutilizacaoNFeSucesso(): array
     {
         return [
@@ -289,5 +288,5 @@ class NFeStub
             "status" => "erro_autorizacao"
         ];
     }
-    
+
 }

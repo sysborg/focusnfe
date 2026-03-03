@@ -2,11 +2,8 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
-
 class NFSeNacionalRequest extends BaseRequest
 {
-
-    
     public function rules()
     {
         return [
@@ -14,7 +11,7 @@ class NFSeNacionalRequest extends BaseRequest
             'data_competencia' => 'required|date',
 
             'codigo_municipio_emissora' => 'required|string',
-            
+
             'prestador' => 'required|array',
             'prestador.cnpj' => 'required|string',
             'prestador.inscricao_municipal' => 'required|string',

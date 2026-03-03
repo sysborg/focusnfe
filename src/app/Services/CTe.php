@@ -6,13 +6,14 @@ use Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
 
-class CTe {
+class CTe
+{
     /**
      * URL base da API CTe
      *
      * @var string
      */
-    const URL = '/v2/cte';
+    public const URL = '/v2/cte';
 
     /**
      * Token de acesso
@@ -111,13 +112,13 @@ class CTe {
         return $response;
     }
 
-     /**
-     * Cria uma Carta de Correção para uma CTe
-     *
-     * @param string $referencia
-     * @param array $data
-     * @return Response
-     */
+    /**
+    * Cria uma Carta de Correção para uma CTe
+    *
+    * @param string $referencia
+    * @param array $data
+    * @return Response
+    */
     public function cartaCorrecao(string $referencia, array $data): Response
     {
         $response = Http::withHeaders([

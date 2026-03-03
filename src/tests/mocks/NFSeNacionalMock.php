@@ -1,31 +1,33 @@
 <?php
+
 namespace Sysborg\FocusNfe\tests\mocks;
 
 use Sysborg\FocusNfe\tests\mocks\Stub\NFSeNacionalStub;
 use Illuminate\Support\Facades\Http;
 
-trait NFSeNacionalMock {
-  /**
-   * Stub de requisição para NFSeNacional
-   * 
-   * @param string $url
-   * @param string $stub
-   * @param int $status
-   * @param int $times
-   * @return void
-   */
-  public function mockHttp(string $url, string $stub, int $status, int $times = 1): void
-  {
-    if (!method_exists(NFSeNacionalStub::class, $stub)) {
-      throw new \Exception("Stub {$stub} não encontrado");
+trait NFSeNacionalMock
+{
+    /**
+     * Stub de requisição para NFSeNacional
+     *
+     * @param string $url
+     * @param string $stub
+     * @param int $status
+     * @param int $times
+     * @return void
+     */
+    public function mockHttp(string $url, string $stub, int $status, int $times = 1): void
+    {
+        if (!method_exists(NFSeNacionalStub::class, $stub)) {
+            throw new \Exception("Stub {$stub} não encontrado");
+        }
+
+        Http::fake([
+          $url => Http::response(NFSeNacionalStub::$stub(), $status)
+        ]);
     }
 
-    Http::fake([
-      $url => Http::response(NFSeNacionalStub::$stub(), $status)
-    ]);
-  }
-
-      /**
+    /**
      * Simula o envio de NFSe Nacional com sucesso.
      *
      * @param string $url

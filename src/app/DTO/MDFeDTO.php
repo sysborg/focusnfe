@@ -23,11 +23,12 @@ class MDFeDTO extends DTO
         public string $uf_emitente,
         public float $valor_total_carga,
         public int $codigo_unidade_medida_peso_bruto
-    ) {}
+    ) {
+    }
 
     /**
      * Cria uma instância de MDFeDTO a partir de um array
-     * 
+     *
      * @param array $data
      * @return MDFeDTO
      */

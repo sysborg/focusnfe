@@ -13,7 +13,7 @@ class NFSeRecebidas
      *
      * @var string
      */
-    const URL = '/v2/nfses_recebidas';
+    public const URL = '/v2/nfses_recebidas';
 
     /**
      * Token de acesso

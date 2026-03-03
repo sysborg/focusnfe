@@ -6,13 +6,14 @@ use Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
 
-class ConsultaEmails {
+class ConsultaEmails
+{
     /**
      * URL base da API ConsultaEmails
      *
      * @var string
      */
-    const URL = '/v2/blocked_emails';
+    public const URL = '/v2/blocked_emails';
 
     /**
      * Token de acesso

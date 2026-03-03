@@ -5,8 +5,8 @@ namespace Sysborg\FocusNfe\tests\mocks;
 use Sysborg\FocusNfe\tests\mocks\Stub\NFSeRecebidasStub;
 use Illuminate\Support\Facades\Http;
 
-trait NFSeRecebidasMock {
-
+trait NFSeRecebidasMock
+{
     /**
      * Stub para NFSeRecebidas.
      *

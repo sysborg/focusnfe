@@ -1,16 +1,16 @@
 <?php
+
 namespace Sysborg\FocusNfe\app\Events;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class EmpresaCreated {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+class EmpresaCreated
+{
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public array $data;
 

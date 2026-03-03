@@ -10,13 +10,14 @@ use Sysborg\FocusNfe\app\DTO\CTERecebidasDTO;
 /**
  * Classe responsável por manipular as CTE Recebidas
  */
-class CTERecebidas {
+class CTERecebidas
+{
     /**
      * URL base da API CTE Recebidas
      *
      * @var string
      */
-    const URL = '/v2/ctes_recebidas';
+    public const URL = '/v2/ctes_recebidas';
 
     /**
      * Token de acesso

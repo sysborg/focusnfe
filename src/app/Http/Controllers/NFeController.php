@@ -10,14 +10,13 @@ use Sysborg\FocusNfe\app\Http\Requests\NFeRequest;
 
 class NFeController extends Controller
 {
-    
     public function store(NFeRequest $request)
     {
         $dto = NFeDTO::fromArray($request->validated());
         return response()->json(NFe::envia($dto, $request->input('referencia')), 201);
     }
 
- 
+
     public function show(string $referencia)
     {
         return response()->json(NFe::get($referencia));
@@ -29,13 +28,13 @@ class NFeController extends Controller
         return response()->json(NFe::cancela($referencia));
     }
 
-   
+
     public function cartaCorrecao(string $referencia, Request $request)
     {
         return response()->json(NFe::cartaCorrecao($referencia, $request->all()));
     }
 
- 
+
     public function inutilizacoes()
     {
         return response()->json(NFe::inutilizacoes());

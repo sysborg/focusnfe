@@ -12,7 +12,7 @@ class NFSeArquivoControllerTest extends Common
 
     /**
      * Teste de envio de NFSe por arquivo com sucesso.
-     * 
+     *
      * @return void
      */
     public function test_envia_nfse_arquivo_sucesso(): void
@@ -33,7 +33,7 @@ class NFSeArquivoControllerTest extends Common
 
     /**
      * Teste de erro ao consultar NFSe enviada por arquivo.
-     * 
+     *
      * @return void
      */
     public function test_consulta_nfse_arquivo_erro(): void

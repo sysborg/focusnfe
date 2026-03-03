@@ -17,7 +17,7 @@ class MDFe
      *
      * @var string
      */
-    const URL = '/v2/mdfe';
+    public const URL = '/v2/mdfe';
 
     /**
      * Token de acesso

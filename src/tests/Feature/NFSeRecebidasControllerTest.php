@@ -12,7 +12,7 @@ class NFSeRecebidasControllerTest extends Common
 
     /**
      * Teste de consulta de todas as NFSe recebidas para um CNPJ.
-     * 
+     *
      * @return void
      */
     public function test_consulta_todas_nfse_recebidas(): void
@@ -32,7 +32,7 @@ class NFSeRecebidasControllerTest extends Common
 
     /**
      * Teste de consulta de uma NFSe específica pela chave.
-     * 
+     *
      * @return void
      */
     public function test_consulta_nfse_por_chave(): void
@@ -53,7 +53,7 @@ class NFSeRecebidasControllerTest extends Common
 
     /**
      * Teste de erro ao consultar uma NFSe inexistente.
-     * 
+     *
      * @return void
      */
     public function test_consulta_nfse_nao_encontrada(): void

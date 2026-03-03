@@ -16,7 +16,7 @@ class NFSeArquivo
      *
      * @var string
      */
-     const URL = '/v2/lotes_rps';
+    public const URL = '/v2/lotes_rps';
 
     /**
      * Ambiente de produção ou sandbox

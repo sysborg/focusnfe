@@ -6,10 +6,8 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Facades\Sysborg\FocusNfe\app\Services\Municipios;
 
-
 class MunicipiosController extends Controller
 {
-  
     public function index(Request $request)
     {
         return response()->json(Municipios::list(
@@ -19,7 +17,7 @@ class MunicipiosController extends Controller
         ));
     }
 
-   
+
     public function show(string $codigo)
     {
         return response()->json(Municipios::get($codigo));

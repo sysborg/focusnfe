@@ -1,10 +1,12 @@
 <?php
+
 namespace Sysborg\FocusNfe\tests\mocks;
 
 use Sysborg\FocusNfe\tests\mocks\Stub\CTeStub;
 use Illuminate\Support\Facades\Http;
 
-trait CTeMock {
+trait CTeMock
+{
     /**
      * Mock  para o CTE
      *

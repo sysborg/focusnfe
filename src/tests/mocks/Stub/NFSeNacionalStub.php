@@ -2,11 +2,11 @@
 
 namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
-class NFSeNacionalStub {
-
+class NFSeNacionalStub
+{
     /**
      * Mock de request para a emissão de NFSe Nacional.
-     * 
+     *
      * @return array
      */
     public static function request(): array
@@ -42,10 +42,10 @@ class NFSeNacionalStub {
     }
 
 
-   
+
     /**
      * Retorna dados mocados de NFSe com status processando autorização
-     * 
+     *
      * @return string
      */
     public static function processandoAutorizacaoEnvio(): string
@@ -57,9 +57,9 @@ class NFSeNacionalStub {
         ]);
     }
 
-      /**
+    /**
      * Retorna dados mocados para requisição inválida
-     * 
+     *
      * @return string
      */
     public static function requisicaoInvalida(): string
@@ -70,11 +70,11 @@ class NFSeNacionalStub {
         ]);
     }
 
-     /**
-     * Retorna dados mocados de NFSe autorizada
-     * 
-     * @return string
-     */
+    /**
+    * Retorna dados mocados de NFSe autorizada
+    *
+    * @return string
+    */
     public static function autorizada(): string
     {
         return json_encode([
@@ -93,48 +93,48 @@ class NFSeNacionalStub {
         ]);
     }
 
-     /**
-     * Retorna dados mocados de NFSe cancelada
-     * 
-     * @return string
-     */
+    /**
+    * Retorna dados mocados de NFSe cancelada
+    *
+    * @return string
+    */
     public static function cancelada(): string
-{
-    return json_encode([
-        'cnpj_prestador' => '18765499000199',
-        'ref' => '12345',
-        'numero_rps' => '123',
-        'serie_rps' => '1',
-        'tipo_rps' => '1',
-        'status' => 'cancelado',
-        'numero' => '1245',
-        'codigo_verificacao' => '1234567890123456789012345678901234567890',
-        'data_emissao' => '2024-05-07T07:34:56-03:00',
-        'url' => 'https://www.nfse.gov.br/consultapublica/?tpc=1&chave=12345678901234567890123456789012345678901234567890',
-        'caminho_xml_nota_fiscal' => '/arquivos/18765499000199_166/202405/XMLsNFSe/187654990001994106902-14018919393-43-123456789012345678901234567890-nfse.xml',
-        'caminho_xml_cancelamento' => '/arquivos/187654990001994106902-14018919393-43-123456789012345678901234567890-can.xml',
-        'url_danfse' => 'https://focusnfe.s3.sa-east-1.amazonaws.com/arquivos/187654990001994106902-14018919393-43-123456789012345678901234567890.pdf'
-    ]);
-}
+    {
+        return json_encode([
+            'cnpj_prestador' => '18765499000199',
+            'ref' => '12345',
+            'numero_rps' => '123',
+            'serie_rps' => '1',
+            'tipo_rps' => '1',
+            'status' => 'cancelado',
+            'numero' => '1245',
+            'codigo_verificacao' => '1234567890123456789012345678901234567890',
+            'data_emissao' => '2024-05-07T07:34:56-03:00',
+            'url' => 'https://www.nfse.gov.br/consultapublica/?tpc=1&chave=12345678901234567890123456789012345678901234567890',
+            'caminho_xml_nota_fiscal' => '/arquivos/18765499000199_166/202405/XMLsNFSe/187654990001994106902-14018919393-43-123456789012345678901234567890-nfse.xml',
+            'caminho_xml_cancelamento' => '/arquivos/187654990001994106902-14018919393-43-123456789012345678901234567890-can.xml',
+            'url_danfse' => 'https://focusnfe.s3.sa-east-1.amazonaws.com/arquivos/187654990001994106902-14018919393-43-123456789012345678901234567890.pdf'
+        ]);
+    }
 
 
-/*
-* Mock de processnado autorização na consulta
-*
-* @return string 
-*/
+    /*
+    * Mock de processnado autorização na consulta
+    *
+    * @return string
+    */
 
-public static function processandoAutorizacaoConsulta(): string
-{
-    return json_encode([
-        'cnpj_prestador' => '18765499000199',
-        'ref' => '12345',
-        'numero_rps' => '123',
-        'serie_rps' => '1',
-        'tipo_rps' => '1',
-        'status' => 'processando_autorizacao'
-    ]);
-}
+    public static function processandoAutorizacaoConsulta(): string
+    {
+        return json_encode([
+            'cnpj_prestador' => '18765499000199',
+            'ref' => '12345',
+            'numero_rps' => '123',
+            'serie_rps' => '1',
+            'tipo_rps' => '1',
+            'status' => 'processando_autorizacao'
+        ]);
+    }
 
 
     /**

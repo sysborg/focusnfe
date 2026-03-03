@@ -9,7 +9,6 @@ use Sysborg\FocusNfe\app\Http\Requests\NFeRecebidasRequest;
 
 class NFeRecebidasController extends Controller
 {
-   
     public function listByCnpj(string $cnpj)
     {
         return response()->json(NFeRecebidas::listByCnpj($cnpj));
@@ -22,7 +21,7 @@ class NFeRecebidasController extends Controller
         return response()->json(NFeRecebidas::manifestar($chave, $dto));
     }
 
-  
+
     public function consultarManifesto(string $chave)
     {
         return response()->json(NFeRecebidas::consultarManifesto($chave));

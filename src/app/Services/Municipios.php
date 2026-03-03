@@ -6,7 +6,6 @@ use Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
 
-
 class Municipios
 {
     /**
@@ -14,7 +13,7 @@ class Municipios
      *
      * @var string
      */
-    const URL = '/v2/municipios';
+    public const URL = '/v2/municipios';
 
     /**
      * Token de acesso
@@ -95,13 +94,13 @@ class Municipios
     }
 
 
-     /**
-     * Retorna os itens da lista de serviço para um município específico
-     *
-     * @param string $codigoMunicipio
-     * @param string $codigoServico
-     * @return Response
-     */
+    /**
+    * Retorna os itens da lista de serviço para um município específico
+    *
+    * @param string $codigoMunicipio
+    * @param string $codigoServico
+    * @return Response
+    */
     public function getListaServico(string $codigoMunicipio, string $codigoServico): Response
     {
         $response = Http::withHeaders([

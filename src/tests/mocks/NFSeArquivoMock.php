@@ -27,12 +27,12 @@ trait NFSeArquivoMock
         ]);
     }
 
-     /**
-     * Simula a resposta da API para o envio de NFSe via arquivo (sucesso).
-     *
-     * @param string $url
-     * @return void
-     */
+    /**
+    * Simula a resposta da API para o envio de NFSe via arquivo (sucesso).
+    *
+    * @param string $url
+    * @return void
+    */
     public function mockEnviaNFSeArquivoSucesso(string $url): void
     {
         $this->mockHttp($url, 'EnviaNFSeArquivoSucesso', 201);

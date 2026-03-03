@@ -4,7 +4,8 @@ namespace Sysborg\FocusNfe\app\DTO;
 
 use Carbon\Carbon;
 
-class NFeDTO extends DTO {
+class NFeDTO extends DTO
+{
     public function __construct(
         public string $natureza_operacao,
         public Carbon $data_emissao,
@@ -33,9 +34,10 @@ class NFeDTO extends DTO {
         public string $uf_destinatario,
         public int $indicador_inscricao_estadual_destinatario,
         public array $itens
-    ) {}
+    ) {
+    }
 
- 
+
     public static function fromArray(array $data): self
     {
         return new self(

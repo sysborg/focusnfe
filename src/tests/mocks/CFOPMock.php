@@ -5,8 +5,8 @@ namespace Sysborg\FocusNfe\tests\mocks;
 use Sysborg\FocusNfe\tests\mocks\Stub\CFOPStub;
 use Illuminate\Support\Facades\Http;
 
-trait CFOPMock {
-    
+trait CFOPMock
+{
     /**
      * Simula uma requisição HTTP para CFOP.
      *
@@ -27,7 +27,7 @@ trait CFOPMock {
         ]);
     }
 
-      /**
+    /**
      * Simula a busca por um CFOP existente.
      *
      * @param string $url

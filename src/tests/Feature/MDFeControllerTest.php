@@ -17,7 +17,7 @@ class MDFeControllerTest extends Common
     {
         $inputData = MDFeStub::request();
         $expectedKeys = array_keys(MDFeStub::consultaMDFe());
-        
+
         $this->mockHttp(
             config('focusnfe.URL.production') . MDFe::URL . '?ref=' . $inputData['numero'],
             'consultaMDFe',
@@ -35,7 +35,7 @@ class MDFeControllerTest extends Common
     public function test_cancelamento_mdfe(): void
     {
         $expectedKeys = array_keys(MDFeStub::cancelamentoMDFe());
-        
+
         $this->mockHttp(
             config('focusnfe.URL.production') . MDFe::URL . '/' . 'ref123',
             'cancelamentoMDFe',
@@ -53,7 +53,7 @@ class MDFeControllerTest extends Common
     public function test_inclusao_condutor(): void
     {
         $expectedKeys = array_keys(MDFeStub::inclusaoCondutor());
-        
+
         $this->mockHttp(
             config('focusnfe.URL.production') . MDFe::URL . '/ref123/inclusao_condutor',
             'inclusaoCondutor',
@@ -71,7 +71,7 @@ class MDFeControllerTest extends Common
     public function test_inclusao_dfe(): void
     {
         $expectedKeys = array_keys(MDFeStub::inclusaoDFe());
-        
+
         $this->mockHttp(
             config('focusnfe.URL.production') . MDFe::URL . '/ref123/inclusao_dfe',
             'inclusaoDFe',
@@ -89,7 +89,7 @@ class MDFeControllerTest extends Common
     public function test_encerramento_mdfe(): void
     {
         $expectedKeys = array_keys(MDFeStub::encerramentoMDFe());
-        
+
         $this->mockHttp(
             config('focusnfe.URL.production') . MDFe::URL . '/ref123/encerrar',
             'encerramentoMDFe',

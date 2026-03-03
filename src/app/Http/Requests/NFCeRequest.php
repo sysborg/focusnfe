@@ -2,10 +2,8 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
-
 class NFCeRequest extends BaseRequest
 {
-    
     public function rules()
     {
         return [

@@ -2,10 +2,11 @@
 
 namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
-class CnaeStub {
+class CnaeStub
+{
     /**
      * Retorna uma lista de CNAEs simulada.
-     * 
+     *
      * @return string
      */
     public static function lista(): string
@@ -46,7 +47,7 @@ class CnaeStub {
 
     /**
      * Retorna uma resposta simulada para um CNAE específico.
-     * 
+     *
      * @return string
      */
     public static function detalhe(): string

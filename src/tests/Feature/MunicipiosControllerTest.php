@@ -12,7 +12,7 @@ class MunicipiosControllerTest extends Common
 
     /**
      * Teste de consulta de municípios com sucesso.
-     * 
+     *
      * @return void
      */
     public function test_consulta_municipios_sucesso(): void
@@ -32,7 +32,7 @@ class MunicipiosControllerTest extends Common
 
     /**
      * Teste de consulta de um município pelo código com sucesso.
-     * 
+     *
      * @return void
      */
     public function test_consulta_municipio_unico_sucesso(): void
@@ -53,7 +53,7 @@ class MunicipiosControllerTest extends Common
 
     /**
      * Teste de consulta da lista de serviços de um município com sucesso.
-     * 
+     *
      * @return void
      */
     public function test_consulta_lista_servico_sucesso(): void
@@ -74,7 +74,7 @@ class MunicipiosControllerTest extends Common
 
     /**
      * Teste de consulta de município não encontrado.
-     * 
+     *
      * @return void
      */
     public function test_consulta_municipio_nao_encontrado(): void

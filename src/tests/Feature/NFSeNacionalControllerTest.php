@@ -126,55 +126,55 @@ class NFSeNacionalControllerTest extends Common
     /**
  * Teste para consulta de NFSe Nacional processando autorização
  */
-public function test_consulta_nfse_nacional_processando_autorizacao(): void
-{
-    $expectedKeys = array_keys(json_decode(NFSeNacionalStub::processandoAutorizacaoConsulta(), true));
+    public function test_consulta_nfse_nacional_processando_autorizacao(): void
+    {
+        $expectedKeys = array_keys(json_decode(NFSeNacionalStub::processandoAutorizacaoConsulta(), true));
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFSeNacional::URL . '/12345',
-        'processandoAutorizacaoConsulta',
-        200
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFSeNacional::URL . '/12345',
+            'processandoAutorizacaoConsulta',
+            200
+        );
 
-    $response = $this->get($this->prefix . NFSeNacional::URL . '/12345');
-    $response->assertStatus(200);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->get($this->prefix . NFSeNacional::URL . '/12345');
+        $response->assertStatus(200);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
-/**
- * Teste para erro na autorização da NFSe Nacional
- */
-public function test_erro_autorizacao_nfse_nacional(): void
-{
-    $expectedKeys = array_keys(json_decode(NFSeNacionalStub::erroAutorizacao(), true));
+    /**
+     * Teste para erro na autorização da NFSe Nacional
+     */
+    public function test_erro_autorizacao_nfse_nacional(): void
+    {
+        $expectedKeys = array_keys(json_decode(NFSeNacionalStub::erroAutorizacao(), true));
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFSeNacional::URL . '/12345',
-        'erroAutorizacao',
-        200
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFSeNacional::URL . '/12345',
+            'erroAutorizacao',
+            200
+        );
 
-    $response = $this->get($this->prefix . NFSeNacional::URL . '/12345');
-    $response->assertStatus(200);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->get($this->prefix . NFSeNacional::URL . '/12345');
+        $response->assertStatus(200);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
-/**
- * Teste para tentativa de cancelamento de uma NFSe Nacional já cancelada
- */
-public function test_cancelamento_nfse_nacional_ja_cancelada(): void
-{
-    $expectedKeys = array_keys(json_decode(NFSeNacionalStub::nfseJaCancelada(), true));
+    /**
+     * Teste para tentativa de cancelamento de uma NFSe Nacional já cancelada
+     */
+    public function test_cancelamento_nfse_nacional_ja_cancelada(): void
+    {
+        $expectedKeys = array_keys(json_decode(NFSeNacionalStub::nfseJaCancelada(), true));
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFSeNacional::URL . '/12345',
-        'nfseJaCancelada',
-        400
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFSeNacional::URL . '/12345',
+            'nfseJaCancelada',
+            400
+        );
 
-    $response = $this->delete($this->prefix . NFSeNacional::URL . '/12345');
-    $response->assertStatus(400);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->delete($this->prefix . NFSeNacional::URL . '/12345');
+        $response->assertStatus(400);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
 }

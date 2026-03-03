@@ -4,7 +4,8 @@ namespace Sysborg\FocusNfe\app\DTO;
 
 use Carbon\Carbon;
 
-class NFCeDTO extends DTO {
+class NFCeDTO extends DTO
+{
     public function __construct(
         public string $natureza_operacao,
         public Carbon $data_emissao,
@@ -12,11 +13,12 @@ class NFCeDTO extends DTO {
         public string $cnpj_emitente,
         public int $modalidade_frete,
         public int $local_destino,
-    ) {}
+    ) {
+    }
 
     /**
      * Cria um objeto NFCeDTO a partir de um array
-     * 
+     *
      * @param array $data
      * @return NFCeDTO
      */

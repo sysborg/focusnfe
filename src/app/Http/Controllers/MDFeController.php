@@ -9,12 +9,11 @@ use Sysborg\FocusNfe\app\Http\Requests\MDFeRequest;
 
 class MDFeController extends Controller
 {
-   
     public function store(MDFeRequest $request)
-{
-    $dto = MDFeDTO::fromArray($request->validated());
-    return response()->json(MDFe::create($dto), 201);
-}
+    {
+        $dto = MDFeDTO::fromArray($request->validated());
+        return response()->json(MDFe::create($dto), 201);
+    }
 
 
     /**
@@ -30,19 +29,19 @@ class MDFeController extends Controller
         return response()->json(MDFe::cancela($referencia));
     }
 
-  
+
     public function incluiCondutor(MDFeRequest $request, string $referencia)
     {
         return response()->json(MDFe::incluiCondutor($referencia, $request->all()));
     }
 
-   
+
     public function incluiDFe(MDFeRequest $request, string $referencia)
     {
         return response()->json(MDFe::incluiDFe($referencia, $request->all()));
     }
 
-   
+
     public function encerra(string $referencia)
     {
         return response()->json(MDFe::encerra($referencia));

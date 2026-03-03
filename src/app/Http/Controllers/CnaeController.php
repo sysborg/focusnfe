@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Sysborg\FocusNfe\app\Http\Controllers;
 
@@ -67,11 +67,11 @@ class CnaeController extends Controller
      */
     public function index(Request $request)
     {
-   
+
         return response()->json(Cnae::list(
-            $request->query('offset', 1), 
-            $request->query('codigo', null), 
-            $request->query('descricao', null) 
+            $request->query('offset', 1),
+            $request->query('codigo', null),
+            $request->query('descricao', null)
         ));
     }
 

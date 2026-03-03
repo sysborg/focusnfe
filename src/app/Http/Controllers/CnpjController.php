@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Sysborg\FocusNfe\app\Http\Controllers;
 

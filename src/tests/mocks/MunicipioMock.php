@@ -22,12 +22,12 @@ trait MunicipioMock
         ]);
     }
 
-     /**
-     * Simula a consulta de todos os municípios.
-     *
-     * @param string $url
-     * @return void
-     */
+    /**
+    * Simula a consulta de todos os municípios.
+    *
+    * @param string $url
+    * @return void
+    */
     public function mockConsultaMunicipios(string $url): void
     {
         $this->mockHttp($url, 'consultaMunicipios', 200);

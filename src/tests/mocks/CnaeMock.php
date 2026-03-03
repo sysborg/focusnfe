@@ -5,10 +5,11 @@ namespace Sysborg\FocusNfe\tests\mocks;
 use Sysborg\FocusNfe\tests\mocks\Stub\CnaeStub;
 use Illuminate\Support\Facades\Http;
 
-trait CnaeMock {
+trait CnaeMock
+{
     /**
      * Stub de consulta de CNAE
-     * 
+     *
      * @param string $url
      * @param string $stub
      * @param int $status
@@ -26,7 +27,7 @@ trait CnaeMock {
         ]);
     }
 
-    
+
     /**
      * Simula a consulta da listagem de CNAEs.
      *

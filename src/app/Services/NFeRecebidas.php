@@ -14,7 +14,7 @@ class NFeRecebidas
      *
      * @var string
      */
-    const URL = '/v2/nfes_recebidas';
+    public const URL = '/v2/nfes_recebidas';
 
     /**
      * Ambiente de produção ou sandbox

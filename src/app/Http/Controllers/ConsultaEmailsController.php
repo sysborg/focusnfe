@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Sysborg\FocusNfe\app\Http\Controllers;
 
@@ -7,7 +7,6 @@ use Facades\Sysborg\FocusNfe\app\Services\ConsultaEmails;
 
 class ConsultaEmailsController extends Controller
 {
-   
     public function getEmail(string $email)
     {
         return response()->json(ConsultaEmails::get($email));

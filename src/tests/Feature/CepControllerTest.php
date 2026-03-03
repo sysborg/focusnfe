@@ -8,12 +8,11 @@ use Sysborg\FocusNfe\tests\mocks\CEPMock;
 
 class CEPControllerTest extends Common
 {
-
     use CEPMock;
 
     /**
      * Teste de consulta de CEP com sucesso.
-     * 
+     *
      * @return void
      */
     public function test_consulta_cep_sucesso(): void
@@ -34,7 +33,7 @@ class CEPControllerTest extends Common
 
     /**
      * Teste de consulta de CEP não encontrado.
-     * 
+     *
      * @return void
      */
     public function test_consulta_cep_nao_encontrado(): void
@@ -59,7 +58,7 @@ class CEPControllerTest extends Common
 
     /**
      * Teste de consulta de CEP com requisição inválida.
-     * 
+     *
      * @return void
      */
     public function test_consulta_cep_requisicao_invalida(): void

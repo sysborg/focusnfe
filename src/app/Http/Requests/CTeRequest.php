@@ -2,7 +2,6 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
-
 /**
  * @doc https://focusnfe.com.br/doc/#cte-e-cte-os_urls
  */
@@ -73,7 +72,7 @@ class CTeRequest extends BaseRequest
             'modal_aereo.artigos_perigosos.*.quantidade_total_volumes' => 'required|string|min:1|max:20',
             'modal_aereo.artigos_perigosos.*.quantidade_total_artigos' => 'required|numeric|decimal:11,4',
             'modal_aereo.artigos_perigosos.*.unidade_medida' => 'sometimes|string|in:KG,KG G,LITROS,TI,Unidades',
-            
+
             'modal_aquaviario' => 'sometimes|array',
             'modal_aquaviario.valor_prestacao_servico' => 'required|numeric|decimal:13,2',
             'modal_aquaviario.adicional_frete_renovacao_marinha' => 'required|numeric|decimal:13,2',

@@ -161,5 +161,5 @@ trait NFeMock
         $this->mockHttp($url, 'inutilizacaoNFeErro', 422);
     }
 
-    
+
 }

@@ -12,7 +12,7 @@ class NCMControllerTest extends Common
 
     /**
      * Teste de consulta da lista de NCMs.
-     * 
+     *
      * @return void
      */
     public function test_consulta_lista_ncm(): void

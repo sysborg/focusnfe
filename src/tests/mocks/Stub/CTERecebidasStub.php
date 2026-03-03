@@ -2,11 +2,11 @@
 
 namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
-class CTERecebidasStub {
-
+class CTERecebidasStub
+{
     /**
      * Retorna dados mocados da consulta de CTEs recebidas.
-     * 
+     *
      * @return string
      */
     public static function consultaCTesRecebidas(): string
@@ -30,7 +30,7 @@ class CTERecebidasStub {
 
     /**
      * Retorno de resposta para consulta individual de CTe recebida.
-     * 
+     *
      * @return string
      */
     public static function consultaIndividual(): string
@@ -52,7 +52,7 @@ class CTERecebidasStub {
 
     /**
      * request para informar desacordo.
-     * 
+     *
      * @return string
      */
     public static function informarDesacordo(): string
@@ -64,7 +64,7 @@ class CTERecebidasStub {
 
     /**
      * Retorno da resposta para consulta de desacordo já registrado.
-     * 
+     *
      * @return string
      */
     public static function consultaDesacordo(): string

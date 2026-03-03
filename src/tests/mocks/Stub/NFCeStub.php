@@ -4,27 +4,26 @@ namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
 class NFCeStub
 {
+    /**
+     * exemplo de request para a emissão de NFC-e.
+     *
+     * @return array
+     */
+    public static function request(): array
+    {
+        return [
+            'natureza_operacao' => 'VENDA AO CONSUMIDOR',
+            'data_emissao' => '2015-11-19T13:54:31-02:00',
+            'presenca_comprador' => 1,
+            'cnpj_emitente' => '05953016000132',
+            'modalidade_frete' => 9,
+            'local_destino' => 1,
+        ];
+    }
 
-/**
- * exemplo de request para a emissão de NFC-e.
- *
- * @return array
- */
-public static function request(): array
-{
-    return [
-        'natureza_operacao' => 'VENDA AO CONSUMIDOR',
-        'data_emissao' => '2015-11-19T13:54:31-02:00',
-        'presenca_comprador' => 1,
-        'cnpj_emitente' => '05953016000132',
-        'modalidade_frete' => 9,
-        'local_destino' => 1,
-    ];
-}
 
-
-      /**
-     * Retorna um exemplo de resposta para o registro de conciliação financeira da NFC-e 
+    /**
+     * Retorna um exemplo de resposta para o registro de conciliação financeira da NFC-e
      *
      * @return array
      */
@@ -40,8 +39,8 @@ public static function request(): array
         ];
     }
 
-      /**
-     * Retorna um exemplo de resposta para a consulta de conciliação financeira da NFC-e 
+    /**
+     * Retorna um exemplo de resposta para a consulta de conciliação financeira da NFC-e
      *
      * @return array
      */
@@ -57,8 +56,8 @@ public static function request(): array
         ];
     }
 
-       /**
-     * Retorna um exemplo de resposta para o cancelamento da conciliação financeira da NFC-e 
+    /**
+     * Retorna um exemplo de resposta para o cancelamento da conciliação financeira da NFC-e
      *
      * @return array
      */
@@ -74,7 +73,7 @@ public static function request(): array
     }
 
     /**
-     * Retorna um exemplo de resposta para erro na consulta ou cancelamento da conciliação financeira 
+     * Retorna um exemplo de resposta para erro na consulta ou cancelamento da conciliação financeira
      *
      * @return array
      */
@@ -86,9 +85,9 @@ public static function request(): array
         ];
     }
 
-    
+
     /**
-     * Retorna um exemplo de resposta para a consulta de NFC-e 
+     * Retorna um exemplo de resposta para a consulta de NFC-e
      *
      * @return array
      */
@@ -111,7 +110,7 @@ public static function request(): array
     }
 
     /**
-     * Retorna um exemplo de resposta para a inutilização de numeração de NFC-e 
+     * Retorna um exemplo de resposta para a inutilização de numeração de NFC-e
      *
      * @return array
      */
@@ -131,7 +130,7 @@ public static function request(): array
     }
 
     /**
-     * Retorna um exemplo de resposta para erro de inutilização de NFC-e 
+     * Retorna um exemplo de resposta para erro de inutilização de NFC-e
      *
      * @return array
      */
@@ -147,11 +146,11 @@ public static function request(): array
         ];
     }
 
-     /**
-     * Retorna um exemplo de resposta para o cancelamento de NFC-e autorizado 
-     *
-     * @return array
-     */
+    /**
+    * Retorna um exemplo de resposta para o cancelamento de NFC-e autorizado
+    *
+    * @return array
+    */
     public static function cancelamentoNFCe(): array
     {
         return [
@@ -164,7 +163,7 @@ public static function request(): array
     }
 
     /**
-     * Retorna um exemplo de resposta para erro no cancelamento de NFC-e 
+     * Retorna um exemplo de resposta para erro no cancelamento de NFC-e
      *
      * @return array
      */

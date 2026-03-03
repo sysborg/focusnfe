@@ -5,10 +5,11 @@ namespace Sysborg\FocusNfe\tests\mocks;
 use Illuminate\Support\Facades\Http;
 use Sysborg\FocusNfe\tests\mocks\Stub\NFERecebidasStub;
 
-trait NFeRecebidasMock {
+trait NFeRecebidasMock
+{
     /**
      * Simula a resposta da API para uma manifestação de NFe Recebida.
-     * 
+     *
      * @param string $url
      * @param string $stub
      * @param int $status
@@ -26,7 +27,7 @@ trait NFeRecebidasMock {
         ]);
     }
 
-      /**
+    /**
      * Simula a resposta da API para registrar uma manifestação de NFe recebida.
      *
      * @param string $url

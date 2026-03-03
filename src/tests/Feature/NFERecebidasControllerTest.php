@@ -12,7 +12,7 @@ class NFeRecebidasControllerTest extends Common
 
     /**
      * Teste de consulta de manifestação de NFe recebida com sucesso.
-     * 
+     *
      * @return void
      */
     public function test_consulta_manifestacao_sucesso(): void
@@ -32,7 +32,7 @@ class NFeRecebidasControllerTest extends Common
 
     /**
      * Teste de erro ao registrar uma manifestação inválida.
-     * 
+     *
      * @return void
      */
     public function test_registrar_manifestacao_erro(): void

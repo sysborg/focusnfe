@@ -36,9 +36,13 @@ trait BootstrapsFacadesTrait
         $container->instance('validator', $validatorFactory);
         $container->instance('http', new HttpFactory());
         $container->instance('events', new Dispatcher($container));
-        $container->instance('log', new class {
-            public function error(string $message, array $context = []): void {}
-            public function debug(string $message, array $context = []): void {}
+        $container->instance('log', new class () {
+            public function error(string $message, array $context = []): void
+            {
+            }
+            public function debug(string $message, array $context = []): void
+            {
+            }
         });
 
         Container::setInstance($container);
@@ -49,4 +53,3 @@ trait BootstrapsFacadesTrait
         Validator::extend('cnae', fn ($attribute, $value) => (new CnaeRule())->passes($attribute, (string) $value), (new CnaeRule())->message());
     }
 }
-

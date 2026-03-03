@@ -3,7 +3,6 @@
 namespace Sysborg\FocusNfe\app\DTO;
 
 use Carbon\Carbon;
-use Sysborg\FocusNfe\app\DTO\ServicoDTO;
 
 class NFSeNDTO extends DTO
 {
@@ -12,12 +11,13 @@ class NFSeNDTO extends DTO
         public PrestadorDTO $prestador,
         public TomadorDTO $tomador,
         public ServicoDTO $servico
-    ) {}
+    ) {
+    }
 
     /**
      * Cria um objeto NFSeNDTO a partir de um array.
-     * 
-     * 
+     *
+     *
      * @param array $data
      * @return NFSeNDTO
      */

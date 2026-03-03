@@ -12,7 +12,7 @@ class CnaeControllerTest extends Common
 
     /**
      * Teste de consulta de um CNAE específico com sucesso.
-     * 
+     *
      * @return void
      */
     public function test_consulta_cnae_sucesso(): void
@@ -34,7 +34,7 @@ class CnaeControllerTest extends Common
 
     /**
      * Teste de consulta da lista de CNAEs.
-     * 
+     *
      * @return void
      */
     public function test_consulta_lista_cnae(): void

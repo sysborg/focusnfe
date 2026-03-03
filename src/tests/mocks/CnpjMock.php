@@ -5,10 +5,11 @@ namespace Sysborg\FocusNfe\tests\mocks;
 use Sysborg\FocusNfe\tests\mocks\Stub\CnpjStub;
 use Illuminate\Support\Facades\Http;
 
-trait CnpjMock {
+trait CnpjMock
+{
     /**
      * Simula a resposta da API ao consultar um CNPJ.
-     * 
+     *
      * @param string $url
      * @param string $stub
      * @param int $status

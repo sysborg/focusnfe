@@ -11,7 +11,7 @@ class CNAE
     /**
      * URL base da API CNAE
      */
-    const URL = '/v2/codigos_cnae';
+    public const URL = '/v2/codigos_cnae';
 
     /**
      * Token de acesso

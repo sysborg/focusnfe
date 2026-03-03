@@ -1,36 +1,38 @@
 <?php
+
 namespace Sysborg\FocusNfe\tests\mocks;
 
 use Sysborg\FocusNfe\tests\mocks\Stub\EmpresaStub;
 use Illuminate\Support\Facades\Http;
 
-trait EmpresaMock {
-  /**
-   * Stub de método da empresa
-   * 
-   * @param string $method
-   * @param string $stub
-   * @param int $times
-   * @return void
-   */
-  public function mockHttp(string $url, string $stub, int $status, int $times = 1): void
-  {
-    if (!method_exists(EmpresaStub::class, $stub)) {
-      throw new \Exception("Stub {$stub} não encontrado");
-    }
-
-    Http::fake([
-      $url => Http::response(EmpresaStub::$stub(), $status)
-    ]);
-  }
-
-  
-  /**
-     * Simula uma requisição de criação de empresa bem-sucedida.
+trait EmpresaMock
+{
+    /**
+     * Stub de método da empresa
      *
-     * @param string $url
+     * @param string $method
+     * @param string $stub
+     * @param int $times
      * @return void
      */
+    public function mockHttp(string $url, string $stub, int $status, int $times = 1): void
+    {
+        if (!method_exists(EmpresaStub::class, $stub)) {
+            throw new \Exception("Stub {$stub} não encontrado");
+        }
+
+        Http::fake([
+          $url => Http::response(EmpresaStub::$stub(), $status)
+        ]);
+    }
+
+
+    /**
+       * Simula uma requisição de criação de empresa bem-sucedida.
+       *
+       * @param string $url
+       * @return void
+       */
     public function mockEmpresaCriada(string $url): void
     {
         $this->mockHttp($url, 'sucesso', 201);

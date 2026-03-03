@@ -12,7 +12,7 @@ class CFOPControllerTest extends Common
 
     /**
      * Teste de consulta de CFOP com sucesso.
-     * 
+     *
      * @return void
      */
     public function test_consulta_cfop_sucesso(): void
@@ -33,7 +33,7 @@ class CFOPControllerTest extends Common
 
     /**
      * Teste de consulta de CFOP não encontrado.
-     * 
+     *
      * @return void
      */
     public function test_consulta_cfop_nao_encontrado(): void
@@ -58,7 +58,7 @@ class CFOPControllerTest extends Common
 
     /**
      * Teste de consulta de CFOP com requisição inválida.
-     * 
+     *
      * @return void
      */
     public function test_consulta_cfop_requisicao_invalida(): void
@@ -83,7 +83,7 @@ class CFOPControllerTest extends Common
 
     /**
      * Teste de consulta da lista de CFOPs.
-     * 
+     *
      * @return void
      */
     public function test_consulta_lista_cfop(): void

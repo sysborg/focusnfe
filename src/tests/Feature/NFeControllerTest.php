@@ -85,147 +85,147 @@ class NFeControllerTest extends Common
         $response->assertJsonStructure($expectedKeys);
     }
 
-/**
- * Teste de consulta de NFe ainda em processamento
- */
-public function test_consulta_nfe_processando(): void
-{
-    $expectedKeys = array_keys(NFeStub::consultaNFeProcessando());
+    /**
+     * Teste de consulta de NFe ainda em processamento
+     */
+    public function test_consulta_nfe_processando(): void
+    {
+        $expectedKeys = array_keys(NFeStub::consultaNFeProcessando());
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFe::URL . '/ref123',
-        'consultaNFeProcessando',
-        200
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFe::URL . '/ref123',
+            'consultaNFeProcessando',
+            200
+        );
 
-    $response = $this->get($this->prefix . NFe::URL . '/ref123');
-    $response->assertStatus(200);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->get($this->prefix . NFe::URL . '/ref123');
+        $response->assertStatus(200);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
-/**
- * Teste para erro de autorização de NFe
- */
-public function test_consulta_nfe_erro_autorizacao(): void
-{
-    $expectedKeys = array_keys(NFeStub::consultaNFeErroAutorizacao());
+    /**
+     * Teste para erro de autorização de NFe
+     */
+    public function test_consulta_nfe_erro_autorizacao(): void
+    {
+        $expectedKeys = array_keys(NFeStub::consultaNFeErroAutorizacao());
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFe::URL . '/ref123',
-        'consultaNFeErroAutorizacao',
-        200
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFe::URL . '/ref123',
+            'consultaNFeErroAutorizacao',
+            200
+        );
 
-    $response = $this->get($this->prefix . NFe::URL . '/ref123');
-    $response->assertStatus(200);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->get($this->prefix . NFe::URL . '/ref123');
+        $response->assertStatus(200);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
-/**
- * Teste de consulta de NFe autorizada com Carta de Correção (CC-e) anexada
- */
-public function test_consulta_nfe_com_cce(): void
-{
-    $expectedKeys = array_keys(NFeStub::consultaNFeComCCe());
+    /**
+     * Teste de consulta de NFe autorizada com Carta de Correção (CC-e) anexada
+     */
+    public function test_consulta_nfe_com_cce(): void
+    {
+        $expectedKeys = array_keys(NFeStub::consultaNFeComCCe());
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFe::URL . '/ref123',
-        'consultaNFeComCCe',
-        200
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFe::URL . '/ref123',
+            'consultaNFeComCCe',
+            200
+        );
 
-    $response = $this->get($this->prefix . NFe::URL . '/ref123');
-    $response->assertStatus(200);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->get($this->prefix . NFe::URL . '/ref123');
+        $response->assertStatus(200);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
-/**
- * Teste de consulta de NFe cancelada
- */
-public function test_consulta_nfe_cancelada(): void
-{
-    $expectedKeys = array_keys(NFeStub::consultaNFeCancelada());
+    /**
+     * Teste de consulta de NFe cancelada
+     */
+    public function test_consulta_nfe_cancelada(): void
+    {
+        $expectedKeys = array_keys(NFeStub::consultaNFeCancelada());
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFe::URL . '/ref123',
-        'consultaNFeCancelada',
-        200
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFe::URL . '/ref123',
+            'consultaNFeCancelada',
+            200
+        );
 
-    $response = $this->get($this->prefix . NFe::URL . '/ref123');
-    $response->assertStatus(200);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->get($this->prefix . NFe::URL . '/ref123');
+        $response->assertStatus(200);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
-/**
- * Teste para erro de cancelamento inválido de NFe
- */
-public function test_cancelamento_nfe_erro(): void
-{
-    $expectedKeys = array_keys(NFeStub::erroCancelamentoNFe());
+    /**
+     * Teste para erro de cancelamento inválido de NFe
+     */
+    public function test_cancelamento_nfe_erro(): void
+    {
+        $expectedKeys = array_keys(NFeStub::erroCancelamentoNFe());
 
-    $payloadInvalido = ['justificativa' => 'curto'];
+        $payloadInvalido = ['justificativa' => 'curto'];
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFe::URL . '/ref123',
-        'erroCancelamentoNFe',
-        400
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFe::URL . '/ref123',
+            'erroCancelamentoNFe',
+            400
+        );
 
-    $response = $this->delete($this->prefix . NFe::URL . '/ref123', $payloadInvalido);
-    $response->assertStatus(400);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->delete($this->prefix . NFe::URL . '/ref123', $payloadInvalido);
+        $response->assertStatus(400);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
-/**
- * Teste de inutilização de numeração da NFe autorizada
- */
-public function test_inutilizacao_nfe_sucesso(): void
-{
-    $expectedKeys = array_keys(NFeStub::inutilizacaoNFeSucesso());
+    /**
+     * Teste de inutilização de numeração da NFe autorizada
+     */
+    public function test_inutilizacao_nfe_sucesso(): void
+    {
+        $expectedKeys = array_keys(NFeStub::inutilizacaoNFeSucesso());
 
-    $payload = [
-        'serie' => '1',
-        'numero_inicial' => '999',
-        'numero_final' => '1000',
-        'justificativa' => 'Falha na emissão'
-    ];
+        $payload = [
+            'serie' => '1',
+            'numero_inicial' => '999',
+            'numero_final' => '1000',
+            'justificativa' => 'Falha na emissão'
+        ];
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFe::URL . '/inutilizacao',
-        'inutilizacaoNFeSucesso',
-        200
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFe::URL . '/inutilizacao',
+            'inutilizacaoNFeSucesso',
+            200
+        );
 
-    $response = $this->post($this->prefix . NFe::URL . '/inutilizacao', $payload);
-    $response->assertStatus(200);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->post($this->prefix . NFe::URL . '/inutilizacao', $payload);
+        $response->assertStatus(200);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
-/**
- * Teste para erro ao inutilizar numeração da NFe
- */
-public function test_inutilizacao_nfe_erro(): void
-{
-    $expectedKeys = array_keys(NFeStub::inutilizacaoNFeErro());
+    /**
+     * Teste para erro ao inutilizar numeração da NFe
+     */
+    public function test_inutilizacao_nfe_erro(): void
+    {
+        $expectedKeys = array_keys(NFeStub::inutilizacaoNFeErro());
 
-    $payload = [
-        'serie' => '1',
-        'numero_inicial' => '1000',
-        'numero_final' => '1000',
-        'justificativa' => 'Falha na emissão'
-    ];
+        $payload = [
+            'serie' => '1',
+            'numero_inicial' => '1000',
+            'numero_final' => '1000',
+            'justificativa' => 'Falha na emissão'
+        ];
 
-    $this->mockHttp(
-        config('focusnfe.URL.production') . NFe::URL . '/inutilizacao',
-        'inutilizacaoNFeErro',
-        422
-    );
+        $this->mockHttp(
+            config('focusnfe.URL.production') . NFe::URL . '/inutilizacao',
+            'inutilizacaoNFeErro',
+            422
+        );
 
-    $response = $this->post($this->prefix . NFe::URL . '/inutilizacao', $payload);
-    $response->assertStatus(422);
-    $response->assertJsonStructure($expectedKeys);
-}
+        $response = $this->post($this->prefix . NFe::URL . '/inutilizacao', $payload);
+        $response->assertStatus(422);
+        $response->assertJsonStructure($expectedKeys);
+    }
 
 
 }

@@ -5,10 +5,11 @@ namespace Sysborg\FocusNfe\tests\mocks;
 use Sysborg\FocusNfe\tests\mocks\Stub\ConsultaEmailsStub;
 use Illuminate\Support\Facades\Http;
 
-trait ConsultaEmailsMock {
+trait ConsultaEmailsMock
+{
     /**
      * Simula a resposta da API ao consultar e-mails bloqueados.
-     * 
+     *
      * @param string $url
      * @param string $stub
      * @param int $status

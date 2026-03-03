@@ -2,15 +2,6 @@
 
 namespace Sysborg\FocusNfe\app\DTO;
 
-use Sysborg\FocusNfe\app\DTO\ModalAereoDTO;
-use Sysborg\FocusNfe\app\DTO\ModalAquaviarioDTO;
-use Sysborg\FocusNfe\app\DTO\ModalDutoviarioDTO;
-use Sysborg\FocusNfe\app\DTO\ModalMultimodalDTO;
-use Sysborg\FocusNfe\app\DTO\ModalRodoviarioDTO;
-use Sysborg\FocusNfe\app\DTO\ModalFerroviarioDTO;
-use Sysborg\FocusNfe\app\DTO\ModalRodoviarioOsDTO;
-
-
 class CTeDTO extends DTO
 {
     public function __construct(
@@ -21,11 +12,12 @@ class CTeDTO extends DTO
         public ?ModalMultimodalDTO $modal_multimodal,
         public ?ModalRodoviarioDTO $modal_rodoviario,
         public $referencia
-    ) {}
+    ) {
+    }
 
     /**
      * Cria um objeto CTeDTO a partir de um array.
-     * 
+     *
      * @param array $data
      * @return CTeDTO
      */

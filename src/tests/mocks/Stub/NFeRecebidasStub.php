@@ -6,7 +6,7 @@ class NFeRecebidasStub
 {
     /**
      * Retorna dados mocados de requisição inválida para manifestação de NFe recebida
-     * 
+     *
      * @return array
      */
     public static function registrarManifestacaoErro(): array
@@ -17,10 +17,10 @@ class NFeRecebidasStub
         ];
     }
 
-   
+
     /**
      * Retorna dados mocados de uma manifestação já registrada para uma NFe recebida
-     * 
+     *
      * @return array
      */
     public static function consultarManifestacao(): array
@@ -35,9 +35,9 @@ class NFeRecebidasStub
         ];
     }
 
-      /**
+    /**
      * Retorna dados mocados de erro ao registrar manifestação da NFe recebida
-     * 
+     *
      * @return array
      */
     public static function erroManifestacao(): array

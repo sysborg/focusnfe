@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Sysborg\FocusNfe\app\Rules;
 
@@ -6,7 +6,6 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CnaeRule implements Rule
 {
-  
     public function passes($attribute, $value)
     {
         return preg_match('/^\d{6}$/', $value);

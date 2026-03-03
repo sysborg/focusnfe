@@ -2,8 +2,8 @@
 
 namespace Sysborg\FocusNfe\tests\mocks\Stub;
 
-class ConsultaEmailsStub {
-   
+class ConsultaEmailsStub
+{
     /**
      * Retorna uma resposta simulada de um e-mail bloqueado.
      *
@@ -33,7 +33,7 @@ class ConsultaEmailsStub {
         ]);
     }
 
-      /**
+    /**
      * Retorna uma resposta simulada para solicitação não atendida ao tentar excluir um e-mail bloqueado.
      *
      * @return string
