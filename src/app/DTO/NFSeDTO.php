@@ -79,12 +79,19 @@ class NFSeDTO extends DTO
     public static function fromArray(array $data): self
     {
         return new self(
-            $data['dataEmissao'] instanceof Carbon ? $data['dataEmissao'] : new Carbon($data['dataEmissao']),
+            self::value($data, 'dataEmissao', 'data_emissao') instanceof Carbon
+                ? self::value($data, 'dataEmissao', 'data_emissao')
+                : new Carbon(self::value($data, 'dataEmissao', 'data_emissao')),
             PrestadorDTO::fromArray($data['prestador']),
             TomadorDTO::fromArray($data['tomador']),
             ServicoDTO::fromArray($data['servico']),
-            $data['optanteSimplesNacional'] ?? true
+            self::value($data, 'optanteSimplesNacional', 'optante_simples_nacional') ?? true
         );
+    }
+
+    private static function value(array $data, string $camelKey, ?string $snakeKey = null): mixed
+    {
+        return $data[$camelKey] ?? ($snakeKey !== null ? ($data[$snakeKey] ?? null) : null);
     }
 
     /**

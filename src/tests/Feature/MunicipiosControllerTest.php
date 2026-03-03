@@ -6,7 +6,7 @@ use Sysborg\FocusNfe\tests\mocks\Stub\MunicipiosStub;
 use Sysborg\FocusNfe\app\Services\Municipios;
 use Sysborg\FocusNfe\tests\mocks\MunicipioMock;
 
-class MunicipioControllerTest extends Common
+class MunicipiosControllerTest extends Common
 {
     use MunicipioMock;
 

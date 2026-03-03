@@ -5,9 +5,18 @@ namespace Sysborg\FocusNfe\tests\Unit\DTO;
 use PHPUnit\Framework\TestCase;
 use Sysborg\FocusNfe\app\DTO\EmpresaDTO;
 use Illuminate\Validation\ValidationException;
+use Sysborg\FocusNfe\tests\Traits\BootstrapsFacadesTrait;
 
 class EmpresaDTOTest extends TestCase
 {
+    use BootstrapsFacadesTrait;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->bootstrapFacades();
+    }
+
     /**
      * Dados válidos básicos para teste
      */
@@ -604,6 +613,7 @@ class EmpresaDTOTest extends TestCase
     {
         $dados = [
             'razaoSocial' => 'Empresa Teste LTDA',
+            'nomeFantasia' => 'Empresa Teste',
             'bairro' => 'Centro',
             'cep' => 80000000,
             'cnpj' => '11222333000181',
@@ -621,7 +631,7 @@ class EmpresaDTOTest extends TestCase
         $empresa = EmpresaDTO::fromArray($dados);
 
         $this->assertInstanceOf(EmpresaDTO::class, $empresa);
-        $this->assertEquals('', $empresa->nomeFantasia);
+        $this->assertEquals('Empresa Teste', $empresa->nomeFantasia);
         $this->assertEquals('', $empresa->complemento);
         $this->assertEquals('', $empresa->inscricaoEstadual);
         $this->assertEquals('', $empresa->inscricaoMunicipal);
@@ -642,12 +652,12 @@ class EmpresaDTOTest extends TestCase
         $array = $empresa->toArray();
 
         $this->assertIsArray($array);
-        $this->assertArrayHasKey('razaoSocial', $array);
+        $this->assertArrayHasKey('nome', $array);
         $this->assertArrayHasKey('cnpj', $array);
         $this->assertArrayHasKey('email', $array);
-        $this->assertArrayHasKey('inscricaoEstadual', $array);
-        $this->assertArrayHasKey('inscricaoMunicipal', $array);
-        $this->assertEquals($dados['razaoSocial'], $array['razaoSocial']);
+        $this->assertArrayHasKey('inscricao_estadual', $array);
+        $this->assertArrayHasKey('inscricao_municipal', $array);
+        $this->assertEquals($dados['razaoSocial'], $array['nome']);
         $this->assertEquals($dados['cnpj'], $array['cnpj']);
     }
 

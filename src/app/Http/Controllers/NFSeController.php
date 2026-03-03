@@ -3,6 +3,7 @@
 namespace Sysborg\FocusNfe\app\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Http\Request;
 use Sysborg\FocusNfe\app\Http\Requests\NFSeRequest;
 use Sysborg\FocusNfe\app\DTO\NFSeDTO;
 use Facades\Sysborg\FocusNfe\app\Services\NFSe;
@@ -22,8 +23,12 @@ class NFSeController extends Controller
         return response()->json(NFSe::get($id));
     }
 
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        return response()->json(NFSe::cancela($id));
+        $payload = $request->validate([
+            'justificativa' => ['required', 'string'],
+        ]);
+
+        return response()->json(NFSe::cancela($id, $payload['justificativa']));
     }
 }

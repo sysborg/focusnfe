@@ -114,17 +114,21 @@ class NFSe extends EventHelper {
    * @param string $referencia
    * @return array
    */
-  public function cancela(string $referencia): Response
+  public function cancela(string $referencia, string $justificativa): Response
   {
     $response = Http::withHeaders([
       'Authorization' => 'Basic ' . base64_encode($this->token),
-    ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
+    ])->delete(
+      config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia",
+      ['justificativa' => $justificativa]
+    );
 
     $this->dispatch(NFSeCancelada::class, $response);
     if ($response->failed()) {
       Log::error('FocusNfe.NFSe: Erro ao cancelar NFSe', [
         'response' => $response->json(),
-        'referencia' => $referencia
+        'referencia' => $referencia,
+        'justificativa' => $justificativa,
       ]);
     }
 

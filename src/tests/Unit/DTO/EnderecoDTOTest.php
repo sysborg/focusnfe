@@ -4,10 +4,19 @@ namespace Sysborg\FocusNfe\tests\Unit\DTO;
 
 use PHPUnit\Framework\TestCase;
 use Sysborg\FocusNfe\app\DTO\EnderecoDTO;
-use InvalidArgumentException;
+use Illuminate\Validation\ValidationException;
+use Sysborg\FocusNfe\tests\Traits\BootstrapsFacadesTrait;
 
 class EnderecoDTOTest extends TestCase
 {
+    use BootstrapsFacadesTrait;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->bootstrapFacades();
+    }
+
     /**
      * Testa criação de EnderecoDTO com dados válidos
      */
@@ -18,7 +27,7 @@ class EnderecoDTOTest extends TestCase
             numero: '123',
             complemento: 'Apto 45',
             bairro: 'Centro',
-            codigo_municipio: '4106902',
+            codigoMunicipio: '4106902',
             uf: 'PR',
             cep: '80000000'
         );
@@ -27,7 +36,7 @@ class EnderecoDTOTest extends TestCase
         $this->assertEquals('123', $endereco->numero);
         $this->assertEquals('Apto 45', $endereco->complemento);
         $this->assertEquals('Centro', $endereco->bairro);
-        $this->assertEquals('4106902', $endereco->codigo_municipio);
+        $this->assertEquals('4106902', $endereco->codigoMunicipio);
         $this->assertEquals('PR', $endereco->uf);
         $this->assertEquals('80000000', $endereco->cep);
     }
@@ -58,15 +67,14 @@ class EnderecoDTOTest extends TestCase
      */
     public function test_valida_logradouro_vazio(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('O campo logradouro é obrigatório');
+        $this->expectException(ValidationException::class);
 
         new EnderecoDTO(
             logradouro: '',
             numero: '123',
             complemento: 'Apto 45',
             bairro: 'Centro',
-            codigo_municipio: '4106902',
+            codigoMunicipio: '4106902',
             uf: 'PR',
             cep: '80000000'
         );
@@ -77,15 +85,14 @@ class EnderecoDTOTest extends TestCase
      */
     public function test_valida_numero_vazio(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('O campo numero é obrigatório');
+        $this->expectException(ValidationException::class);
 
         new EnderecoDTO(
             logradouro: 'Rua Teste',
             numero: '',
             complemento: 'Apto 45',
             bairro: 'Centro',
-            codigo_municipio: '4106902',
+            codigoMunicipio: '4106902',
             uf: 'PR',
             cep: '80000000'
         );
@@ -96,15 +103,14 @@ class EnderecoDTOTest extends TestCase
      */
     public function test_valida_bairro_vazio(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('O campo bairro é obrigatório');
+        $this->expectException(ValidationException::class);
 
         new EnderecoDTO(
             logradouro: 'Rua Teste',
             numero: '123',
             complemento: 'Apto 45',
             bairro: '',
-            codigo_municipio: '4106902',
+            codigoMunicipio: '4106902',
             uf: 'PR',
             cep: '80000000'
         );
@@ -115,15 +121,14 @@ class EnderecoDTOTest extends TestCase
      */
     public function test_valida_uf_invalida(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('O campo uf é obrigatório e deve ter 2 caracteres');
+        $this->expectException(ValidationException::class);
 
         new EnderecoDTO(
             logradouro: 'Rua Teste',
             numero: '123',
             complemento: 'Apto 45',
             bairro: 'Centro',
-            codigo_municipio: '4106902',
+            codigoMunicipio: '4106902',
             uf: 'PRR',
             cep: '80000000'
         );
@@ -134,15 +139,14 @@ class EnderecoDTOTest extends TestCase
      */
     public function test_valida_cep_vazio(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('O campo cep é obrigatório');
+        $this->expectException(ValidationException::class);
 
         new EnderecoDTO(
             logradouro: 'Rua Teste',
             numero: '123',
             complemento: 'Apto 45',
             bairro: 'Centro',
-            codigo_municipio: '4106902',
+            codigoMunicipio: '4106902',
             uf: 'PR',
             cep: ''
         );
@@ -158,7 +162,7 @@ class EnderecoDTOTest extends TestCase
             numero: '123',
             complemento: 'Apto 45',
             bairro: 'Centro',
-            codigo_municipio: '4106902',
+            codigoMunicipio: '4106902',
             uf: 'PR',
             cep: '80000000'
         );

@@ -96,7 +96,7 @@ class EnderecoDTO extends DTO
             $data['numero'],
             $data['complemento'] ?? '',
             $data['bairro'],
-            $data['codigoMunicipio'],
+            $data['codigoMunicipio'] ?? $data['codigo_municipio'],
             $data['uf'],
             $data['cep']
         );

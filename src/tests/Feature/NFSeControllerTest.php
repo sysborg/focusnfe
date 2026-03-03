@@ -93,6 +93,7 @@ class NFSeControllerTest extends Common
     public function test_cancelamento_nfse(): void
     {
         $expectedKeys = array_keys(json_decode(NFSeStub::cancelada(), true));
+        $payload = ['justificativa' => 'Teste de cancelamento de nota'];
 
         $this->mockHttp(
             config('focusnfe.URL.production') . NFSe::URL . '/nfs-2',
@@ -100,7 +101,7 @@ class NFSeControllerTest extends Common
             200
         );
 
-        $response = $this->delete($this->prefix . NFSe::URL . '/nfs-2');
+        $response = $this->delete($this->prefix . NFSe::URL . '/nfs-2', $payload);
         $response->assertStatus(200);
         $response->assertJsonStructure($expectedKeys);
     }
@@ -111,6 +112,7 @@ class NFSeControllerTest extends Common
     public function test_erro_cancelamento_nfse(): void
     {
         $expectedKeys = array_keys(json_decode(NFSeStub::erroCancelamento(), true));
+        $payload = ['justificativa' => 'Cancelamento fora do prazo'];
 
         $this->mockHttp(
             config('focusnfe.URL.production') . NFSe::URL . '/nfs-2',
@@ -118,7 +120,7 @@ class NFSeControllerTest extends Common
             400
         );
 
-        $response = $this->delete($this->prefix . NFSe::URL . '/nfs-2');
+        $response = $this->delete($this->prefix . NFSe::URL . '/nfs-2', $payload);
         $response->assertStatus(400);
         $response->assertJsonStructure($expectedKeys);
     }
@@ -129,6 +131,7 @@ class NFSeControllerTest extends Common
     public function test_nfse_ja_cancelada(): void
     {
         $expectedKeys = array_keys(json_decode(NFSeStub::canceladaJaCancelada(), true));
+        $payload = ['justificativa' => 'Nota ja cancelada previamente'];
 
         $this->mockHttp(
             config('focusnfe.URL.production') . NFSe::URL . '/nfs-2',
@@ -136,9 +139,17 @@ class NFSeControllerTest extends Common
             400
         );
 
-        $response = $this->delete($this->prefix . NFSe::URL . '/nfs-2');
+        $response = $this->delete($this->prefix . NFSe::URL . '/nfs-2', $payload);
         $response->assertStatus(400);
         $response->assertJsonStructure($expectedKeys);
+    }
+
+    public function test_cancelamento_nfse_sem_justificativa_retorna_erro_validacao(): void
+    {
+        $response = $this->delete($this->prefix . NFSe::URL . '/nfs-2', []);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['justificativa']);
     }
 
     /**

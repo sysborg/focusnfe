@@ -26,6 +26,17 @@
         "laravel/framework": ">=9.0",
         "laravel/sanctum": ">=2.11"
     },
+    "require-dev": {
+        "laravel/pint": "^1.21",
+        "nunomaduro/larastan": "^2.9",
+        "phpstan/phpstan": "^1.12",
+        "phpunit/phpunit": "^10.5"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan analyse --memory-limit=1G",
+        "lint": "pint --test"
+    },
     "extra": {
         "laravel": {
             "providers": [

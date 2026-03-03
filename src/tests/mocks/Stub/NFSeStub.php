@@ -37,7 +37,18 @@ class NFSeStub {
                 'iss_retido' => false,
                 'item_lista_servico' => '0107',
                 'codigo_tributario_municipio' => '620910000',
-                'valor_servicos' => 1.00
+                'valor_servicos' => 1.00,
+                'codigo_nbs' => '1.0107',
+                'codigo_indicador_operacao' => '2',
+                'ibs_cbs_classificacao_tributaria' => '100',
+                'ibs_cbs_situacao_tributaria' => '000',
+                'ibs_cbs_base_calculo' => 1.00,
+                'ibs_uf_aliquota' => 0.1,
+                'ibs_mun_aliquota' => 0.1,
+                'cbs_aliquota' => 0.9,
+                'ibs_uf_valor' => 0.001,
+                'ibs_mun_valor' => 0.001,
+                'cbs_valor' => 0.009
             ]
         ];
     }

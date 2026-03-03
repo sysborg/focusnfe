@@ -12,7 +12,7 @@ class Backups {
    * 
    * @var string
    */
-  const URL = '/v2/backups/CNPJ.json';
+  const URL = '/v2/backups/%s.json';
 
   /**
    * Token de acesso

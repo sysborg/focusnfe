@@ -76,7 +76,7 @@ class TomadorDTO extends DTO
         $endereco = EnderecoDTO::fromArray($data['endereco']);
         return new self(
             $data['cnpj'],
-            $data['razaoSocial'],
+            $data['razaoSocial'] ?? $data['razao_social'],
             $data['email'],
             $endereco
         );

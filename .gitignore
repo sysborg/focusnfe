@@ -1,3 +1,8 @@
 vendor
 .claude
 PLANO_ESTRATEGICO.md
+composer.lock
+.phpunit.result.cache
+coverage/
+.idea/
+.vscode/

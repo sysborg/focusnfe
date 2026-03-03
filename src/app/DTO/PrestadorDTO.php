@@ -74,8 +74,8 @@ class PrestadorDTO extends DTO
     {
         return new self(
             $data['cnpj'],
-            $data['inscricaoMunicipal'],
-            $data['codigoMunicipio']
+            $data['inscricaoMunicipal'] ?? $data['inscricao_municipal'],
+            $data['codigoMunicipio'] ?? $data['codigo_municipio']
         );
     }
 }
