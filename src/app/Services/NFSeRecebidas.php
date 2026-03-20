@@ -2,10 +2,13 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Log;
-use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
+use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 
+/**
+ * Serviço responsável por manipular as NFSe Recebidas via API FocusNFe
+ */
 class NFSeRecebidas
 {
     /**
@@ -49,12 +52,10 @@ class NFSeRecebidas
      */
     public function listByCnpj(string $cnpj): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?cnpj=$cnpj");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?cnpj=$cnpj");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.NFSeRecebidas: Erro ao listar NFSe Recebidas', [
+            FocusNfeLogger::error('FocusNFe.NFSeRecebidas: Erro ao listar NFSe Recebidas', [
                 'response' => $response->json(),
                 'cnpj' => $cnpj
             ]);
@@ -71,12 +72,10 @@ class NFSeRecebidas
      */
     public function getByChave(string $chave): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.NFSeRecebidas: Erro ao buscar NFSe Recebida', [
+            FocusNfeLogger::error('FocusNFe.NFSeRecebidas: Erro ao buscar NFSe Recebida', [
                 'response' => $response->json(),
                 'chave' => $chave
             ]);

@@ -2,10 +2,13 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Log;
-use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
+use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 
+/**
+ * Serviço responsável por manipular o CT-e via API FocusNFe
+ */
 class CTe
 {
     /**
@@ -49,12 +52,10 @@ class CTe
      */
     public function envia(array $data, string $referencia): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref=$referencia", $data);
+        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref=$referencia", $data);
 
         if ($response->failed()) {
-            Log::error('FocusNFe.CTe: Erro ao enviar CTe', [
+            FocusNfeLogger::error('FocusNFe.CTe: Erro ao enviar CTe', [
                 'response' => $response->json(),
                 'data' => $data,
                 'referencia' => $referencia
@@ -74,12 +75,10 @@ class CTe
     {
         $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get($url);
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            Log::error('FocusNFe.CTe: Erro ao consultar CTe', [
+            FocusNfeLogger::error('FocusNFe.CTe: Erro ao consultar CTe', [
                 'response' => $response->json(),
                 'referencia' => $referencia
             ]);
@@ -98,12 +97,10 @@ class CTe
     {
         $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->delete($url);
+        $response = FocusNfeHttp::withToken($this->token)->delete($url);
 
         if ($response->failed()) {
-            Log::error('FocusNFe.CTe: Erro ao cancelar CTe', [
+            FocusNfeLogger::error('FocusNFe.CTe: Erro ao cancelar CTe', [
                 'response' => $response->json(),
                 'referencia' => $referencia
             ]);
@@ -121,12 +118,10 @@ class CTe
     */
     public function cartaCorrecao(string $referencia, array $data): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/carta_correcao", $data);
+        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/carta_correcao", $data);
 
         if ($response->failed()) {
-            Log::error('FocusNFe.CTe: Erro ao enviar Carta de Correção', [
+            FocusNfeLogger::error('FocusNFe.CTe: Erro ao enviar Carta de Correção', [
                 'response' => $response->json(),
                 'referencia' => $referencia,
                 'data' => $data

@@ -29,6 +29,9 @@ use Sysborg\FocusNfe\app\Events\HooksReceived;
 use Sysborg\FocusNfe\app\Rules\{CepRule, CnaeRule, CnpjRule};
 use Illuminate\Support\Facades\Event;
 
+/**
+ * Service provider responsável por registrar e inicializar os serviços do FocusNFe
+ */
 class SBFocusNFeProvider extends ServiceProvider
 {
     /**

@@ -8,6 +8,9 @@ use Sysborg\FocusNfe\app\DTO\CTeDTO;
 use Facades\Sysborg\FocusNfe\app\Services\CTe;
 use Illuminate\Http\JsonResponse;
 
+/**
+ * Controlador responsável por gerenciar CT-e
+ */
 class CTeController extends Controller
 {
     /**

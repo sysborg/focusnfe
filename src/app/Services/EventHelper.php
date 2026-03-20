@@ -4,6 +4,9 @@ namespace Sysborg\FocusNfe\app\Services;
 
 use Illuminate\Http\Client\Response;
 
+/**
+ * Classe auxiliar abstrata para disparo de eventos
+ */
 abstract class EventHelper
 {
     /**

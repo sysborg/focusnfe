@@ -8,6 +8,9 @@ use Sysborg\FocusNfe\app\DTO\EmpresaDTO;
 use Sysborg\FocusNfe\app\Http\Requests\EmpresaRequest;
 use Facades\Sysborg\FocusNfe\app\Services\Empresas;
 
+/**
+ * Controlador responsável por gerenciar empresas
+ */
 class EmpresaController extends Controller
 {
     /**

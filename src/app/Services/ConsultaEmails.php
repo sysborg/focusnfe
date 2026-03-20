@@ -2,10 +2,13 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Log;
-use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
+use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 
+/**
+ * Serviço responsável por consultar e gerenciar e-mails bloqueados via API FocusNFe
+ */
 class ConsultaEmails
 {
     /**
@@ -49,12 +52,10 @@ class ConsultaEmails
      */
     public function get(string $email): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$email");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$email");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.ConsultarEmails: Erro ao consultar e-mail', [
+            FocusNfeLogger::error('FocusNFe.ConsultarEmails: Erro ao consultar e-mail', [
                 'response' => $response->json(),
                 'data' => ['email' => $email]
             ]);
@@ -71,12 +72,10 @@ class ConsultaEmails
      */
     public function delete(string $email): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$email");
+        $response = FocusNfeHttp::withToken($this->token)->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$email");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.ConsultarEmails: Erro ao deletar e-mail', [
+            FocusNfeLogger::error('FocusNFe.ConsultarEmails: Erro ao deletar e-mail', [
                 'response' => $response->json(),
                 'email' => $email
             ]);

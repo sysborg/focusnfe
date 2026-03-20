@@ -4,8 +4,16 @@ namespace Sysborg\FocusNfe\app\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
+/**
+ * Regra de validação para CNPJ
+ */
 class CnpjRule implements Rule
 {
+    /**
+     * @param string $attribute
+     * @param mixed $value
+     * @return bool
+     */
     public function passes($attribute, $value)
     {
         $cnpj = preg_replace('/\D/', '', $value);
@@ -38,6 +46,9 @@ class CnpjRule implements Rule
         return true;
     }
 
+    /**
+     * @return string
+     */
     public function message()
     {
         return 'O CNPJ informado é inválido.';

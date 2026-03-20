@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Facades\Sysborg\FocusNfe\app\Services\CFOP;
 
+/**
+ * Controlador responsável por consultar CFOPs
+ */
 class CfopController extends Controller
 {
     /**

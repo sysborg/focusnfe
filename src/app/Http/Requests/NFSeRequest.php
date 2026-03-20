@@ -8,6 +8,9 @@ use Sysborg\FocusNfe\app\DTO\TomadorDTO;
 use Sysborg\FocusNfe\app\DTO\ServicoDTO;
 use Sysborg\FocusNfe\app\DTO\EnderecoDTO;
 
+/**
+ * Requisição para validação de dados de NFS-e
+ */
 class NFSeRequest extends BaseRequest
 {
     /**

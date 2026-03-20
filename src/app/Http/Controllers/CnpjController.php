@@ -7,6 +7,9 @@ use Illuminate\Routing\Controller;
 use Sysborg\FocusNfe\app\Rules\CnpjRule;
 use Facades\Sysborg\FocusNfe\app\Services\Cnpjs;
 
+/**
+ * Controlador responsável por consultar dados de CNPJ
+ */
 class CnpjController extends Controller
 {
     /**

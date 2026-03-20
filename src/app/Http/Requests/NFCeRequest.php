@@ -2,6 +2,9 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
+/**
+ * Requisição para validação de dados de NFC-e
+ */
 class NFCeRequest extends BaseRequest
 {
     public function rules()

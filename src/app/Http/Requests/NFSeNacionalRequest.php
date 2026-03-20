@@ -2,6 +2,9 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
+/**
+ * Requisição para validação de dados de NFS-e Nacional
+ */
 class NFSeNacionalRequest extends BaseRequest
 {
     public function rules()

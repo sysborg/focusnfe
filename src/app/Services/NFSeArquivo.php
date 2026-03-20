@@ -2,8 +2,8 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Log;
-use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
+use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 
 /**
@@ -52,16 +52,14 @@ class NFSeArquivo
      */
     public function envia(string $referencia, $arquivo): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->attach(
+        $response = FocusNfeHttp::withToken($this->token)->pending()->attach(
             'arquivo',
             file_get_contents($arquivo->getPathname()),
             $arquivo->getClientOriginalName()
         )->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref={$referencia}");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.NFSeArquivo: Erro ao enviar arquivo NFSe', [
+            FocusNfeLogger::error('FocusNFe.NFSeArquivo: Erro ao enviar arquivo NFSe', [
                 'response' => $response->json(),
                 'referencia' => $referencia
             ]);
@@ -71,14 +69,18 @@ class NFSeArquivo
     }
 
 
+    /**
+     * Consulta um lote de RPS enviado por arquivo
+     *
+     * @param string $referencia
+     * @return Response
+     */
     public function get(string $referencia): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.LotesRPS: Erro ao buscar lote RPS', [
+            FocusNfeLogger::error('FocusNFe.LotesRPS: Erro ao buscar lote RPS', [
                 'response' => $response->json(),
                 'data' => [
                     'referencia' => $referencia,

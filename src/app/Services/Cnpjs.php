@@ -2,10 +2,13 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Log;
-use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
+use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 
+/**
+ * Serviço responsável por consultar CNPJs via API FocusNFe
+ */
 class Cnpjs
 {
     /**
@@ -49,12 +52,10 @@ class Cnpjs
      */
     public function get(string $cnpj): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$cnpj");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$cnpj");
 
         if ($response->failed()) {
-            Log::error('FocusNfe.Cnpjs: Erro ao consultar CNPJ', [
+            FocusNfeLogger::error('FocusNfe.Cnpjs: Erro ao consultar CNPJ', [
             'response' => $response->json(),
             'data' => [
                 'cnpj' => $cnpj

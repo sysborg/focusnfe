@@ -221,6 +221,22 @@ return [
     ],
   ],
 
+  'log' => [
+    'channel' => env('FOCUSNFE_LOG_CHANNEL', 'stack'),
+    'level'   => env('FOCUSNFE_LOG_LEVEL', 'debug'),
+  ],
+
+  'retry' => [
+    'times' => (int) env('FOCUSNFE_RETRY_TIMES', 3),
+    'sleep' => (int) env('FOCUSNFE_RETRY_SLEEP', 1000), // ms base para exponential backoff
+  ],
+
+  'rate_limit' => [
+    'enabled'      => (bool) env('FOCUSNFE_RATE_LIMIT_ENABLED', true),
+    'max_attempts' => (int) env('FOCUSNFE_RATE_LIMIT_MAX_ATTEMPTS', 60),
+    'decay_seconds' => (int) env('FOCUSNFE_RATE_LIMIT_DECAY_SECONDS', 60),
+  ],
+
   'middlewares' => [],
 
   'apiPrefix' => 'api/v1',

@@ -7,6 +7,9 @@ use Illuminate\Routing\Controller;
 use Sysborg\FocusNfe\app\Rules\CnaeRule;
 use Facades\Sysborg\FocusNfe\app\Services\CNAE;
 
+/**
+ * Controlador responsável por consultar códigos CNAE
+ */
 class CnaeController extends Controller
 {
     /**

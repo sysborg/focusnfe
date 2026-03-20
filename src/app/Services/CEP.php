@@ -2,10 +2,13 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Log;
-use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
+use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 
+/**
+ * Serviço responsável por consultar CEP via API FocusNFe
+ */
 class CEP
 {
     /**
@@ -49,12 +52,10 @@ class CEP
      */
     public function get(string $cep): Response
     {
-        $response = Http::withHeaders([
-          'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$cep");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$cep");
 
         if ($response->failed()) {
-            Log::error('FocusNfe.Cep: Erro ao consultar CEP', [
+            FocusNfeLogger::error('FocusNfe.Cep: Erro ao consultar CEP', [
               'response' => $response->json(),
               'data' => [
                 'cep' => $cep

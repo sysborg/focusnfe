@@ -2,6 +2,9 @@
 
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
+/**
+ * Requisição para validação de dados de webhook
+ */
 class HooksRequest extends BaseRequest
 {
     public function rules()

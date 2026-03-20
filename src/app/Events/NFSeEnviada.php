@@ -6,6 +6,9 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * Evento disparado quando uma NFSe é enviada
+ */
 class NFSeEnviada
 {
     use Dispatchable;
@@ -14,6 +17,10 @@ class NFSeEnviada
 
     public array $data;
 
+    /**
+     * @param array $data
+     * @return void
+     */
     public function __construct(array $data)
     {
         $this->data = $data;

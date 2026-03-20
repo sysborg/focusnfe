@@ -2,10 +2,13 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Log;
-use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
+use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 
+/**
+ * Serviço responsável por consultar códigos CNAE via API FocusNFe
+ */
 class CNAE
 {
     /**
@@ -39,12 +42,10 @@ class CNAE
      */
     public function list(int $offset = 1): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.CNAE: Erro ao listar CNAEs', [
+            FocusNfeLogger::error('FocusNFe.CNAE: Erro ao listar CNAEs', [
                 'response' => $response->json(),
                 'offset' => $offset
             ]);
@@ -54,14 +55,18 @@ class CNAE
     }
 
 
+    /**
+     * Retorna um CNAE pelo código
+     *
+     * @param string $codigo
+     * @return Response
+     */
     public function get(string $codigo): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.CNAE: Erro ao buscar CNAE', [
+            FocusNfeLogger::error('FocusNFe.CNAE: Erro ao buscar CNAE', [
                 'response' => $response->json(),
                 'codigo' => $codigo
             ]);

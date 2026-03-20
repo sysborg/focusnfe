@@ -4,6 +4,9 @@ namespace Sysborg\FocusNfe\app\Http\Requests;
 
 use Sysborg\FocusNfe\app\DTO\EmpresaDTO;
 
+/**
+ * Requisição para validação de dados de empresa
+ */
 class EmpresaRequest extends BaseRequest
 {
     /**

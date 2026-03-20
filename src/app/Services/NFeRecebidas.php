@@ -2,11 +2,14 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Log;
-use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
+use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 use Sysborg\FocusNfe\app\DTO\NFeRecebidasDTO;
 
+/**
+ * Serviço responsável por manipular as NFe Recebidas via API FocusNFe
+ */
 class NFeRecebidas
 {
     /**
@@ -50,12 +53,10 @@ class NFeRecebidas
      */
     public function listByCnpj(string $cnpj): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?cnpj=$cnpj");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?cnpj=$cnpj");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.NFeRecebidas: Erro ao listar NFe Recebidas', [
+            FocusNfeLogger::error('FocusNFe.NFeRecebidas: Erro ao listar NFe Recebidas', [
                 'response' => $response->json(),
                 'cnpj' => $cnpj
             ]);
@@ -74,12 +75,10 @@ class NFeRecebidas
      */
     public function manifestar(string $chave, NFeRecebidasDTO $data): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/manifesto", $data);
+        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/manifesto", $data);
 
         if ($response->failed()) {
-            Log::error('FocusNFe.NFeRecebidas: Erro ao manifestar NFe', [
+            FocusNfeLogger::error('FocusNFe.NFeRecebidas: Erro ao manifestar NFe', [
                 'response' => $response->json(),
                 'chave' => $chave
             ]);
@@ -96,12 +95,10 @@ class NFeRecebidas
      */
     public function consultarManifesto(string $chave): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/manifesto");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/manifesto");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.NFeRecebidas: Erro ao consultar manifesto NFe', [
+            FocusNfeLogger::error('FocusNFe.NFeRecebidas: Erro ao consultar manifesto NFe', [
                 'response' => $response->json(),
                 'chave' => $chave
             ]);

@@ -3,9 +3,10 @@
 namespace Sysborg\FocusNfe\app\Http\Requests;
 
 /**
+ * Requisição para validação de dados de CT-e
+ *
  * @doc https://focusnfe.com.br/doc/#cte-e-cte-os_urls
  */
-
 class CTeRequest extends BaseRequest
 {
     protected function prepareForValidation(): void

@@ -8,8 +8,15 @@ use Sysborg\FocusNfe\app\Http\Requests\NFSeRequest;
 use Sysborg\FocusNfe\app\DTO\NFSeDTO;
 use Facades\Sysborg\FocusNfe\app\Services\NFSe;
 
+/**
+ * Controlador responsável por gerenciar NFS-e
+ */
 class NFSeController extends Controller
 {
+    /**
+     * @param NFSeRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(NFSeRequest $request)
     {
         $dto = NFSeDTO::fromArray($request->validated());
@@ -18,11 +25,20 @@ class NFSeController extends Controller
         return response()->json(NFSe::envia($dto, $ref), 201);
     }
 
+    /**
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show(string $id)
     {
         return response()->json(NFSe::get($id));
     }
 
+    /**
+     * @param Request $request
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy(Request $request, string $id)
     {
         $payload = $request->validate([

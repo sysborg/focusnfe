@@ -2,10 +2,13 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Log;
-use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
+use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 
+/**
+ * Serviço responsável por consultar NCMs via API FocusNFe
+ */
 class NCM
 {
     /**
@@ -51,12 +54,10 @@ class NCM
      */
     public function list(int $offset = 1, ?string $codigo = null, ?string $descricao = null): Response
     {
-        $response = Http::withHeaders([
-          'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?offset=$offset&codigo=$codigo&descricao=$descricao");
 
         if ($response->failed()) {
-            Log::error('FocusNfe.NCM: Erro ao listar NCMs', [
+            FocusNfeLogger::error('FocusNfe.NCM: Erro ao listar NCMs', [
               'response' => $response->json(),
               'data' => [
                 'offset' => $offset,
@@ -77,12 +78,10 @@ class NCM
      */
     public function get(string $codigo): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$codigo");
 
         if ($response->failed()) {
-            Log::error('FocusNfe.NCM: Erro ao buscar NCM', [
+            FocusNfeLogger::error('FocusNfe.NCM: Erro ao buscar NCM', [
               'response' => $response->json(),
               'data' => [
                 'ncm' => $codigo

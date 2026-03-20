@@ -24,9 +24,10 @@ class NFSeCancelServiceTest extends TestCase
         $container = new Container();
         $container->instance('config', new ConfigRepository([
             'focusnfe' => [
-                'URL' => [
-                    'production' => 'https://api.focusnfe.com.br',
-                ],
+                'URL' => ['production' => 'https://api.focusnfe.com.br'],
+                'log' => ['channel' => 'stack', 'level' => 'error'],
+                'rate_limit' => ['enabled' => false],
+                'retry' => ['times' => 1, 'sleep' => 0],
             ],
         ]));
         $container->instance('http', new HttpFactory());
@@ -36,11 +37,24 @@ class NFSeCancelServiceTest extends TestCase
             }
         });
         $container->instance('log', new class () {
+            public function channel(?string $channel = null): static
+            {
+                return $this;
+            }
+
             public function error(string $message, array $context = []): void
             {
             }
 
             public function debug(string $message, array $context = []): void
+            {
+            }
+
+            public function info(string $message, array $context = []): void
+            {
+            }
+
+            public function warning(string $message, array $context = []): void
             {
             }
         });

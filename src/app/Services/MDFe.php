@@ -2,8 +2,8 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Log;
-use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
+use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 
 /**
@@ -53,12 +53,10 @@ class MDFe
      */
     public function envia(array $data): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data);
+        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data);
 
         if ($response->failed()) {
-            Log::error('FocusNFe.MDFe: Erro ao enviar MDF-e', [
+            FocusNfeLogger::error('FocusNFe.MDFe: Erro ao enviar MDF-e', [
                 'response' => $response->json(),
                 'data' => $data
             ]);
@@ -75,12 +73,10 @@ class MDFe
      */
     public function consulta(string $referencia): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.MDFe: Erro ao consultar MDF-e', [
+            FocusNfeLogger::error('FocusNFe.MDFe: Erro ao consultar MDF-e', [
                 'response' => $response->json(),
                 'referencia' => $referencia
             ]);
@@ -97,12 +93,10 @@ class MDFe
      */
     public function cancela(string $referencia): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
+        $response = FocusNfeHttp::withToken($this->token)->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.MDFe: Erro ao cancelar MDF-e', [
+            FocusNfeLogger::error('FocusNFe.MDFe: Erro ao cancelar MDF-e', [
                 'response' => $response->json(),
                 'referencia' => $referencia
             ]);
@@ -120,12 +114,10 @@ class MDFe
      */
     public function incluiCondutor(string $referencia, array $data): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/inclusao_condutor", $data);
+        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/inclusao_condutor", $data);
 
         if ($response->failed()) {
-            Log::error('FocusNFe.MDFe: Erro ao incluir condutor no MDF-e', [
+            FocusNfeLogger::error('FocusNFe.MDFe: Erro ao incluir condutor no MDF-e', [
                 'response' => $response->json(),
                 'referencia' => $referencia,
                 'data' => $data
@@ -144,12 +136,10 @@ class MDFe
      */
     public function incluiDFe(string $referencia, array $data): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/inclusao_dfe", $data);
+        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/inclusao_dfe", $data);
 
         if ($response->failed()) {
-            Log::error('FocusNFe.MDFe: Erro ao incluir DFe no MDF-e', [
+            FocusNfeLogger::error('FocusNFe.MDFe: Erro ao incluir DFe no MDF-e', [
                 'response' => $response->json(),
                 'referencia' => $referencia,
                 'data' => $data
@@ -167,12 +157,10 @@ class MDFe
      */
     public function encerra(string $referencia): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/encerrar");
+        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/encerrar");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.MDFe: Erro ao encerrar MDF-e', [
+            FocusNfeLogger::error('FocusNFe.MDFe: Erro ao encerrar MDF-e', [
                 'response' => $response->json(),
                 'referencia' => $referencia
             ]);

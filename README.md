@@ -1,5 +1,7 @@
 # Sysborg FocusNFe
 
+[![CI](https://github.com/sysborg/focusnfe/actions/workflows/ci.yml/badge.svg)](https://github.com/sysborg/focusnfe/actions/workflows/ci.yml)
+
 ## Pacote de implementação da FocusNFe para Laravel por Sysborg
 
 ## Introdução

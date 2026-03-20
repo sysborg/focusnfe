@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Facades\Sysborg\FocusNfe\app\Services\NCM;
 
+/**
+ * Controlador responsável por consultar NCMs
+ */
 class NcmController extends Controller
 {
     /**

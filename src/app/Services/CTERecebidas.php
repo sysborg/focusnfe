@@ -2,8 +2,8 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Log;
-use Illuminate\Support\Facades\Http;
+use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
+use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 use Sysborg\FocusNfe\app\DTO\CTERecebidasDTO;
 
@@ -53,12 +53,10 @@ class CTERecebidas
      */
     public function consulta(string $cnpj): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?cnpj=$cnpj");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?cnpj=$cnpj");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.CTERecebidas: Erro ao consultar CTEs Recebidas', [
+            FocusNfeLogger::error('FocusNFe.CTERecebidas: Erro ao consultar CTEs Recebidas', [
                 'response' => $response->json(),
                 'cnpj' => $cnpj
             ]);
@@ -75,12 +73,10 @@ class CTERecebidas
      */
     public function consultaCTE(string $chave): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.CTERecebidas: Erro ao consultar CTE', [
+            FocusNfeLogger::error('FocusNFe.CTERecebidas: Erro ao consultar CTE', [
                 'response' => $response->json(),
                 'chave' => $chave
             ]);
@@ -98,14 +94,12 @@ class CTERecebidas
      */
     public function informarDesacordo(string $chave, CTERecebidasDTO $data): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/desacordo", [
+        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/desacordo", [
             'observacoes' => $data->observacoes
         ]);
 
         if ($response->failed()) {
-            Log::error('FocusNFe.CTERecebidas: Erro ao informar desacordo CTE', [
+            FocusNfeLogger::error('FocusNFe.CTERecebidas: Erro ao informar desacordo CTE', [
                 'response' => $response->json(),
                 'chave' => $chave
             ]);
@@ -122,12 +116,10 @@ class CTERecebidas
      */
     public function consultaDesacordo(string $chave): Response
     {
-        $response = Http::withHeaders([
-            'Authorization' => 'Basic ' . base64_encode($this->token),
-        ])->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/desacordo");
+        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/desacordo");
 
         if ($response->failed()) {
-            Log::error('FocusNFe.CTERecebidas: Erro ao consultar desacordo CTE', [
+            FocusNfeLogger::error('FocusNFe.CTERecebidas: Erro ao consultar desacordo CTE', [
                 'response' => $response->json(),
                 'chave' => $chave
             ]);

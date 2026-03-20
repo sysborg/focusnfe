@@ -7,6 +7,9 @@ use Illuminate\Routing\Controller;
 use Sysborg\FocusNfe\app\Rules\CepRule;
 use Facades\Sysborg\FocusNfe\app\Services\CEP;
 
+/**
+ * Controlador responsável por consultar endereços por CEP
+ */
 class CepController extends Controller
 {
     /**
