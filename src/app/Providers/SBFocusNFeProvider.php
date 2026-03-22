@@ -22,7 +22,8 @@ use Sysborg\FocusNfe\app\Services\{
     NFSe,
     NFSeArquivo,
     NFSeNacional,
-    NFSeRecebidas
+    NFSeRecebidas,
+    Webhooks
 };
 use Illuminate\Support\Facades\Validator;
 use Sysborg\FocusNfe\app\Events\HooksReceived;
@@ -137,6 +138,10 @@ class SBFocusNFeProvider extends ServiceProvider
 
         $this->app->singleton(NFSeRecebidas::class, function ($app) {
             return new NFSeRecebidas(config('focusnfe.token'), config('focusnfe.ambiente'));
+        });
+
+        $this->app->singleton(Webhooks::class, function ($app) {
+            return new Webhooks(config('focusnfe.token'), config('focusnfe.ambiente'));
         });
 
         Event::listen(HooksReceived::class, [

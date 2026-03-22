@@ -125,6 +125,28 @@ class NFCe
     }
 
     /**
+     * Reenvia o email da NFC-e para o destinatário
+     *
+     * @param string $referencia
+     * @param string $email
+     * @return Response
+     */
+    public function reenviaEmail(string $referencia, string $email): Response
+    {
+        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email");
+
+        if ($response->failed()) {
+            FocusNfeLogger::error('FocusNFe.NFCe: Erro ao reenviar email da NFC-e', [
+              'response' => $response->json(),
+              'referencia' => $referencia,
+              'email' => $email,
+            ]);
+        }
+
+        return $response;
+    }
+
+    /**
      * Registra um evento de Conciliação Financeira - ECONF
      *
      * @param string $referencia
