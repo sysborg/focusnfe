@@ -2,14 +2,14 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
-use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
+use Sysborg\FocusNfe\app\Events\CTeAutorizado;
+use Sysborg\FocusNfe\app\Events\CTeCancelado;
 
 /**
  * Serviço responsável por manipular o CT-e via API FocusNFe
  */
-class CTe
+class CTe extends EventHelper
 {
     /**
      * URL base da API CTe
@@ -54,6 +54,7 @@ class CTe
     {
         $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref=$referencia", $data);
 
+        $this->dispatch(CTeAutorizado::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNFe.CTe: Erro ao enviar CTe', [
                 'response' => $response->json(),
@@ -99,6 +100,7 @@ class CTe
 
         $response = FocusNfeHttp::withToken($this->token)->delete($url);
 
+        $this->dispatch(CTeCancelado::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNFe.CTe: Erro ao cancelar CTe', [
                 'response' => $response->json(),
@@ -122,6 +124,81 @@ class CTe
 
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNFe.CTe: Erro ao enviar Carta de Correção', [
+                'response' => $response->json(),
+                'referencia' => $referencia,
+                'data' => $data
+            ]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Registra prestacao do servico em desacordo.
+     *
+     * @param string $referencia
+     * @param array $data
+     * @return Response
+     */
+    public function desacordo(string $referencia, array $data): Response
+    {
+        $response = FocusNfeHttp::withToken($this->token)->post(
+            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/desacordo",
+            $data
+        );
+
+        if ($response->failed()) {
+            FocusNfeLogger::error('FocusNFe.CTe: Erro ao registrar desacordo', [
+                'response' => $response->json(),
+                'referencia' => $referencia,
+                'data' => $data
+            ]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Registra evento de multimodal.
+     *
+     * @param string $referencia
+     * @param array $data
+     * @return Response
+     */
+    public function registroMultimodal(string $referencia, array $data): Response
+    {
+        $response = FocusNfeHttp::withToken($this->token)->post(
+            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/registro_multimodal",
+            $data
+        );
+
+        if ($response->failed()) {
+            FocusNfeLogger::error('FocusNFe.CTe: Erro ao registrar multimodal', [
+                'response' => $response->json(),
+                'referencia' => $referencia,
+                'data' => $data
+            ]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Registra informacoes da GTV.
+     *
+     * @param string $referencia
+     * @param array $data
+     * @return Response
+     */
+    public function dadosGtv(string $referencia, array $data): Response
+    {
+        $response = FocusNfeHttp::withToken($this->token)->post(
+            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/dados_gtv",
+            $data
+        );
+
+        if ($response->failed()) {
+            FocusNfeLogger::error('FocusNFe.CTe: Erro ao registrar dados da GTV', [
                 'response' => $response->json(),
                 'referencia' => $referencia,
                 'data' => $data

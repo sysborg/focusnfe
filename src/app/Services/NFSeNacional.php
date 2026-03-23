@@ -2,15 +2,15 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
-use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 use Sysborg\FocusNfe\app\DTO\NFSeNDTO;
+use Sysborg\FocusNfe\app\Events\NFSeNacionalAutorizada;
+use Sysborg\FocusNfe\app\Events\NFSeNacionalCancelada;
 
 /**
  * Serviço responsável por manipular as NFSe Nacional via API FocusNFe
  */
-class NFSeNacional
+class NFSeNacional extends EventHelper
 {
     /**
      * URL base da API NFSe Nacional
@@ -55,6 +55,7 @@ class NFSeNacional
     {
         $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
+        $this->dispatch(NFSeNacionalAutorizada::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNfe.NFSeN: Erro ao enviar NFSe Nacional', [
               'response' => $response->json(),
@@ -95,6 +96,7 @@ class NFSeNacional
     {
         $response = FocusNfeHttp::withToken($this->token)->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
+        $this->dispatch(NFSeNacionalCancelada::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNfe.NFSeN: Erro ao cancelar NFSe Nacional', [
               'response' => $response->json(),

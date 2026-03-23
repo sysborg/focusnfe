@@ -5,6 +5,7 @@ namespace Sysborg\FocusNfe\app\Services;
 use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
 use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
+use Sysborg\FocusNfe\app\DTO\CnpjResponseDTO;
 
 /**
  * Serviço responsável por consultar CNPJs via API FocusNFe
@@ -64,5 +65,24 @@ class Cnpjs
         }
 
         return $response;
+    }
+
+    /**
+     * Consulta um CNPJ e retorna um DTO quando a API responde com sucesso.
+     *
+     * @param string $cnpj
+     * @return CnpjResponseDTO|null
+     */
+    public function getDto(string $cnpj): ?CnpjResponseDTO
+    {
+        $response = $this->get($cnpj);
+
+        if ($response->failed()) {
+            return null;
+        }
+
+        $data = $response->json();
+
+        return is_array($data) ? CnpjResponseDTO::fromArray($data) : null;
     }
 }

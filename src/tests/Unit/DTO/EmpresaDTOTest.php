@@ -284,13 +284,13 @@ class EmpresaDTOTest extends TestCase
         $this->expectException(ValidationException::class);
 
         $dados = $this->getDadosValidos();
-        $dados['regimeTributario'] = 4; // Deve ser entre 1 e 3
+        $dados['regimeTributario'] = 5; // Deve ser entre 1 e 4
 
         EmpresaDTO::fromArray($dados);
     }
 
     /**
-     * Testa valores válidos de regimeTributario (1, 2, 3)
+     * Testa valores válidos de regimeTributario (1, 2, 3, 4)
      */
     public function test_valida_regime_tributario_valores_validos(): void
     {
@@ -310,6 +310,11 @@ class EmpresaDTOTest extends TestCase
         $dados['regimeTributario'] = 3;
         $empresa3 = EmpresaDTO::fromArray($dados);
         $this->assertEquals(3, $empresa3->regimeTributario);
+
+        // Regime 4 - MEI
+        $dados['regimeTributario'] = 4;
+        $empresa4 = EmpresaDTO::fromArray($dados);
+        $this->assertEquals(4, $empresa4->regimeTributario);
     }
 
     // ==================== TESTES DE LIMITES DE CARACTERES ====================
@@ -657,8 +662,94 @@ class EmpresaDTOTest extends TestCase
         $this->assertArrayHasKey('email', $array);
         $this->assertArrayHasKey('inscricao_estadual', $array);
         $this->assertArrayHasKey('inscricao_municipal', $array);
+        $this->assertArrayHasKey('enviar_email_destinatario', $array);
+        $this->assertArrayHasKey('discrimina_impostos', $array);
+        $this->assertArrayHasKey('id_token_nfce_producao', $array);
         $this->assertEquals($dados['razaoSocial'], $array['nome']);
         $this->assertEquals($dados['cnpj'], $array['cnpj']);
+    }
+
+    public function test_to_array_serializa_campos_expandidos_da_empresa(): void
+    {
+        $dados = array_merge($this->getDadosValidos(), [
+            'cpfCnpjContabilidade' => '12345678901',
+            'habilitaNfsenProducao' => true,
+            'habilitaNfsenHomologacao' => true,
+            'habilitaNfsenRecebidasProducao' => true,
+            'habilitaNfsenRecebidasHomologacao' => true,
+            'habilitaCte' => true,
+            'habilitaMdfe' => true,
+            'habilitaManifestacao' => true,
+            'habilitaManifestacaoCte' => true,
+            'habilitaContingenciaOfflineNfce' => true,
+            'reaproveitaNumeroNfceContingencia' => true,
+            'mostrarDanfseBadge' => true,
+            'orientacaoDanfe' => 'portrait',
+            'reciboDanfe' => true,
+            'exibeSempreIpiDanfe' => true,
+            'exibeIssqnDanfe' => true,
+            'exibeImpostosAdicionaisDanfe' => true,
+            'exibeUnidadeTributariaDanfe' => true,
+            'exibeSempreVolumesDanfe' => true,
+            'exibeComposicaoCargaMdfe' => true,
+            'enviarEmailHomologacao' => true,
+            'cscNfceHomologacao' => 'CSC-HOMOLOG',
+            'idTokenNfceHomologacao' => '000002',
+            'proximoNumeroNfsenProducao' => 11,
+            'proximoNumeroNfsenHomologacao' => 12,
+            'serieNfsenProducao' => 2,
+            'serieNfsenHomologacao' => 3,
+            'proximoNumeroCteProducao' => 13,
+            'proximoNumeroCteHomologacao' => 14,
+            'serieCteProducao' => 4,
+            'serieCteHomologacao' => 5,
+            'proximoNumeroCteOsProducao' => 15,
+            'proximoNumeroCteOsHomologacao' => 16,
+            'serieCteOsProducao' => 6,
+            'serieCteOsHomologacao' => 7,
+            'proximoNumeroMdfeProducao' => 17,
+            'proximoNumeroMdfeHomologacao' => 18,
+            'serieMdfeProducao' => 8,
+            'serieMdfeHomologacao' => 9,
+            'nfeSincrono' => true,
+            'nfeSincronoHomologacao' => true,
+            'mdfeSincrono' => true,
+            'mdfeSincronoHomologacao' => true,
+        ]);
+
+        $array = EmpresaDTO::fromArray($dados)->toArray();
+
+        $this->assertSame('12345678901', $array['cpf_cnpj_contabilidade']);
+        $this->assertTrue($array['habilita_nfsen_producao']);
+        $this->assertTrue($array['habilita_cte']);
+        $this->assertTrue($array['habilita_mdfe']);
+        $this->assertTrue($array['habilita_manifestacao']);
+        $this->assertTrue($array['habilita_manifestacao_cte']);
+        $this->assertTrue($array['habilita_contingencia_offline_nfce']);
+        $this->assertTrue($array['reaproveita_numero_nfce_contingencia']);
+        $this->assertTrue($array['mostrar_danfse_badge']);
+        $this->assertSame('portrait', $array['orientacao_danfe']);
+        $this->assertTrue($array['recibo_danfe']);
+        $this->assertTrue($array['exibe_composicao_carga_mdfe']);
+        $this->assertTrue($array['enviar_email_homologacao']);
+        $this->assertSame('CSC-HOMOLOG', $array['csc_nfce_homologacao']);
+        $this->assertSame('000002', $array['id_token_nfce_homologacao']);
+        $this->assertSame(11, $array['proximo_numero_nfsen_producao']);
+        $this->assertSame(13, $array['proximo_numero_cte_producao']);
+        $this->assertSame(15, $array['proximo_numero_cte_os_producao']);
+        $this->assertSame(17, $array['proximo_numero_mdfe_producao']);
+        $this->assertTrue($array['nfe_sincrono']);
+        $this->assertTrue($array['mdfe_sincrono_homologacao']);
+    }
+
+    public function test_valida_orientacao_danfe_invalida(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        $dados = $this->getDadosValidos();
+        $dados['orientacaoDanfe'] = 'horizontal';
+
+        EmpresaDTO::fromArray($dados);
     }
 
     /**

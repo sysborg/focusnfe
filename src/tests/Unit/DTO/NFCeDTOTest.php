@@ -126,6 +126,14 @@ class NFCeDTOTest extends TestCase
         $this->assertArrayHasKey('formas_pagamento', $payload);
     }
 
+    public function test_to_array_serializa_data_emissao_em_iso8601(): void
+    {
+        $dto = NFCeDTO::fromArray($this->makeMinimalData());
+        $payload = $dto->toArray();
+
+        $this->assertSame('2026-01-15T13:00:00+00:00', $payload['data_emissao']);
+    }
+
     public function test_to_array_nao_inclui_campos_nulos(): void
     {
         $dto = NFCeDTO::fromArray($this->makeMinimalData());
@@ -176,6 +184,44 @@ class NFCeDTOTest extends TestCase
         $this->assertEquals(100.00, $dto->valor_total_nota);
         $this->assertEquals(100.00, $dto->valor_total_produtos);
         $this->assertEquals(0.00, $dto->valor_desconto);
+    }
+
+    public function test_to_array_mantem_nomes_aderentes_ao_manual(): void
+    {
+        $payload = NFCeDTO::fromArray($this->makeMinimalData())->toArray();
+
+        $this->assertArrayHasKey('cnpj_emitente', $payload);
+        $this->assertArrayHasKey('presenca_comprador', $payload);
+        $this->assertArrayHasKey('modalidade_frete', $payload);
+        $this->assertArrayHasKey('formas_pagamento', $payload);
+        $this->assertArrayNotHasKey('cnpjEmitente', $payload);
+        $this->assertArrayNotHasKey('formasPagamento', $payload);
+    }
+
+    public function test_campos_opcionais_do_emitente_e_intermediador_sao_serializados(): void
+    {
+        $data = $this->makeMinimalData();
+        $data['complemento_emitente'] = 'Loja 2';
+        $data['telefone_emitente'] = '11999999999';
+        $data['email_emitente'] = 'contato@empresa.com';
+        $data['inscricao_estadual_emitente'] = '123456789';
+        $data['nome_fantasia_emitente'] = 'Empresa Teste';
+        $data['indicador_intermed_transacao'] = '1';
+        $data['cnpj_intermediador'] = '12345678000190';
+        $data['id_cadastro_intermediador'] = 'MKP-01';
+        $data['informacoes_adicionais_contribuinte'] = 'Venda balcão';
+
+        $payload = NFCeDTO::fromArray($data)->toArray();
+
+        $this->assertSame('Loja 2', $payload['complemento_emitente']);
+        $this->assertSame('11999999999', $payload['telefone_emitente']);
+        $this->assertSame('contato@empresa.com', $payload['email_emitente']);
+        $this->assertSame('123456789', $payload['inscricao_estadual_emitente']);
+        $this->assertSame('Empresa Teste', $payload['nome_fantasia_emitente']);
+        $this->assertSame('1', $payload['indicador_intermed_transacao']);
+        $this->assertSame('12345678000190', $payload['cnpj_intermediador']);
+        $this->assertSame('MKP-01', $payload['id_cadastro_intermediador']);
+        $this->assertSame('Venda balcão', $payload['informacoes_adicionais_contribuinte']);
     }
 
     public function test_data_emissao_e_instancia_carbon(): void

@@ -2,16 +2,16 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
-use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
 use Sysborg\FocusNfe\app\DTO\NFCeDTO;
+use Sysborg\FocusNfe\app\Events\NFCeAutorizada;
+use Sysborg\FocusNfe\app\Events\NFCeCancelada;
 
 /**
  * Classe responsável por manipular as NFCe
  *
  */
-class NFCe
+class NFCe extends EventHelper
 {
     /**
      * URL base da API NFCe
@@ -56,6 +56,7 @@ class NFCe
     {
         $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
 
+        $this->dispatch(NFCeAutorizada::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNFe.NFCe: Erro ao enviar NFCe', [
               'response' => $response->json(),
@@ -96,6 +97,7 @@ class NFCe
     {
         $response = FocusNfeHttp::withToken($this->token)->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
+        $this->dispatch(NFCeCancelada::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNFe.NFCe: Erro ao cancelar NFCe', [
               'response' => $response->json(),

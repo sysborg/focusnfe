@@ -42,6 +42,8 @@ class WebhooksServiceTest extends TestCase
             cnpj_emitente: '07504505000132',
             url: 'https://meuapp.com/webhooks/nfe',
             evento: $evento,
+            authorization: 'Bearer webhook-secret',
+            authorization_header: 'Authorization',
         );
     }
 
@@ -53,6 +55,8 @@ class WebhooksServiceTest extends TestCase
                 'cnpj_emitente' => '07504505000132',
                 'url' => 'https://meuapp.com/webhooks/nfe',
                 'evento' => 'nfe_autorizada',
+                'authorization' => 'Bearer webhook-secret',
+                'authorization_header' => 'Authorization',
             ], 201),
         ]);
 
@@ -131,6 +135,8 @@ class WebhooksServiceTest extends TestCase
             cnpj_emitente: '07504505000132',
             url: 'https://meuapp.com/webhooks/nfe-novo',
             evento: 'nfe_cancelada',
+            authorization: 'Bearer novo-token',
+            authorization_header: 'Authorization',
         );
 
         Http::fake([
@@ -138,6 +144,7 @@ class WebhooksServiceTest extends TestCase
                 'id' => 1,
                 'url' => 'https://meuapp.com/webhooks/nfe-novo',
                 'evento' => 'nfe_cancelada',
+                'authorization' => 'Bearer novo-token',
             ], 200),
         ]);
 
@@ -158,6 +165,20 @@ class WebhooksServiceTest extends TestCase
         $this->assertEquals(204, $response->status());
     }
 
+    public function test_remover_webhook_inexistente(): void
+    {
+        Http::fake([
+            $this->baseUrl . Webhooks::URL . '/404' => Http::response([
+                'codigo' => 'nao_encontrado',
+            ], 404),
+        ]);
+
+        $response = $this->service->remover(404);
+
+        $this->assertTrue($response->failed());
+        $this->assertEquals(404, $response->status());
+    }
+
     public function test_testar_webhook(): void
     {
         Http::fake([
@@ -171,6 +192,21 @@ class WebhooksServiceTest extends TestCase
         $this->assertEquals(200, $response->status());
     }
 
+    public function test_testar_webhook_com_erro(): void
+    {
+        Http::fake([
+            $this->baseUrl . Webhooks::URL . '/1/testar' => Http::response([
+                'codigo' => 'erro_envio',
+                'mensagem' => 'Falha ao entregar payload de teste',
+            ], 422),
+        ]);
+
+        $response = $this->service->testar(1);
+
+        $this->assertTrue($response->failed());
+        $this->assertEquals('erro_envio', $response->json('codigo'));
+    }
+
     public function test_webhook_dto_serializa_corretamente(): void
     {
         $dto = $this->makeDto('nfce_autorizada');
@@ -179,6 +215,8 @@ class WebhooksServiceTest extends TestCase
         $this->assertEquals('07504505000132', $payload['cnpj_emitente']);
         $this->assertEquals('https://meuapp.com/webhooks/nfe', $payload['url']);
         $this->assertEquals('nfce_autorizada', $payload['evento']);
+        $this->assertEquals('Bearer webhook-secret', $payload['authorization']);
+        $this->assertEquals('Authorization', $payload['authorization_header']);
     }
 
     public function test_webhook_dto_from_array(): void
@@ -187,10 +225,14 @@ class WebhooksServiceTest extends TestCase
             'cnpj_emitente' => '07504505000132',
             'url' => 'https://meuapp.com/hooks',
             'evento' => 'cte_autorizado',
+            'authorization' => 'Bearer focus-token',
+            'authorization_header' => 'X-Webhook-Token',
         ]);
 
         $this->assertInstanceOf(WebhookDTO::class, $dto);
         $this->assertEquals('cte_autorizado', $dto->evento);
+        $this->assertEquals('Bearer focus-token', $dto->authorization);
+        $this->assertEquals('X-Webhook-Token', $dto->authorization_header);
     }
 
     public function test_eventos_suportados_estao_definidos(): void

@@ -146,6 +146,27 @@ class NFeServiceTest extends TestCase
         $this->assertEquals(200, $response->status());
     }
 
+    public function test_inutilizar_nfe(): void
+    {
+        Http::fake([
+            $this->baseUrl . NFe::URL . '/inutilizacao' => Http::response([
+                'status' => 'autorizado',
+                'serie' => '1',
+            ], 200),
+        ]);
+
+        $response = $this->service->inutilizar([
+            'cnpj' => '07504505000132',
+            'serie' => '1',
+            'numero_inicial' => '10',
+            'numero_final' => '12',
+            'justificativa' => 'Teste de inutilizacao',
+        ]);
+
+        $this->assertEquals(200, $response->status());
+        $this->assertEquals('autorizado', $response->json('status'));
+    }
+
     public function test_inutilizacoes(): void
     {
         Http::fake([
@@ -171,6 +192,21 @@ class NFeServiceTest extends TestCase
 
         $this->assertEquals(200, $response->status());
         $this->assertEquals('email_reenviado', $response->json('status'));
+    }
+
+    public function test_download_xml(): void
+    {
+        Http::fake([
+            $this->baseUrl . NFe::URL . '/' . $this->ref . '?completo=true' => Http::response([
+                'status' => 'autorizado',
+                'xml' => '<NFe>conteudo</NFe>',
+            ], 200),
+        ]);
+
+        $response = $this->service->downloadXml($this->ref);
+
+        $this->assertEquals(200, $response->status());
+        $this->assertEquals('<NFe>conteudo</NFe>', $response->json('xml'));
     }
 
     public function test_insucesso_entrega(): void

@@ -24,6 +24,8 @@ class WebhookDTO extends DTO
         public string $cnpj_emitente,
         public string $url,
         public string $evento,
+        public ?string $authorization = null,
+        public ?string $authorization_header = null,
     ) {
     }
 
@@ -33,6 +35,8 @@ class WebhookDTO extends DTO
             cnpj_emitente: $data['cnpj_emitente'],
             url: $data['url'],
             evento: $data['evento'],
+            authorization: $data['authorization'] ?? null,
+            authorization_header: $data['authorization_header'] ?? null,
         );
     }
 }

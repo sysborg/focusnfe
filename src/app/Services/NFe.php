@@ -4,11 +4,14 @@ namespace Sysborg\FocusNfe\app\Services;
 
 use Illuminate\Http\Client\Response;
 use Sysborg\FocusNfe\app\DTO\NFeDTO;
+use Sysborg\FocusNfe\app\Events\NFeAutorizada;
+use Sysborg\FocusNfe\app\Events\NFeCancelada;
+use Sysborg\FocusNfe\app\Events\NFeInutilizada;
 
 /**
  * Classe responsável por manipular as NF-e via API FocusNFe v2
  */
-class NFe
+class NFe extends EventHelper
 {
     /**
      * URL base da API NF-e
@@ -57,6 +60,7 @@ class NFe
             $data->toArray()
         );
 
+        $this->dispatch(NFeAutorizada::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNfe.NFe: Erro ao enviar NF-e', [
                 'response' => $response->json(),
@@ -101,6 +105,7 @@ class NFe
             config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia"
         );
 
+        $this->dispatch(NFeCancelada::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNfe.NFe: Erro ao cancelar NF-e', [
                 'response' => $response->json(),
@@ -129,6 +134,30 @@ class NFe
             FocusNfeLogger::error('FocusNfe.NFe: Erro ao criar Carta de Correção', [
                 'response' => $response->json(),
                 'referencia' => $referencia,
+            ]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Envia uma inutilizacao de faixa de numeracao para a NF-e.
+     *
+     * @param array $data
+     * @return Response
+     */
+    public function inutilizar(array $data): Response
+    {
+        $response = FocusNfeHttp::withToken($this->token)->post(
+            config('focusnfe.URL.' . $this->ambiente) . self::URL . '/inutilizacao',
+            $data
+        );
+
+        $this->dispatch(NFeInutilizada::class, $response);
+        if ($response->failed()) {
+            FocusNfeLogger::error('FocusNfe.NFe: Erro ao inutilizar faixa de numeracao', [
+                'response' => $response->json(),
+                'data' => $data,
             ]);
         }
 
@@ -173,6 +202,29 @@ class NFe
                 'response' => $response->json(),
                 'referencia' => $referencia,
                 'email' => $email,
+            ]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Faz o download do XML completo da NF-e.
+     *
+     * @param string $referencia
+     * @return Response
+     */
+    public function downloadXml(string $referencia): Response
+    {
+        $response = FocusNfeHttp::withToken($this->token)->get(
+            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia",
+            ['completo' => 'true']
+        );
+
+        if ($response->failed()) {
+            FocusNfeLogger::error('FocusNfe.NFe: Erro ao baixar XML da NF-e', [
+                'response' => $response->json(),
+                'referencia' => $referencia,
             ]);
         }
 

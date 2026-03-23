@@ -2,15 +2,16 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
-use Sysborg\FocusNfe\app\Services\FocusNfeHttp;
 use Illuminate\Http\Client\Response;
+use Sysborg\FocusNfe\app\Events\MDFeAutorizado;
+use Sysborg\FocusNfe\app\Events\MDFeCancelado;
+use Sysborg\FocusNfe\app\Events\MDFeEncerrado;
 
 /**
  * Classe responsável por manipular o MDF-e
  *
  */
-class MDFe
+class MDFe extends EventHelper
 {
     /**
      * URL base da API MDF-e
@@ -55,6 +56,7 @@ class MDFe
     {
         $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data);
 
+        $this->dispatch(MDFeAutorizado::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNFe.MDFe: Erro ao enviar MDF-e', [
                 'response' => $response->json(),
@@ -95,6 +97,7 @@ class MDFe
     {
         $response = FocusNfeHttp::withToken($this->token)->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
 
+        $this->dispatch(MDFeCancelado::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNFe.MDFe: Erro ao cancelar MDF-e', [
                 'response' => $response->json(),
@@ -159,6 +162,7 @@ class MDFe
     {
         $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/encerrar");
 
+        $this->dispatch(MDFeEncerrado::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNFe.MDFe: Erro ao encerrar MDF-e', [
                 'response' => $response->json(),

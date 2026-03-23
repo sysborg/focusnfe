@@ -5,65 +5,252 @@ namespace Sysborg\FocusNfe\app\DTO;
 class CTeDTO extends DTO
 {
     public function __construct(
-        public ?ModalAereoDTO $modal_aereo,
-        public ?ModalAquaviarioDTO $modal_aquaviario,
-        public ?ModalDutoviarioDTO $modal_dutoviario,
-        public ?ModalFerroviarioDTO $modal_ferroviario,
-        public ?ModalMultimodalDTO $modal_multimodal,
-        public ?ModalRodoviarioDTO $modal_rodoviario,
-        public $referencia
+        public string $referencia,
+        public ?string $cfop = null,
+        public ?string $natureza_operacao = null,
+        public ?string $tipo_cte = null,
+        public ?string $data_emissao = null,
+        public ?string $codigo_municipio_envio = null,
+        public ?string $municipio_envio = null,
+        public ?string $uf_envio = null,
+        public ?string $codigo_municipio_inicio = null,
+        public ?string $municipio_inicio = null,
+        public ?string $uf_inicio = null,
+        public ?string $codigo_municipio_fim = null,
+        public ?string $municipio_fim = null,
+        public ?string $uf_fim = null,
+        public ?string $cnpj_emitente = null,
+        public ?string $inscricao_estadual_emitente = null,
+        public ?string $logradouro_emitente = null,
+        public ?string $numero_emitente = null,
+        public ?string $bairro_emitente = null,
+        public ?string $municipio_emitente = null,
+        public ?string $uf_emitente = null,
+        public ?string $cep_emitente = null,
+        public ?string $telefone_emitente = null,
+        public ?string $email_emitente = null,
+        public ?string $nome_emitente = null,
+        public ?string $nome_fantasia_emitente = null,
+        public ?string $regime_tributario_emitente = null,
+        public ?string $cnpj_remetente = null,
+        public ?string $cpf_remetente = null,
+        public ?string $inscricao_estadual_remetente = null,
+        public ?string $nome_remetente = null,
+        public ?string $telefone_remetente = null,
+        public ?string $logradouro_remetente = null,
+        public ?string $numero_remetente = null,
+        public ?string $bairro_remetente = null,
+        public ?string $codigo_municipio_remetente = null,
+        public ?string $municipio_remetente = null,
+        public ?string $uf_remetente = null,
+        public ?string $cep_remetente = null,
+        public ?string $codigo_pais_remetente = null,
+        public ?string $pais_remetente = null,
+        public ?string $cnpj_destinatario = null,
+        public ?string $cpf_destinatario = null,
+        public ?string $inscricao_estadual_destinatario = null,
+        public ?string $nome_destinatario = null,
+        public ?string $telefone_destinatario = null,
+        public ?string $logradouro_destinatario = null,
+        public ?string $numero_destinatario = null,
+        public ?string $bairro_destinatario = null,
+        public ?string $codigo_municipio_destinatario = null,
+        public ?string $municipio_destinatario = null,
+        public ?string $uf_destinatario = null,
+        public ?string $cep_destinatario = null,
+        public ?string $codigo_pais_destinatario = null,
+        public ?string $pais_destinatario = null,
+        public ?string $email_destinatario = null,
+        public ?string $cnpj_expedidor = null,
+        public ?string $cpf_expedidor = null,
+        public ?string $inscricao_estadual_expedidor = null,
+        public ?string $nome_expedidor = null,
+        public ?string $telefone_expedidor = null,
+        public ?string $logradouro_expedidor = null,
+        public ?string $numero_expedidor = null,
+        public ?string $bairro_expedidor = null,
+        public ?string $codigo_municipio_expedidor = null,
+        public ?string $municipio_expedidor = null,
+        public ?string $uf_expedidor = null,
+        public ?string $cep_expedidor = null,
+        public ?string $codigo_pais_expedidor = null,
+        public ?string $pais_expedidor = null,
+        public ?string $cnpj_recebedor = null,
+        public ?string $cpf_recebedor = null,
+        public ?string $inscricao_estadual_recebedor = null,
+        public ?string $nome_recebedor = null,
+        public ?string $telefone_recebedor = null,
+        public ?string $logradouro_recebedor = null,
+        public ?string $numero_recebedor = null,
+        public ?string $bairro_recebedor = null,
+        public ?string $codigo_municipio_recebedor = null,
+        public ?string $municipio_recebedor = null,
+        public ?string $uf_recebedor = null,
+        public ?string $cep_recebedor = null,
+        public ?string $codigo_pais_recebedor = null,
+        public ?string $pais_recebedor = null,
+        public ?string $cnpj_tomador = null,
+        public ?string $cpf_tomador = null,
+        public ?string $nome_tomador = null,
+        public ?string $nome_fantasia_tomador = null,
+        public ?string $logradouro_tomador = null,
+        public ?string $numero_tomador = null,
+        public ?string $bairro_tomador = null,
+        public ?string $municipio_tomador = null,
+        public ?string $uf_tomador = null,
+        public ?string $cep_tomador = null,
+        public ?string $codigo_municipio_tomador = null,
+        public ?string $indicador_inscricao_estadual_tomador = null,
+        public ?string $valor_total = null,
+        public ?string $valor_receber = null,
+        public ?string $valor_total_tributos = null,
+        public ?string $valor_total_carga = null,
+        public ?string $valor_carga_averbacao = null,
+        public ?string $icms_situacao_tributaria = null,
+        public ?string $icms_base_calculo = null,
+        public ?string $icms_aliquota = null,
+        public ?string $icms_valor = null,
+        public ?string $issqn_base_calculo = null,
+        public ?string $issqn_valor = null,
+        public ?ModalAereoDTO $modal_aereo = null,
+        public ?ModalAquaviarioDTO $modal_aquaviario = null,
+        public ?ModalDutoviarioDTO $modal_dutoviario = null,
+        public ?ModalFerroviarioDTO $modal_ferroviario = null,
+        public ?ModalMultimodalDTO $modal_multimodal = null,
+        public ModalRodoviarioDTO|ModalRodoviarioOsDTO|null $modal_rodoviario = null,
     ) {
     }
 
-    /**
-     * Cria um objeto CTeDTO a partir de um array.
-     *
-     * @param array $data
-     * @return CTeDTO
-     */
     public static function fromArray(array $data): self
     {
-        $modal_aereo = null;
-        if (isset($data['modal_aereo'])) {
-            $modal_aereo = ModalAereoDTO::fromArray($data['modal_aereo']);
-        }
-
-        $modal_aquaviario = null;
-        if (isset($data['modal_aquaviario'])) {
-            $modal_aquaviario = ModalAquaviarioDTO::fromArray($data['modal_aquaviario']);
-        }
-
-        $modal_dutoviario = null;
-        if (isset($data['modal_dutoviario'])) {
-            $modal_dutoviario = ModalDutoviarioDTO::fromArray($data['modal_dutoviario']);
-        }
-
-        $modal_ferroviario = null;
-        if (isset($data['modal_ferroviario'])) {
-            $modal_ferroviario = ModalFerroviarioDTO::fromArray($data['modal_ferroviario']);
-        }
-
-        $modal_multimodal = null;
-        if (isset($data['modal_multimodal'])) {
-            $modal_multimodal = ModalMultimodalDTO::fromArray($data['modal_multimodal']);
-        }
+        $modal_aereo = isset($data['modal_aereo']) ? ModalAereoDTO::fromArray($data['modal_aereo']) : null;
+        $modal_aquaviario = isset($data['modal_aquaviario']) ? ModalAquaviarioDTO::fromArray($data['modal_aquaviario']) : null;
+        $modal_dutoviario = isset($data['modal_dutoviario']) ? ModalDutoviarioDTO::fromArray($data['modal_dutoviario']) : null;
+        $modal_ferroviario = isset($data['modal_ferroviario']) ? ModalFerroviarioDTO::fromArray($data['modal_ferroviario']) : null;
+        $modal_multimodal = isset($data['modal_multimodal']) ? ModalMultimodalDTO::fromArray($data['modal_multimodal']) : null;
 
         $modal_rodoviario = null;
         if (isset($data['modal_rodoviario'])) {
             $modalType = $data['modal_rodoviario']['type'] ?? ($data['modal_rodoviario']['tipo'] ?? null);
-            $modal_rodoviario = $modalType === 'CTe' ?
-                ModalRodoviarioDTO::fromArray($data['modal_rodoviario']) :
-                ModalRodoviarioOsDTO::fromArray($data['modal_rodoviario']);
+            $modal_rodoviario = $modalType === 'CTe'
+                ? ModalRodoviarioDTO::fromArray($data['modal_rodoviario'])
+                : ModalRodoviarioOsDTO::fromArray($data['modal_rodoviario']);
         }
 
         return new self(
-            $modal_aereo,
-            $modal_aquaviario,
-            $modal_dutoviario,
-            $modal_ferroviario,
-            $modal_multimodal,
-            $modal_rodoviario,
-            $data['referencia']
+            referencia: $data['referencia'],
+            cfop: $data['cfop'] ?? null,
+            natureza_operacao: $data['natureza_operacao'] ?? null,
+            tipo_cte: $data['tipo_cte'] ?? null,
+            data_emissao: $data['data_emissao'] ?? null,
+            codigo_municipio_envio: $data['codigo_municipio_envio'] ?? null,
+            municipio_envio: $data['municipio_envio'] ?? null,
+            uf_envio: $data['uf_envio'] ?? null,
+            codigo_municipio_inicio: $data['codigo_municipio_inicio'] ?? null,
+            municipio_inicio: $data['municipio_inicio'] ?? null,
+            uf_inicio: $data['uf_inicio'] ?? null,
+            codigo_municipio_fim: $data['codigo_municipio_fim'] ?? null,
+            municipio_fim: $data['municipio_fim'] ?? null,
+            uf_fim: $data['uf_fim'] ?? null,
+            cnpj_emitente: $data['cnpj_emitente'] ?? null,
+            inscricao_estadual_emitente: $data['inscricao_estadual_emitente'] ?? null,
+            logradouro_emitente: $data['logradouro_emitente'] ?? null,
+            numero_emitente: $data['numero_emitente'] ?? null,
+            bairro_emitente: $data['bairro_emitente'] ?? null,
+            municipio_emitente: $data['municipio_emitente'] ?? null,
+            uf_emitente: $data['uf_emitente'] ?? null,
+            cep_emitente: $data['cep_emitente'] ?? null,
+            telefone_emitente: $data['telefone_emitente'] ?? null,
+            email_emitente: $data['email_emitente'] ?? null,
+            nome_emitente: $data['nome_emitente'] ?? null,
+            nome_fantasia_emitente: $data['nome_fantasia_emitente'] ?? null,
+            regime_tributario_emitente: $data['regime_tributario_emitente'] ?? null,
+            cnpj_remetente: $data['cnpj_remetente'] ?? null,
+            cpf_remetente: $data['cpf_remetente'] ?? null,
+            inscricao_estadual_remetente: $data['inscricao_estadual_remetente'] ?? null,
+            nome_remetente: $data['nome_remetente'] ?? null,
+            telefone_remetente: $data['telefone_remetente'] ?? null,
+            logradouro_remetente: $data['logradouro_remetente'] ?? null,
+            numero_remetente: $data['numero_remetente'] ?? null,
+            bairro_remetente: $data['bairro_remetente'] ?? null,
+            codigo_municipio_remetente: $data['codigo_municipio_remetente'] ?? null,
+            municipio_remetente: $data['municipio_remetente'] ?? null,
+            uf_remetente: $data['uf_remetente'] ?? null,
+            cep_remetente: $data['cep_remetente'] ?? null,
+            codigo_pais_remetente: $data['codigo_pais_remetente'] ?? null,
+            pais_remetente: $data['pais_remetente'] ?? null,
+            cnpj_destinatario: $data['cnpj_destinatario'] ?? null,
+            cpf_destinatario: $data['cpf_destinatario'] ?? null,
+            inscricao_estadual_destinatario: $data['inscricao_estadual_destinatario'] ?? null,
+            nome_destinatario: $data['nome_destinatario'] ?? null,
+            telefone_destinatario: $data['telefone_destinatario'] ?? null,
+            logradouro_destinatario: $data['logradouro_destinatario'] ?? null,
+            numero_destinatario: $data['numero_destinatario'] ?? null,
+            bairro_destinatario: $data['bairro_destinatario'] ?? null,
+            codigo_municipio_destinatario: $data['codigo_municipio_destinatario'] ?? null,
+            municipio_destinatario: $data['municipio_destinatario'] ?? null,
+            uf_destinatario: $data['uf_destinatario'] ?? null,
+            cep_destinatario: $data['cep_destinatario'] ?? null,
+            codigo_pais_destinatario: $data['codigo_pais_destinatario'] ?? null,
+            pais_destinatario: $data['pais_destinatario'] ?? null,
+            email_destinatario: $data['email_destinatario'] ?? null,
+            cnpj_expedidor: $data['cnpj_expedidor'] ?? null,
+            cpf_expedidor: $data['cpf_expedidor'] ?? null,
+            inscricao_estadual_expedidor: $data['inscricao_estadual_expedidor'] ?? null,
+            nome_expedidor: $data['nome_expedidor'] ?? null,
+            telefone_expedidor: $data['telefone_expedidor'] ?? null,
+            logradouro_expedidor: $data['logradouro_expedidor'] ?? null,
+            numero_expedidor: $data['numero_expedidor'] ?? null,
+            bairro_expedidor: $data['bairro_expedidor'] ?? null,
+            codigo_municipio_expedidor: $data['codigo_municipio_expedidor'] ?? null,
+            municipio_expedidor: $data['municipio_expedidor'] ?? null,
+            uf_expedidor: $data['uf_expedidor'] ?? null,
+            cep_expedidor: $data['cep_expedidor'] ?? null,
+            codigo_pais_expedidor: $data['codigo_pais_expedidor'] ?? null,
+            pais_expedidor: $data['pais_expedidor'] ?? null,
+            cnpj_recebedor: $data['cnpj_recebedor'] ?? null,
+            cpf_recebedor: $data['cpf_recebedor'] ?? null,
+            inscricao_estadual_recebedor: $data['inscricao_estadual_recebedor'] ?? null,
+            nome_recebedor: $data['nome_recebedor'] ?? null,
+            telefone_recebedor: $data['telefone_recebedor'] ?? null,
+            logradouro_recebedor: $data['logradouro_recebedor'] ?? null,
+            numero_recebedor: $data['numero_recebedor'] ?? null,
+            bairro_recebedor: $data['bairro_recebedor'] ?? null,
+            codigo_municipio_recebedor: $data['codigo_municipio_recebedor'] ?? null,
+            municipio_recebedor: $data['municipio_recebedor'] ?? null,
+            uf_recebedor: $data['uf_recebedor'] ?? null,
+            cep_recebedor: $data['cep_recebedor'] ?? null,
+            codigo_pais_recebedor: $data['codigo_pais_recebedor'] ?? null,
+            pais_recebedor: $data['pais_recebedor'] ?? null,
+            cnpj_tomador: $data['cnpj_tomador'] ?? null,
+            cpf_tomador: $data['cpf_tomador'] ?? null,
+            nome_tomador: $data['nome_tomador'] ?? null,
+            nome_fantasia_tomador: $data['nome_fantasia_tomador'] ?? null,
+            logradouro_tomador: $data['logradouro_tomador'] ?? null,
+            numero_tomador: $data['numero_tomador'] ?? null,
+            bairro_tomador: $data['bairro_tomador'] ?? null,
+            municipio_tomador: $data['municipio_tomador'] ?? null,
+            uf_tomador: $data['uf_tomador'] ?? null,
+            cep_tomador: $data['cep_tomador'] ?? null,
+            codigo_municipio_tomador: $data['codigo_municipio_tomador'] ?? null,
+            indicador_inscricao_estadual_tomador: $data['indicador_inscricao_estadual_tomador'] ?? null,
+            valor_total: $data['valor_total'] ?? null,
+            valor_receber: $data['valor_receber'] ?? null,
+            valor_total_tributos: $data['valor_total_tributos'] ?? null,
+            valor_total_carga: $data['valor_total_carga'] ?? null,
+            valor_carga_averbacao: $data['valor_carga_averbacao'] ?? null,
+            icms_situacao_tributaria: $data['icms_situacao_tributaria'] ?? null,
+            icms_base_calculo: $data['icms_base_calculo'] ?? null,
+            icms_aliquota: $data['icms_aliquota'] ?? null,
+            icms_valor: $data['icms_valor'] ?? null,
+            issqn_base_calculo: $data['issqn_base_calculo'] ?? null,
+            issqn_valor: $data['issqn_valor'] ?? null,
+            modal_aereo: $modal_aereo,
+            modal_aquaviario: $modal_aquaviario,
+            modal_dutoviario: $modal_dutoviario,
+            modal_ferroviario: $modal_ferroviario,
+            modal_multimodal: $modal_multimodal,
+            modal_rodoviario: $modal_rodoviario,
         );
     }
 }
