@@ -30,4 +30,14 @@ jobs:
         run: composer analyse
 
       - name: Run tests with coverage
-        run: vendor/bin/phpunit --coverage-text --colors=always
+        run: |
+          vendor/bin/phpunit --coverage-text --colors=always | tee coverage.txt
+          COVERAGE=$(grep -Eo 'Lines:\s+[0-9]+\.[0-9]+%' coverage.txt | head -n 1 | grep -Eo '[0-9]+\.[0-9]+')
+          if [ -z "$COVERAGE" ]; then
+            echo "Nao foi possivel extrair a cobertura de linhas do relatório."
+            exit 1
+          fi
+          awk -v coverage="$COVERAGE" 'BEGIN { if (coverage + 0 < 80) exit 1 }'
+
+      - name: Assert minimum coverage
+        run: echo "Cobertura minima de 80% validada no CI."

@@ -1,11 +1,26 @@
 {
     "name": "sysborg/focusnfe",
-    "description": "Integração para Laravel com a FocusNFe",
+    "description": "Integração Laravel com a FocusNFe para NFe, NFCe, CTe, MDFe e NFSe",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "nfe",
+        "nfce",
+        "cte",
+        "mdfe",
+        "fiscal",
+        "sefaz",
+        "focus",
+        "laravel"
+    ],
     "autoload": {
         "psr-4": {
             "Sysborg\\FocusNfe\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sysborg\\FocusNfe\\tests\\": "tests/"
         }
     },
     "authors": [
@@ -30,10 +45,12 @@
         "laravel/pint": "^1.21",
         "nunomaduro/larastan": "^2.9",
         "phpstan/phpstan": "^1.12",
-        "phpunit/phpunit": "^10.5"
+        "phpunit/phpunit": "^10.5",
+        "pestphp/pest": "^2.36"
     },
     "scripts": {
         "test": "phpunit",
+        "test:pest": "pest",
         "analyse": "phpstan analyse --memory-limit=1G",
         "lint": "pint --test"
     },
@@ -41,7 +58,15 @@
         "laravel": {
             "providers": [
                 "Sysborg\\FocusNfe\\app\\Providers\\SBFocusNFeProvider"
-            ]
+            ],
+            "aliases": {
+                "FocusNfe": "Sysborg\\FocusNfe\\app\\Facades\\FocusNfe"
+            }
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
     }
 }

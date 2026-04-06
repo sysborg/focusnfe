@@ -5,7 +5,7 @@ parameters:
   level: 8
   paths:
     - src/app
-    - src/tests
+    - tests
   treatPhpDocTypesAsCertain: false
   checkMissingIterableValueType: false
   tmpDir: /tmp/phpstan-focusnfe
