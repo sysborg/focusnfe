@@ -1,21 +1,49 @@
 # Sysborg FocusNFe
 
 [![CI](https://github.com/sysborg/focusnfe/actions/workflows/ci.yml/badge.svg)](https://github.com/sysborg/focusnfe/actions/workflows/ci.yml)
+[![Packagist Version](https://img.shields.io/packagist/v/sysborg/focusnfe)](https://packagist.org/packages/sysborg/focusnfe)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/sysborg/focusnfe)](https://packagist.org/packages/sysborg/focusnfe)
+[![License](https://img.shields.io/packagist/l/sysborg/focusnfe)](https://packagist.org/packages/sysborg/focusnfe)
 
 ## Pacote de implementação da FocusNFe para Laravel por Sysborg
 
 ## Introdução
 
 O projeto tem como objetivo facilitar a integração de aplicações Laravel com a FocusNFe, utilizando uma abordagem consistente e bem estruturada.
-Ele permite que o usuário escolha entre utilizar Services ou acessar os recursos diretamente por meio de rotas.
+Ele expõe uma camada focada em `services`, `DTOs`, `helpers` e eventos Laravel para integração com a API da FocusNFe.
 
 O pacote expõe services para os módulos documentados pela FocusNFe e, nos fluxos já implementados, dispara eventos Laravel para facilitar integrações internas.
 
-## Swagger
+## Quick Start
 
-Todas as rotas estão bem documentadas seguindo o padrão do Swagger, permitindo que você disponibilize uma documentação clara e acessível. Caso queira uma solução rápida e 
-prática, basta implementar o Swagger no seu projeto Laravel para oferecer uma referência detalhada da API.
-[Swagger](https://github.com/DarkaOnLine/L5-Swagger)
+```bash
+composer require sysborg/focusnfe
+php artisan vendor:publish --tag=config
+```
+
+```env
+FOCUSNFE_TOKEN=seu-token-focusnfe
+FOCUSNFE_AMBIENTE=production
+```
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+$response = $nfe->get('pedido-123');
+```
+
+## Guias
+
+- [Instalação](docs/instalacao.md)
+- [Configuração](docs/configuracao.md)
+- [Exemplos](docs/exemplos.md)
+- [Erros e respostas](docs/erros-e-respostas.md)
+- [Eventos](docs/eventos.md)
+- [FAQ](docs/faq.md)
+- [Migração](docs/migracao.md)
+- [Contribuição](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
 
 ## Eventos
 
@@ -23,7 +51,7 @@ prática, basta implementar o Swagger no seu projeto Laravel para oferecer uma r
 - data: É o retorno da FocusNFe sem nenhum tipo de alteração.
 - success: Se a ação esperada foi realizada efetivamente ou não.
 
-### Evento quando a rota de webhook é estimulada
+### Evento quando um webhook é normalizado pela aplicação consumidora
 ```
 use \Sysborg\FocusNfe\app\Events\HooksReceived
 ```
@@ -33,9 +61,9 @@ Neste caso, a explicação introdutória sobre eventos não se aplica, pois trat
 
 [Webhook - FocusNFe](https://focusnfe.com.br/doc/#gatilhos-webhooks_eventos)
 
-### Recebimento de webhooks no Laravel
+### Webhooks no Laravel
 
-O package já oferece o client HTTP para cadastro e gestão de webhooks e também o evento `HooksReceived` para você integrar o payload recebido à sua aplicação.
+O pacote oferece o service de gestão de webhooks na FocusNFe, o `WebhookDTO`, o evento `HooksReceived` e o helper `WebhookPayloadNormalizer` para padronizar dados na aplicação consumidora.
 
 Pelo manual da FocusNFe, os campos relevantes para autenticação do webhook são `authorization` e `authorization_header`. Em vez de depender de uma assinatura HMAC não documentada, a estratégia recomendada é configurar um token compartilhado no cadastro do webhook e validá-lo no seu endpoint de recepção.
 
@@ -56,33 +84,23 @@ $webhooks->cadastrar(new WebhookDTO(
 ));
 ```
 
-Exemplo simples de rota/controller para receber o webhook:
+Exemplo simples de normalização em um listener/serviço da aplicação consumidora:
 
 ```php
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Sysborg\FocusNfe\app\Events\HooksReceived;
+use Sysborg\FocusNfe\app\Services\WebhookPayloadNormalizer;
 
-Route::post('/focusnfe/webhooks', function (Request $request) {
-    $expectedHeader = 'Authorization';
-    $expectedValue = 'Bearer meu-token-interno';
+$payload = [
+    'event' => 'nfe_autorizada',
+    'cnpjEmitente' => '07504505000132',
+    'ref' => 'pedido-123',
+];
 
-    if ($request->header($expectedHeader) !== $expectedValue) {
-        abort(Response::HTTP_UNAUTHORIZED, 'Webhook nao autorizado.');
-    }
-
-    Event::dispatch(new HooksReceived(
-        $request->all(),
-        (string) $request->headers->get('referer', '')
-    ));
-
-    return response()->json(['ok' => true]);
-});
+WebhookPayloadNormalizer::dispatch($payload, 'focusnfe:webhook');
 ```
 
-Se quiser trocar o nome do cabeçalho, configure o campo `authorization_header` no `WebhookDTO` e valide o mesmo nome no seu endpoint.
+Se quiser trocar o nome do cabeçalho, configure o campo `authorization_header` no `WebhookDTO` e valide o mesmo nome na camada HTTP da sua aplicação. Essa camada não faz parte do package.
 
 ### Padrão de dados para os eventos abaixo
 
@@ -123,7 +141,7 @@ Observação importante:
 
 - os eventos acima refletem a cobertura atual do código
 - nem todo endpoint existente no pacote já dispara evento
-- `HooksReceived` é um evento de entrada de webhook, diferente dos eventos de retorno de service
+- `HooksReceived` é um evento de normalização/entrada disparado pela aplicação consumidora, diferente dos eventos de retorno de service
 
 ### Eventos por módulo
 
@@ -147,7 +165,7 @@ Os dados enviados pelo evento são explicados no início da sessão eventos.
 
 #### Exclusão da empresa
 ```
-use \Sysborg\FocusNfe\app\Events\EmpresaCreated
+use \Sysborg\FocusNfe\app\Events\EmpresaDeleted
 ```
 
 Os dados enviados pelo evento são explicados no início da sessão eventos.
@@ -430,6 +448,54 @@ O `EmpresaDTO` cobre os campos atualmente documentados no manual local para:
 - flags operacionais como manifestação, contingência offline e emissão síncrona
 
 ## Instalação
+
+### Requisitos
+
+- PHP 8.0+
+- Laravel 9+
+- Token da API FocusNFe
+
+### Composer
+
+```bash
+composer require sysborg/focusnfe
+```
+
+### Publicar configuração
+
+```bash
+php artisan vendor:publish --tag=config
+```
+
+### Variáveis de ambiente
+
+```env
+FOCUSNFE_TOKEN=seu-token-focusnfe
+FOCUSNFE_AMBIENTE=production
+FOCUSNFE_LOG_CHANNEL=stack
+FOCUSNFE_LOG_LEVEL=error
+FOCUSNFE_RETRY_TIMES=3
+FOCUSNFE_RETRY_SLEEP=1000
+FOCUSNFE_RATE_LIMIT_ENABLED=true
+FOCUSNFE_RATE_LIMIT_MAX_ATTEMPTS=60
+FOCUSNFE_RATE_LIMIT_DECAY_SECONDS=60
+```
+
+### Documentação complementar
+
+- [Guia de instalação detalhado](docs/instalacao.md)
+- [Guia de configuração](docs/configuracao.md)
+- [Exemplos por fluxo](docs/exemplos.md)
+- [Tratamento de erros e respostas](docs/erros-e-respostas.md)
+- [Eventos disponíveis](docs/eventos.md)
+- [FAQ](docs/faq.md)
+- [Guia de migração](docs/migracao.md)
+
+## Apoio
+
+Se este pacote te ajudou no dia a dia e você quiser apoiar o projeto de forma opcional, você pode me pagar um café via Buy Me a Coffee.
+
+O apoio é totalmente voluntário e o foco principal deste repositório continua sendo qualidade técnica, documentação e evolução aberta do package.
 
 ## Documentação da FocusNFe
 

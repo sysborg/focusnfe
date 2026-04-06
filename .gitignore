@@ -9,3 +9,4 @@ coverage/
 /vendor
 references
 .phpunit.cache
+/opendoc
