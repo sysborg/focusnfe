@@ -75,7 +75,7 @@ class NFeRecebidas
      */
     public function manifestar(string $chave, NFeRecebidasDTO $data): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/manifesto", $data);
+        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$chave/manifesto", $data->toArray());
 
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNFe.NFeRecebidas: Erro ao manifestar NFe', [

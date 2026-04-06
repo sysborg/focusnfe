@@ -3,6 +3,7 @@
 namespace Sysborg\FocusNfe\app\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Sysborg\FocusNfe\app\Services\FocusNfeManager;
 use Sysborg\FocusNfe\app\Services\{
     Backups,
     CEP,
@@ -73,6 +74,10 @@ class SBFocusNFeProvider extends ServiceProvider
         foreach (self::FOCUSNFE_SERVICES as $serviceClass) {
             $this->registerFocusNfeService($serviceClass);
         }
+
+        $this->app->singleton('focusnfe', static function ($app) {
+            return new FocusNfeManager($app);
+        });
     }
 
     /**
@@ -96,9 +101,9 @@ class SBFocusNFeProvider extends ServiceProvider
             return (new CnaeRule())->passes($attribute, $value);
         }, (new CnaeRule())->message());
 
-        Event::listen(HooksReceived::class, [
-            ...config('focusnfe.listeners.hooks', [])
-        ]);
+        foreach (config('focusnfe.listeners.hooks', []) as $listener) {
+            Event::listen(HooksReceived::class, $listener);
+        }
     }
 
     /**

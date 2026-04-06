@@ -95,13 +95,11 @@ class NFeDTO extends DTO
     ) {
     }
 
-    public function toArray(): array
+    protected function specialCases(): array
     {
-        $this->specialCases = [
-            'dataEmissao' => fn (Carbon $v) => $v->toIso8601String(),
+        return [
+            'data_emissao' => fn (Carbon $v) => $v->utc()->toIso8601String(),
         ];
-
-        return parent::toArray();
     }
 
     public static function fromArray(array $data): self

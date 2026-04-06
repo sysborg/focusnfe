@@ -281,7 +281,7 @@ class EmpresaDTO extends DTO
             $data['habilitaContingenciaOfflineNfce'] ?? false,
             $data['reaproveitaNumeroNfceContingencia'] ?? false,
             $data['mostrarDanfseBadge'] ?? false,
-            $data['orientacaoDanfe'] ?? null,
+            self::normalizeOrientacaoDanfe($data['orientacaoDanfe'] ?? null),
             $data['reciboDanfe'] ?? false,
             $data['exibeSempreIpiDanfe'] ?? false,
             $data['exibeIssqnDanfe'] ?? false,
@@ -325,5 +325,9 @@ class EmpresaDTO extends DTO
             $data['mdfeSincrono'] ?? false,
             $data['mdfeSincronoHomologacao'] ?? false,
         );
+    }
+    private static function normalizeOrientacaoDanfe(?string $value): ?string
+    {
+        return $value === 'ladscape' ? 'landscape' : $value;
     }
 }

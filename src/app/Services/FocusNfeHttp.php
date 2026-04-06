@@ -100,7 +100,7 @@ class FocusNfeHttp
     public function get(string $url, array $query = []): Response
     {
         $this->checkRateLimit();
-        return $this->http->get($url, $query);
+        return empty($query) ? $this->http->get($url) : $this->http->get($url, $query);
     }
 
     /**

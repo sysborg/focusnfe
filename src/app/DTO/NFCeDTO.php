@@ -72,20 +72,11 @@ class NFCeDTO extends DTO
     ) {
     }
 
-    /**
-     * Mapeamento de campos com Carbon para serialização correta
-     *
-     * @return array
-     */
-    protected array $specialCases = [];
-
-    public function toArray(): array
+    protected function specialCases(): array
     {
-        $this->specialCases = [
-            'dataEmissao' => fn (Carbon $v) => $v->toIso8601String(),
+        return [
+            'data_emissao' => fn (Carbon $v) => $v->utc()->toIso8601String(),
         ];
-
-        return parent::toArray();
     }
 
     /**

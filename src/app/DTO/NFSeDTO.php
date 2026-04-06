@@ -13,7 +13,17 @@ class NFSeDTO extends DTO
         public PrestadorDTO $prestador,
         public TomadorDTO $tomador,
         public ServicoDTO $servico,
-        public bool $optanteSimplesNacional = true
+        public bool $optanteSimplesNacional = true,
+        // Campos opcionais documentados pela API
+        public ?string $naturezaOperacao = null,
+        public ?string $regimeEspecialTributacao = null,
+        public bool $incentivadorCultural = false,
+        public ?string $codigoObra = null,
+        public ?string $art = null,
+        public ?string $numeroRpsSubstituido = null,
+        public ?string $serieRpsSubstituido = null,
+        public ?string $tipoRpsSubstituido = null,
+        public ?array $intermediario = null,
     ) {
         $this->validate();
     }
@@ -51,6 +61,14 @@ class NFSeDTO extends DTO
         return [
             'dataEmissao' => 'required|date',
             'optanteSimplesNacional' => 'required|boolean',
+            'naturezaOperacao' => 'nullable|string|max:2',
+            'regimeEspecialTributacao' => 'nullable|string|max:1',
+            'incentivadorCultural' => 'boolean',
+            'codigoObra' => 'nullable|string|max:15',
+            'art' => 'nullable|string|max:30',
+            'numeroRpsSubstituido' => 'nullable|string',
+            'serieRpsSubstituido' => 'nullable|string',
+            'tipoRpsSubstituido' => 'nullable|string|max:1',
         ];
     }
 
@@ -78,14 +96,23 @@ class NFSeDTO extends DTO
      */
     public static function fromArray(array $data): self
     {
+        $dataEmissao = self::value($data, 'dataEmissao', 'data_emissao');
+
         return new self(
-            self::value($data, 'dataEmissao', 'data_emissao') instanceof Carbon
-                ? self::value($data, 'dataEmissao', 'data_emissao')
-                : new Carbon(self::value($data, 'dataEmissao', 'data_emissao')),
+            $dataEmissao instanceof Carbon ? $dataEmissao : new Carbon($dataEmissao),
             PrestadorDTO::fromArray($data['prestador']),
             TomadorDTO::fromArray($data['tomador']),
             ServicoDTO::fromArray($data['servico']),
-            self::value($data, 'optanteSimplesNacional', 'optante_simples_nacional') ?? true
+            self::value($data, 'optanteSimplesNacional', 'optante_simples_nacional') ?? true,
+            self::value($data, 'naturezaOperacao', 'natureza_operacao'),
+            self::value($data, 'regimeEspecialTributacao', 'regime_especial_tributacao'),
+            (bool) (self::value($data, 'incentivadorCultural', 'incentivador_cultural') ?? false),
+            self::value($data, 'codigoObra', 'codigo_obra'),
+            $data['art'] ?? null,
+            self::value($data, 'numeroRpsSubstituido', 'numero_rps_substituido'),
+            self::value($data, 'serieRpsSubstituido', 'serie_rps_substituido'),
+            self::value($data, 'tipoRpsSubstituido', 'tipo_rps_substituido'),
+            $data['intermediario'] ?? null,
         );
     }
 
@@ -101,17 +128,38 @@ class NFSeDTO extends DTO
      */
     public function toArray(): array
     {
-        return [
+        $result = [
             'data_emissao' => $this->dataEmissao->format('Y-m-d'),
             'prestador' => $this->prestador->toArray(),
             'optante_simples_nacional' => $this->optanteSimplesNacional,
-            'tomador' => [
-                'cnpj' => $this->tomador->cnpj,
-                'razao_social' => $this->tomador->razaoSocial,
-                'email' => $this->tomador->email,
-                'endereco' => $this->tomador->endereco->toArray(),
-            ],
+            'tomador' => $this->tomador->toArray(),
             'servico' => $this->servico->toArray(),
         ];
+
+        if ($this->naturezaOperacao !== null) {
+            $result['natureza_operacao'] = $this->naturezaOperacao;
+        }
+        if ($this->regimeEspecialTributacao !== null) {
+            $result['regime_especial_tributacao'] = $this->regimeEspecialTributacao;
+        }
+        if ($this->incentivadorCultural) {
+            $result['incentivador_cultural'] = $this->incentivadorCultural;
+        }
+        if ($this->codigoObra !== null) {
+            $result['codigo_obra'] = $this->codigoObra;
+        }
+        if ($this->art !== null) {
+            $result['art'] = $this->art;
+        }
+        if ($this->numeroRpsSubstituido !== null) {
+            $result['numero_rps_substituido'] = $this->numeroRpsSubstituido;
+            $result['serie_rps_substituido'] = $this->serieRpsSubstituido;
+            $result['tipo_rps_substituido'] = $this->tipoRpsSubstituido;
+        }
+        if ($this->intermediario !== null) {
+            $result['intermediario'] = $this->intermediario;
+        }
+
+        return $result;
     }
 }

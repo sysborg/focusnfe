@@ -5,6 +5,16 @@ namespace Sysborg\FocusNfe\app\DTO;
 abstract class DTO
 {
     /**
+     * Transformações pontuais executadas durante a serialização.
+     *
+     * @return array<string, callable>
+     */
+    protected function specialCases(): array
+    {
+        return [];
+    }
+
+    /**
      * Mapeamento de campos que não seguem a conversão automática
      * Sobrescreva este método nas classes filhas para definir exceções
      *
@@ -25,11 +35,11 @@ abstract class DTO
     {
         $data = get_object_vars($this);
         $mapping = static::fieldMapping();
+        $specialCases = $this->specialCases();
         $result = [];
 
         foreach ($data as $key => $value) {
             $calculatedValue = $value;
-            $specialCases = $this->specialCases ?? null;
 
             if (is_array($specialCases) && isset($specialCases[$key]) && is_callable($specialCases[$key])) {
                 $calculatedValue = $specialCases[$key]($value);

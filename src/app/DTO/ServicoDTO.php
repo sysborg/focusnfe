@@ -15,6 +15,23 @@ class ServicoDTO extends DTO
         public string $codigoTributarioMunicipio,
         public float $valorServicos,
         public ?string $codigoCnae = null,
+        // Campos de deduções e retenções (NFSe municipal)
+        public ?float $valorDeducoes = null,
+        public ?float $valorPis = null,
+        public ?float $valorCofins = null,
+        public ?float $valorInss = null,
+        public ?float $valorIr = null,
+        public ?float $valorCsll = null,
+        public ?float $valorIss = null,
+        public ?float $valorIssRetido = null,
+        public ?float $outrasRetencoes = null,
+        public ?float $baseCalculo = null,
+        public ?float $descontoIncondicionado = null,
+        public ?float $descontoCondicionado = null,
+        public ?float $percentualTotalTributos = null,
+        public ?string $fonteTotalTributos = null,
+        public ?string $codigoMunicipio = null,
+        // Reforma Tributária — IBS/CBS
         public ?string $codigoNbs = null,
         public ?string $codigoIndicadorOperacao = null,
         public ?string $ibsCbsClassificacaoTributaria = null,
@@ -38,7 +55,7 @@ class ServicoDTO extends DTO
      */
     protected function validate(): void
     {
-        $validator = Validator::make(get_object_vars($this), self::rules(), self::messages());
+        $validator = Validator::make($this->validationData(), self::rules(), self::messages());
 
         if ($validator->fails()) {
             throw new ValidationException($validator);
@@ -60,6 +77,21 @@ class ServicoDTO extends DTO
             'codigoTributarioMunicipio' => 'required|string|max:20',
             'valorServicos' => 'required|numeric|min:0.01',
             'codigoCnae' => 'nullable|string|max:10',
+            'valorDeducoes' => 'nullable|numeric|min:0',
+            'valorPis' => 'nullable|numeric|min:0',
+            'valorCofins' => 'nullable|numeric|min:0',
+            'valorInss' => 'nullable|numeric|min:0',
+            'valorIr' => 'nullable|numeric|min:0',
+            'valorCsll' => 'nullable|numeric|min:0',
+            'valorIss' => 'nullable|numeric|min:0',
+            'valorIssRetido' => 'nullable|numeric|min:0',
+            'outrasRetencoes' => 'nullable|numeric|min:0',
+            'baseCalculo' => 'nullable|numeric|min:0',
+            'descontoIncondicionado' => 'nullable|numeric|min:0',
+            'descontoCondicionado' => 'nullable|numeric|min:0',
+            'percentualTotalTributos' => 'nullable|numeric|min:0',
+            'fonteTotalTributos' => 'nullable|string',
+            'codigoMunicipio' => 'nullable|string|max:7',
             'codigoNbs' => 'nullable|string',
             'codigoIndicadorOperacao' => 'nullable|string',
             'ibsCbsClassificacaoTributaria' => 'nullable|string',
@@ -131,6 +163,21 @@ class ServicoDTO extends DTO
             self::value($data, 'codigoTributarioMunicipio', 'codigo_tributario_municipio'),
             self::value($data, 'valorServicos', 'valor_servicos'),
             self::value($data, 'codigoCnae', 'codigo_cnae'),
+            self::numericValue($data, 'valorDeducoes', 'valor_deducoes'),
+            self::numericValue($data, 'valorPis', 'valor_pis'),
+            self::numericValue($data, 'valorCofins', 'valor_cofins'),
+            self::numericValue($data, 'valorInss', 'valor_inss'),
+            self::numericValue($data, 'valorIr', 'valor_ir'),
+            self::numericValue($data, 'valorCsll', 'valor_csll'),
+            self::numericValue($data, 'valorIss', 'valor_iss'),
+            self::numericValue($data, 'valorIssRetido', 'valor_iss_retido'),
+            self::numericValue($data, 'outrasRetencoes', 'outras_retencoes'),
+            self::numericValue($data, 'baseCalculo', 'base_calculo'),
+            self::numericValue($data, 'descontoIncondicionado', 'desconto_incondicionado'),
+            self::numericValue($data, 'descontoCondicionado', 'desconto_condicionado'),
+            self::numericValue($data, 'percentualTotalTributos', 'percentual_total_tributos'),
+            self::value($data, 'fonteTotalTributos', 'fonte_total_tributos'),
+            self::value($data, 'codigoMunicipio', 'codigo_municipio'),
             self::value($data, 'codigoNbs', 'codigo_nbs'),
             self::value($data, 'codigoIndicadorOperacao', 'codigo_indicador_operacao'),
             self::value($data, 'ibsCbsClassificacaoTributaria', 'ibs_cbs_classificacao_tributaria'),
@@ -154,5 +201,18 @@ class ServicoDTO extends DTO
     {
         $value = self::value($data, $camelKey, $snakeKey);
         return $value === null ? null : (float) $value;
+    }
+
+    /**
+     * Evita deprecations do Brick\Math ao validar floats no Laravel.
+     *
+     * @return array<string, mixed>
+     */
+    private function validationData(): array
+    {
+        return array_map(
+            static fn (mixed $value): mixed => is_float($value) ? (string) $value : $value,
+            get_object_vars($this)
+        );
     }
 }
