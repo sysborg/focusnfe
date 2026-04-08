@@ -67,9 +67,8 @@ class Empresas extends EventHelper
 
         $this->dispatch(EmpresaCreated::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.Empresa: Erro ao criar empresa', [
-              'response' => $response->json(),
-              'data' => $data->toArray()
+            FocusNfeLogger::apiError('FocusNfe.Empresa: Erro ao criar empresa', $this->ambiente, 'post', $url, $response, [
+                'data' => $data->toArray(),
             ]);
         }
 
@@ -105,13 +104,12 @@ class Empresas extends EventHelper
         $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.Empresa: Erro ao listar empresas', [
-              'response' => $response->json(),
-              'data' => [
-                'offset' => $offset,
-                'cnpj' => $cnpj,
-                'cpf' => $cpf
-              ]
+            FocusNfeLogger::apiError('FocusNfe.Empresa: Erro ao listar empresas', $this->ambiente, 'get', $url, $response, [
+                'data' => [
+                    'offset' => $offset,
+                    'cnpj' => $cnpj,
+                    'cpf' => $cpf,
+                ],
             ]);
         }
 
@@ -126,14 +124,14 @@ class Empresas extends EventHelper
      */
     public function get(int $id): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id";
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.Empresa: Erro ao pegar empresa', [
-              'response' => $response->json(),
-              'data' => [
-                'id' => $id
-              ]
+            FocusNfeLogger::apiError('FocusNfe.Empresa: Erro ao pegar empresa', $this->ambiente, 'get', $url, $response, [
+                'data' => [
+                    'id' => $id,
+                ],
             ]);
         }
 
@@ -149,16 +147,16 @@ class Empresas extends EventHelper
      */
     public function update(int $id, EmpresaDTO $data): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->put(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id", $data->toArray());
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id";
+        $response = FocusNfeHttp::withToken($this->token)->put($url, $data->toArray());
 
         $this->dispatch(EmpresaUpdated::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.Empresa: Erro ao atualizar empresa', [
-              'response' => $response->json(),
-              'data' => [
-                'id' => $id,
-                'data' => $data->toArray()
-              ]
+            FocusNfeLogger::apiError('FocusNfe.Empresa: Erro ao atualizar empresa', $this->ambiente, 'put', $url, $response, [
+                'data' => [
+                    'id' => $id,
+                    'data' => $data->toArray(),
+                ],
             ]);
         }
 
@@ -173,15 +171,15 @@ class Empresas extends EventHelper
      */
     public function delete(int $id): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id";
+        $response = FocusNfeHttp::withToken($this->token)->delete($url);
 
         $this->dispatch(EmpresaDeleted::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.Empresa: Erro ao deletar empresa', [
-              'response' => $response->json(),
-              'data' => [
-                'id' => $id
-              ]
+            FocusNfeLogger::apiError('FocusNfe.Empresa: Erro ao deletar empresa', $this->ambiente, 'delete', $url, $response, [
+                'data' => [
+                    'id' => $id,
+                ],
             ]);
         }
 

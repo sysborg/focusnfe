@@ -4,6 +4,7 @@ namespace Sysborg\FocusNfe\tests\Unit\Services;
 
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Container\Container;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Facade;
 use PHPUnit\Framework\TestCase;
 use Sysborg\FocusNfe\app\Services\FocusNfeLogger;
@@ -89,5 +90,38 @@ class FocusNfeLoggerTest extends TestCase
         $this->assertSame(['channel', 'warning', 'channel', 'error'], $methods);
         $this->assertSame('***REDACTED***', $this->logger->entries[1]['context']['cnpj']);
         $this->assertSame('***REDACTED***', $this->logger->entries[3]['context']['authorization']);
+    }
+
+    public function test_api_error_adiciona_contexto_padronizado_sem_mascarar_campos_nao_sensiveis(): void
+    {
+        $response = new Response(new \GuzzleHttp\Psr7\Response(
+            422,
+            ['Content-Type' => 'application/json'],
+            json_encode(['codigo' => 'requisicao_invalida'], JSON_THROW_ON_ERROR)
+        ));
+
+        FocusNfeLogger::apiError(
+            'Erro de teste',
+            'sandbox',
+            'post',
+            'https://homologacao.focusnfe.com.br/v2/nfe',
+            $response,
+            [
+                'arquivo_certificado' => 'certificado-a1-ref',
+                'certificado' => 'certificado-ref',
+                'token' => 'segredo',
+            ]
+        );
+
+        $entry = end($this->logger->entries);
+
+        $this->assertSame('error', $entry['method']);
+        $this->assertSame('sandbox', $entry['context']['ambiente']);
+        $this->assertSame('POST', $entry['context']['method']);
+        $this->assertSame('https://homologacao.focusnfe.com.br/v2/nfe', $entry['context']['url']);
+        $this->assertSame(422, $entry['context']['status']);
+        $this->assertSame('certificado-a1-ref', $entry['context']['arquivo_certificado']);
+        $this->assertSame('certificado-ref', $entry['context']['certificado']);
+        $this->assertSame('***REDACTED***', $entry['context']['token']);
     }
 }

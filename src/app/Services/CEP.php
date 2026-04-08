@@ -52,14 +52,14 @@ class CEP
      */
     public function get(string $cep): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$cep");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$cep";
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.Cep: Erro ao consultar CEP', [
-              'response' => $response->json(),
-              'data' => [
-                'cep' => $cep
-              ]
+            FocusNfeLogger::apiError('FocusNfe.Cep: Erro ao consultar CEP', $this->ambiente, 'get', $url, $response, [
+                'data' => [
+                    'cep' => $cep,
+                ],
             ]);
         }
 

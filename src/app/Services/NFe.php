@@ -55,15 +55,15 @@ class NFe extends EventHelper
      */
     public function envia(NFeDTO $data, string $referencia): Response
     {
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref=$referencia";
         $response = FocusNfeHttp::withToken($this->token)->post(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "?ref=$referencia",
+            $url,
             $data->toArray()
         );
 
         $this->dispatch(NFeAutorizada::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao enviar NF-e', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao enviar NF-e', $this->ambiente, 'post', $url, $response, [
                 'referencia' => $referencia,
             ]);
         }
@@ -79,13 +79,11 @@ class NFe extends EventHelper
      */
     public function get(string $referencia): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia"
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao consultar NF-e', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao consultar NF-e', $this->ambiente, 'get', $url, $response, [
                 'referencia' => $referencia,
             ]);
         }
@@ -101,14 +99,12 @@ class NFe extends EventHelper
      */
     public function cancela(string $referencia): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->delete(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia"
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
+        $response = FocusNfeHttp::withToken($this->token)->delete($url);
 
         $this->dispatch(NFeCancelada::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao cancelar NF-e', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao cancelar NF-e', $this->ambiente, 'delete', $url, $response, [
                 'referencia' => $referencia,
             ]);
         }
@@ -125,14 +121,14 @@ class NFe extends EventHelper
      */
     public function cartaCorrecao(string $referencia, array $data): Response
     {
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/carta_correcao";
         $response = FocusNfeHttp::withToken($this->token)->post(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/carta_correcao",
+            $url,
             $data
         );
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao criar Carta de Correção', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao criar Carta de Correção', $this->ambiente, 'post', $url, $response, [
                 'referencia' => $referencia,
             ]);
         }
@@ -148,15 +144,15 @@ class NFe extends EventHelper
      */
     public function inutilizar(array $data): Response
     {
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . '/inutilizacao';
         $response = FocusNfeHttp::withToken($this->token)->post(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . '/inutilizacao',
+            $url,
             $data
         );
 
         $this->dispatch(NFeInutilizada::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao inutilizar faixa de numeracao', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao inutilizar faixa de numeracao', $this->ambiente, 'post', $url, $response, [
                 'data' => $data,
             ]);
         }
@@ -171,14 +167,11 @@ class NFe extends EventHelper
      */
     public function inutilizacoes(): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . '/inutilizacoes'
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . '/inutilizacoes';
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao consultar inutilizações', [
-                'response' => $response->json(),
-            ]);
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao consultar inutilizações', $this->ambiente, 'get', $url, $response);
         }
 
         return $response;
@@ -193,13 +186,11 @@ class NFe extends EventHelper
      */
     public function reenviaEmail(string $referencia, string $email): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email"
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email";
+        $response = FocusNfeHttp::withToken($this->token)->post($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao reenviar email da NF-e', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao reenviar email da NF-e', $this->ambiente, 'post', $url, $response, [
                 'referencia' => $referencia,
                 'email' => $email,
             ]);

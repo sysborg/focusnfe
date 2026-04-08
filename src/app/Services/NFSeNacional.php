@@ -53,13 +53,13 @@ class NFSeNacional extends EventHelper
      */
     public function envia(NFSeNDTO $data): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL;
+        $response = FocusNfeHttp::withToken($this->token)->post($url, $data->toArray());
 
         $this->dispatch(NFSeNacionalAutorizada::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFSeN: Erro ao enviar NFSe Nacional', [
-              'response' => $response->json(),
-              'data' => $data->toArray()
+            FocusNfeLogger::apiError('FocusNfe.NFSeN: Erro ao enviar NFSe Nacional', $this->ambiente, 'post', $url, $response, [
+                'data' => $data->toArray(),
             ]);
         }
 
@@ -74,12 +74,12 @@ class NFSeNacional extends EventHelper
      */
     public function consulta(string $referencia): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFSeN: Erro ao consultar NFSe Nacional', [
-              'response' => $response->json(),
-              'referencia' => $referencia
+            FocusNfeLogger::apiError('FocusNfe.NFSeN: Erro ao consultar NFSe Nacional', $this->ambiente, 'get', $url, $response, [
+                'referencia' => $referencia,
             ]);
         }
 
@@ -94,13 +94,13 @@ class NFSeNacional extends EventHelper
      */
     public function cancela(string $referencia): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
+        $response = FocusNfeHttp::withToken($this->token)->delete($url);
 
         $this->dispatch(NFSeNacionalCancelada::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFSeN: Erro ao cancelar NFSe Nacional', [
-              'response' => $response->json(),
-              'referencia' => $referencia
+            FocusNfeLogger::apiError('FocusNfe.NFSeN: Erro ao cancelar NFSe Nacional', $this->ambiente, 'delete', $url, $response, [
+                'referencia' => $referencia,
             ]);
         }
 

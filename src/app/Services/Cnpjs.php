@@ -53,14 +53,14 @@ class Cnpjs
      */
     public function get(string $cnpj): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$cnpj");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$cnpj";
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.Cnpjs: Erro ao consultar CNPJ', [
-            'response' => $response->json(),
-            'data' => [
-                'cnpj' => $cnpj
-            ]
+            FocusNfeLogger::apiError('FocusNfe.Cnpjs: Erro ao consultar CNPJ', $this->ambiente, 'get', $url, $response, [
+                'data' => [
+                    'cnpj' => $cnpj,
+                ],
             ]);
         }
 

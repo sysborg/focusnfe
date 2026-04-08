@@ -14,6 +14,7 @@ class WebhooksServiceTest extends TestCase
 
     private Webhooks $service;
     private string $baseUrl = 'https://api.focusnfe.com.br';
+    private string $sandboxBaseUrl = 'https://homologacao.focusnfe.com.br';
 
     protected function setUp(): void
     {
@@ -22,7 +23,10 @@ class WebhooksServiceTest extends TestCase
         $container = new \Illuminate\Container\Container();
         $container->instance('config', new \Illuminate\Config\Repository([
             'focusnfe' => [
-                'URL' => ['production' => $this->baseUrl],
+                'URL' => [
+                    'production' => $this->baseUrl,
+                    'sandbox' => $this->sandboxBaseUrl,
+                ],
                 'log' => ['channel' => 'stack', 'level' => 'error'],
                 'rate_limit' => ['enabled' => false],
                 'retry' => ['times' => 1, 'sleep' => 0],
@@ -72,6 +76,25 @@ class WebhooksServiceTest extends TestCase
         $this->assertEquals(201, $response->status());
         $this->assertEquals(1, $response->json('id'));
         $this->assertEquals('nfe_autorizada', $response->json('evento'));
+    }
+
+    public function test_cadastrar_webhook_em_sandbox_usa_base_url_correta(): void
+    {
+        $service = new Webhooks('test-token', 'sandbox');
+
+        Http::fake([
+            $this->sandboxBaseUrl . Webhooks::URL => Http::response([
+                'id' => 1,
+                'evento' => 'nfe_autorizada',
+            ], 201),
+        ]);
+
+        $response = $service->cadastrar($this->makeDto());
+
+        $this->assertSame(201, $response->status());
+        Http::assertSent(function ($request): bool {
+            return $request->url() === $this->sandboxBaseUrl . Webhooks::URL;
+        });
     }
 
     public function test_cadastrar_webhook_com_erro(): void

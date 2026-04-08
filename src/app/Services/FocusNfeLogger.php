@@ -2,6 +2,7 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -141,5 +142,33 @@ class FocusNfeLogger
         if (self::shouldLog('error')) {
             Log::channel(self::channel())->error($message, self::sanitize($context));
         }
+    }
+
+    /**
+     * Registra uma falha de chamada HTTP com contexto padronizado.
+     *
+     * @param string $message
+     * @param string $ambiente
+     * @param string $method
+     * @param string $url
+     * @param Response $response
+     * @param array<mixed> $context
+     * @return void
+     */
+    public static function apiError(
+        string $message,
+        string $ambiente,
+        string $method,
+        string $url,
+        Response $response,
+        array $context = []
+    ): void {
+        self::error($message, array_merge([
+            'ambiente' => $ambiente,
+            'method' => strtoupper($method),
+            'url' => $url,
+            'status' => $response->status(),
+            'response' => $response->json(),
+        ], $context));
     }
 }

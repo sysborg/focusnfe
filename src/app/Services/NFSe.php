@@ -58,7 +58,8 @@ class NFSe extends EventHelper
      */
     public function envia(NFSeDTO $data, string $ref): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . '?ref=' . $ref, $data->toArray());
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . '?ref=' . $ref;
+        $response = FocusNfeHttp::withToken($this->token)->post($url, $data->toArray());
 
         if (!($response instanceof Response)) {
             FocusNfeLogger::error('FocusNfe.NFSe: Resposta inválida ao enviar NFSe', [
@@ -70,16 +71,17 @@ class NFSe extends EventHelper
         }
 
         FocusNfeLogger::debug('FocusNfe.NFSe: Enviando NFSe', [
-          'url' => config('focusnfe.URL.' . $this->ambiente) . self::URL,
+          'ambiente' => $this->ambiente,
+          'method' => 'POST',
+          'url' => $url,
           'data' => $data->toArray(),
           'response' => $response
         ]);
 
         $this->dispatch(NFSeEnviada::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFSe: Erro ao enviar NFSe', [
-              'response' => $response->json(),
-              'data' => $data->toArray()
+            FocusNfeLogger::apiError('FocusNfe.NFSe: Erro ao enviar NFSe', $this->ambiente, 'post', $url, $response, [
+                'data' => $data->toArray(),
             ]);
         }
 
@@ -94,12 +96,12 @@ class NFSe extends EventHelper
      */
     public function get(string $referencia): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFSe: Erro ao consultar NFSe', [
-              'response' => $response->json(),
-              'referencia' => $referencia
+            FocusNfeLogger::apiError('FocusNfe.NFSe: Erro ao consultar NFSe', $this->ambiente, 'get', $url, $response, [
+                'referencia' => $referencia,
             ]);
         }
 
@@ -114,17 +116,17 @@ class NFSe extends EventHelper
      */
     public function cancela(string $referencia, string $justificativa): Response
     {
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
         $response = FocusNfeHttp::withToken($this->token)->delete(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia",
+            $url,
             ['justificativa' => $justificativa]
         );
 
         $this->dispatch(NFSeCancelada::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFSe: Erro ao cancelar NFSe', [
-              'response' => $response->json(),
-              'referencia' => $referencia,
-              'justificativa' => $justificativa,
+            FocusNfeLogger::apiError('FocusNfe.NFSe: Erro ao cancelar NFSe', $this->ambiente, 'delete', $url, $response, [
+                'referencia' => $referencia,
+                'justificativa' => $justificativa,
             ]);
         }
 
@@ -140,13 +142,13 @@ class NFSe extends EventHelper
      */
     public function reenviaEmail(string $referencia, string $email): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email";
+        $response = FocusNfeHttp::withToken($this->token)->post($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFSe: Erro ao reenviar email da NFSe', [
-              'response' => $response->json(),
-              'referencia' => $referencia,
-              'email' => $email
+            FocusNfeLogger::apiError('FocusNfe.NFSe: Erro ao reenviar email da NFSe', $this->ambiente, 'post', $url, $response, [
+                'referencia' => $referencia,
+                'email' => $email,
             ]);
         }
 

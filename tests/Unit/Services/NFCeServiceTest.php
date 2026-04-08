@@ -16,6 +16,7 @@ class NFCeServiceTest extends TestCase
 {
     private NFCe $service;
     private string $baseUrl = 'https://api.focusnfe.com.br';
+    private string $sandboxBaseUrl = 'https://homologacao.focusnfe.com.br';
     private string $ref = 'nfce-001';
 
     protected function setUp(): void
@@ -25,7 +26,10 @@ class NFCeServiceTest extends TestCase
         $container = new Container();
         $container->instance('config', new ConfigRepository([
             'focusnfe' => [
-                'URL' => ['production' => $this->baseUrl],
+                'URL' => [
+                    'production' => $this->baseUrl,
+                    'sandbox' => $this->sandboxBaseUrl,
+                ],
                 'log' => ['channel' => 'stack', 'level' => 'error'],
                 'rate_limit' => ['enabled' => false],
                 'retry' => ['times' => 1, 'sleep' => 0],
@@ -98,6 +102,25 @@ class NFCeServiceTest extends TestCase
 
         $this->assertSame(202, $response->status());
         $this->assertSame('processando_autorizacao', $response->json('status'));
+    }
+
+    public function test_envia_nfce_para_url_de_sandbox_quando_configurado(): void
+    {
+        $service = new NFCe('test-token', 'sandbox');
+
+        Http::fake([
+            $this->sandboxBaseUrl . NFCe::URL => Http::response([
+                'status' => 'processando_autorizacao',
+                'ref' => $this->ref,
+            ], 202),
+        ]);
+
+        $response = $service->envia($this->makeDto());
+
+        $this->assertSame(202, $response->status());
+        Http::assertSent(function ($request): bool {
+            return $request->url() === $this->sandboxBaseUrl . NFCe::URL;
+        });
     }
 
     public function test_get_nfce_autorizada(): void

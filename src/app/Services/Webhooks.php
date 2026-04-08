@@ -54,14 +54,14 @@ class Webhooks
      */
     public function cadastrar(WebhookDTO $data): Response
     {
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL;
         $response = FocusNfeHttp::withToken($this->token)->post(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL,
+            $url,
             $data->toArray()
         );
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.Webhooks: Erro ao cadastrar webhook', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNFe.Webhooks: Erro ao cadastrar webhook', $this->ambiente, 'post', $url, $response, [
                 'data' => $data->toArray(),
             ]);
         }
@@ -76,14 +76,11 @@ class Webhooks
      */
     public function listar(): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL;
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.Webhooks: Erro ao listar webhooks', [
-                'response' => $response->json(),
-            ]);
+            FocusNfeLogger::apiError('FocusNFe.Webhooks: Erro ao listar webhooks', $this->ambiente, 'get', $url, $response);
         }
 
         return $response;
@@ -97,13 +94,11 @@ class Webhooks
      */
     public function consultar(int $id): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id"
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id";
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.Webhooks: Erro ao consultar webhook', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNFe.Webhooks: Erro ao consultar webhook', $this->ambiente, 'get', $url, $response, [
                 'id' => $id,
             ]);
         }
@@ -120,14 +115,14 @@ class Webhooks
      */
     public function atualizar(int $id, WebhookDTO $data): Response
     {
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id";
         $response = FocusNfeHttp::withToken($this->token)->put(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id",
+            $url,
             $data->toArray()
         );
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.Webhooks: Erro ao atualizar webhook', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNFe.Webhooks: Erro ao atualizar webhook', $this->ambiente, 'put', $url, $response, [
                 'id' => $id,
                 'data' => $data->toArray(),
             ]);
@@ -144,13 +139,11 @@ class Webhooks
      */
     public function remover(int $id): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->delete(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id"
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id";
+        $response = FocusNfeHttp::withToken($this->token)->delete($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.Webhooks: Erro ao remover webhook', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNFe.Webhooks: Erro ao remover webhook', $this->ambiente, 'delete', $url, $response, [
                 'id' => $id,
             ]);
         }
@@ -166,13 +159,11 @@ class Webhooks
      */
     public function testar(int $id): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id/testar"
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$id/testar";
+        $response = FocusNfeHttp::withToken($this->token)->post($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.Webhooks: Erro ao testar webhook', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNFe.Webhooks: Erro ao testar webhook', $this->ambiente, 'post', $url, $response, [
                 'id' => $id,
             ]);
         }

@@ -2,6 +2,7 @@
 
 namespace Sysborg\FocusNfe\app\Providers;
 
+use InvalidArgumentException;
 use Illuminate\Support\ServiceProvider;
 use Sysborg\FocusNfe\app\Services\FocusNfeManager;
 use Sysborg\FocusNfe\app\Services\{
@@ -70,6 +71,7 @@ class SBFocusNFeProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../../config/focusnfe.php', 'focusnfe');
+        $this->validateConfiguration();
 
         foreach (self::FOCUSNFE_SERVICES as $serviceClass) {
             $this->registerFocusNfeService($serviceClass);
@@ -120,5 +122,36 @@ class SBFocusNFeProvider extends ServiceProvider
                 (string) config('focusnfe.ambiente')
             );
         });
+    }
+
+    /**
+     * Valida a configuração essencial do pacote para falhar cedo.
+     *
+     * @throws InvalidArgumentException
+     * @return void
+     */
+    private function validateConfiguration(): void
+    {
+        $token = trim((string) config('focusnfe.token'));
+        $ambiente = (string) config('focusnfe.ambiente', 'production');
+        $urls = (array) config('focusnfe.URL', []);
+
+        if ($token === '') {
+            throw new InvalidArgumentException('A configuração focusnfe.token é obrigatória.');
+        }
+
+        if (!array_key_exists($ambiente, $urls)) {
+            $allowed = implode(', ', array_keys($urls));
+
+            throw new InvalidArgumentException(
+                "Ambiente FocusNFe inválido [{$ambiente}]. Use um dos ambientes configurados: {$allowed}."
+            );
+        }
+
+        if (!is_string($urls[$ambiente]) || trim($urls[$ambiente]) === '') {
+            throw new InvalidArgumentException(
+                "A URL base do ambiente FocusNFe [{$ambiente}] precisa estar configurada."
+            );
+        }
     }
 }

@@ -17,6 +17,7 @@ class NFeServiceTest extends TestCase
 {
     private NFe $service;
     private string $baseUrl = 'https://api.focusnfe.com.br';
+    private string $sandboxBaseUrl = 'https://homologacao.focusnfe.com.br';
     private string $ref = 'nfe-001';
 
     protected function setUp(): void
@@ -26,7 +27,10 @@ class NFeServiceTest extends TestCase
         $container = new Container();
         $container->instance('config', new ConfigRepository([
             'focusnfe' => [
-                'URL' => ['production' => $this->baseUrl],
+                'URL' => [
+                    'production' => $this->baseUrl,
+                    'sandbox' => $this->sandboxBaseUrl,
+                ],
                 'log' => ['channel' => 'stack', 'level' => 'error'],
                 'rate_limit' => ['enabled' => false],
                 'retry' => ['times' => 1, 'sleep' => 0],
@@ -108,6 +112,25 @@ class NFeServiceTest extends TestCase
 
         $this->assertEquals(202, $response->status());
         $this->assertEquals('processando_autorizacao', $response->json('status'));
+    }
+
+    public function test_envia_nfe_para_url_de_sandbox_quando_configurado(): void
+    {
+        $service = new NFe('test-token', 'sandbox');
+
+        Http::fake([
+            $this->sandboxBaseUrl . NFe::URL . '*' => Http::response([
+                'status' => 'processando_autorizacao',
+                'ref' => $this->ref,
+            ], 202),
+        ]);
+
+        $response = $service->envia($this->makeDto(), $this->ref);
+
+        $this->assertSame(202, $response->status());
+        Http::assertSent(function ($request): bool {
+            return $request->url() === $this->sandboxBaseUrl . NFe::URL . '?ref=' . $this->ref;
+        });
     }
 
     public function test_get_nfe_autorizada(): void

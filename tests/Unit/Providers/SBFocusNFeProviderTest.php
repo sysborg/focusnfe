@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory as ValidationFactory;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Sysborg\FocusNfe\app\Events\HooksReceived;
 use Sysborg\FocusNfe\app\Providers\SBFocusNFeProvider;
@@ -83,6 +84,55 @@ class SBFocusNFeProviderTest extends TestCase
         $this->assertCount(1, $captured);
         $this->assertSame('teste', $captured[0]['evento']);
         $this->assertTrue(Validator::make(['cnpj' => '11222333000181'], ['cnpj' => 'cnpj'])->passes());
+    }
+
+    public function test_provider_falha_quando_token_nao_esta_configurado(): void
+    {
+        $container = new Container();
+        $container->instance('config', new ConfigRepository([
+            'focusnfe' => [
+                'URL' => ['production' => 'https://api.focusnfe.com.br'],
+                'token' => '',
+                'ambiente' => 'production',
+            ],
+        ]));
+
+        Container::setInstance($container);
+        Facade::clearResolvedInstances();
+        Facade::setFacadeApplication($container);
+
+        $provider = new SBFocusNFeProvider($container);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('focusnfe.token');
+
+        $provider->register();
+    }
+
+    public function test_provider_falha_quando_ambiente_e_invalido(): void
+    {
+        $container = new Container();
+        $container->instance('config', new ConfigRepository([
+            'focusnfe' => [
+                'URL' => [
+                    'production' => 'https://api.focusnfe.com.br',
+                    'sandbox' => 'https://homologacao.focusnfe.com.br',
+                ],
+                'token' => 'token-valido',
+                'ambiente' => 'staging',
+            ],
+        ]));
+
+        Container::setInstance($container);
+        Facade::clearResolvedInstances();
+        Facade::setFacadeApplication($container);
+
+        $provider = new SBFocusNFeProvider($container);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Ambiente FocusNFe inválido');
+
+        $provider->register();
     }
 }
 }

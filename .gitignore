@@ -10,3 +10,4 @@ coverage/
 references
 .phpunit.cache
 /opendoc
+phpunit.xml.bak

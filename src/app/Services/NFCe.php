@@ -54,13 +54,13 @@ class NFCe extends EventHelper
      */
     public function envia(NFCeDTO $data): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL, $data->toArray());
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL;
+        $response = FocusNfeHttp::withToken($this->token)->post($url, $data->toArray());
 
         $this->dispatch(NFCeAutorizada::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.NFCe: Erro ao enviar NFCe', [
-              'response' => $response->json(),
-              'data' => $data->toArray()
+            FocusNfeLogger::apiError('FocusNFe.NFCe: Erro ao enviar NFCe', $this->ambiente, 'post', $url, $response, [
+                'data' => $data->toArray(),
             ]);
         }
 
@@ -75,12 +75,12 @@ class NFCe extends EventHelper
      */
     public function get(string $referencia): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.NFCe: Erro ao consultar NFCe', [
-              'response' => $response->json(),
-              'referencia' => $referencia
+            FocusNfeLogger::apiError('FocusNFe.NFCe: Erro ao consultar NFCe', $this->ambiente, 'get', $url, $response, [
+                'referencia' => $referencia,
             ]);
         }
 
@@ -95,13 +95,13 @@ class NFCe extends EventHelper
      */
     public function cancela(string $referencia): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
+        $response = FocusNfeHttp::withToken($this->token)->delete($url);
 
         $this->dispatch(NFCeCancelada::class, $response);
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.NFCe: Erro ao cancelar NFCe', [
-              'response' => $response->json(),
-              'referencia' => $referencia
+            FocusNfeLogger::apiError('FocusNFe.NFCe: Erro ao cancelar NFCe', $this->ambiente, 'delete', $url, $response, [
+                'referencia' => $referencia,
             ]);
         }
 
@@ -115,12 +115,11 @@ class NFCe extends EventHelper
      */
     public function inutilizacoes(): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/inutilizacoes");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/inutilizacoes";
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.NFCe: Erro ao consultar inutilizações', [
-              'response' => $response->json()
-            ]);
+            FocusNfeLogger::apiError('FocusNFe.NFCe: Erro ao consultar inutilizações', $this->ambiente, 'get', $url, $response);
         }
 
         return $response;
@@ -135,13 +134,13 @@ class NFCe extends EventHelper
      */
     public function reenviaEmail(string $referencia, string $email): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email";
+        $response = FocusNfeHttp::withToken($this->token)->post($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.NFCe: Erro ao reenviar email da NFC-e', [
-              'response' => $response->json(),
-              'referencia' => $referencia,
-              'email' => $email,
+            FocusNfeLogger::apiError('FocusNFe.NFCe: Erro ao reenviar email da NFC-e', $this->ambiente, 'post', $url, $response, [
+                'referencia' => $referencia,
+                'email' => $email,
             ]);
         }
 
@@ -157,12 +156,12 @@ class NFCe extends EventHelper
      */
     public function registraEconf(string $referencia, array $data): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf", $data);
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf";
+        $response = FocusNfeHttp::withToken($this->token)->post($url, $data);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.NFCe: Erro ao registrar ECONF', [
-              'response' => $response->json(),
-              'referencia' => $referencia
+            FocusNfeLogger::apiError('FocusNFe.NFCe: Erro ao registrar ECONF', $this->ambiente, 'post', $url, $response, [
+                'referencia' => $referencia,
             ]);
         }
 
@@ -179,13 +178,13 @@ class NFCe extends EventHelper
      */
     public function consultaEconf(string $referencia, string $protocolo): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo";
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.NFCe: Erro ao consultar ECONF', [
-              'response' => $response->json(),
-              'referencia' => $referencia,
-              'protocolo' => $protocolo
+            FocusNfeLogger::apiError('FocusNFe.NFCe: Erro ao consultar ECONF', $this->ambiente, 'get', $url, $response, [
+                'referencia' => $referencia,
+                'protocolo' => $protocolo,
             ]);
         }
 
@@ -202,13 +201,13 @@ class NFCe extends EventHelper
      */
     public function cancelaEconf(string $referencia, string $protocolo): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->delete(config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo");
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo";
+        $response = FocusNfeHttp::withToken($this->token)->delete($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNFe.NFCe: Erro ao cancelar ECONF', [
-              'response' => $response->json(),
-              'referencia' => $referencia,
-              'protocolo' => $protocolo
+            FocusNfeLogger::apiError('FocusNFe.NFCe: Erro ao cancelar ECONF', $this->ambiente, 'delete', $url, $response, [
+                'referencia' => $referencia,
+                'protocolo' => $protocolo,
             ]);
         }
 
