@@ -42,7 +42,40 @@ class ServicoDTO extends DTO
         public ?float $cbsAliquota = null,
         public ?float $ibsUfValor = null,
         public ?float $ibsMunValor = null,
-        public ?float $cbsValor = null
+        public ?float $cbsValor = null,
+        public ?string $codigoTributacaoNacionalIss = null,
+        public ?string $codigoMunicipioPrestacao = null,
+        public ?string $codigoPaisPrestacao = null,
+        public ?string $codigoNcm = null,
+        public ?string $ibsCbsClassificacaoTributariaRegular = null,
+        public ?string $ibsCbsSituacaoTributariaRegular = null,
+        public ?string $ibsCbsCreditoCodigoClassificacao = null,
+        public ?float $ibsMunPercentualDiferimento = null,
+        public ?float $ibsUfPercentualDiferimento = null,
+        public ?string $situacaoTributariaPisCofins = null,
+        public ?string $tipoRetencaoPisCofins = null,
+        public ?string $codigoAnexoCnae = null,
+        public ?float $valorServicoExt = null,
+        public ?float $valorFinalCobrado = null,
+        public ?float $valorInicialCobrado = null,
+        public ?float $valorIpi = null,
+        public ?float $valorJuros = null,
+        public ?float $valorMulta = null,
+        public ?bool $pisRetido = null,
+        public ?bool $cofinsRetido = null,
+        public ?bool $csllRetido = null,
+        public ?bool $inssRetido = null,
+        public ?bool $irRetido = null,
+        public ?bool $icmsRetido = null,
+        public ?bool $cpRetido = null,
+        public ?float $aliquotaPis = null,
+        public ?float $aliquotaCofins = null,
+        public ?float $aliquotaCsll = null,
+        public ?float $aliquotaInss = null,
+        public ?float $aliquotaIr = null,
+        public ?float $aliquotaIcms = null,
+        public ?float $aliquotaCp = null,
+        public array $camposExtras = [],
     ) {
         $this->validate();
     }
@@ -103,6 +136,39 @@ class ServicoDTO extends DTO
             'ibsUfValor' => 'nullable|numeric|min:0',
             'ibsMunValor' => 'nullable|numeric|min:0',
             'cbsValor' => 'nullable|numeric|min:0',
+            'codigoTributacaoNacionalIss' => 'nullable|string',
+            'codigoMunicipioPrestacao' => 'nullable|string',
+            'codigoPaisPrestacao' => 'nullable|string',
+            'codigoNcm' => 'nullable|string',
+            'ibsCbsClassificacaoTributariaRegular' => 'nullable|string',
+            'ibsCbsSituacaoTributariaRegular' => 'nullable|string',
+            'ibsCbsCreditoCodigoClassificacao' => 'nullable|string',
+            'ibsMunPercentualDiferimento' => 'nullable|numeric|min:0',
+            'ibsUfPercentualDiferimento' => 'nullable|numeric|min:0',
+            'situacaoTributariaPisCofins' => 'nullable|string',
+            'tipoRetencaoPisCofins' => 'nullable|string',
+            'codigoAnexoCnae' => 'nullable|string',
+            'valorServicoExt' => 'nullable|numeric|min:0',
+            'valorFinalCobrado' => 'nullable|numeric|min:0',
+            'valorInicialCobrado' => 'nullable|numeric|min:0',
+            'valorIpi' => 'nullable|numeric|min:0',
+            'valorJuros' => 'nullable|numeric|min:0',
+            'valorMulta' => 'nullable|numeric|min:0',
+            'pisRetido' => 'nullable|boolean',
+            'cofinsRetido' => 'nullable|boolean',
+            'csllRetido' => 'nullable|boolean',
+            'inssRetido' => 'nullable|boolean',
+            'irRetido' => 'nullable|boolean',
+            'icmsRetido' => 'nullable|boolean',
+            'cpRetido' => 'nullable|boolean',
+            'aliquotaPis' => 'nullable|numeric|min:0',
+            'aliquotaCofins' => 'nullable|numeric|min:0',
+            'aliquotaCsll' => 'nullable|numeric|min:0',
+            'aliquotaInss' => 'nullable|numeric|min:0',
+            'aliquotaIr' => 'nullable|numeric|min:0',
+            'aliquotaIcms' => 'nullable|numeric|min:0',
+            'aliquotaCp' => 'nullable|numeric|min:0',
+            'camposExtras' => 'array',
         ];
     }
 
@@ -188,7 +254,40 @@ class ServicoDTO extends DTO
             self::numericValue($data, 'cbsAliquota', 'cbs_aliquota'),
             self::numericValue($data, 'ibsUfValor', 'ibs_uf_valor'),
             self::numericValue($data, 'ibsMunValor', 'ibs_mun_valor'),
-            self::numericValue($data, 'cbsValor', 'cbs_valor')
+            self::numericValue($data, 'cbsValor', 'cbs_valor'),
+            self::value($data, 'codigoTributacaoNacionalIss', 'codigo_tributacao_nacional_iss'),
+            self::value($data, 'codigoMunicipioPrestacao', 'codigo_municipio_prestacao'),
+            self::value($data, 'codigoPaisPrestacao', 'codigo_pais_prestacao'),
+            self::value($data, 'codigoNcm', 'codigo_ncm'),
+            self::value($data, 'ibsCbsClassificacaoTributariaRegular', 'ibs_cbs_classificacao_tributaria_regular'),
+            self::value($data, 'ibsCbsSituacaoTributariaRegular', 'ibs_cbs_situacao_tributaria_regular'),
+            self::value($data, 'ibsCbsCreditoCodigoClassificacao', 'ibs_cbs_credito_codigo_classificacao'),
+            self::numericValue($data, 'ibsMunPercentualDiferimento', 'ibs_mun_percentual_diferimento'),
+            self::numericValue($data, 'ibsUfPercentualDiferimento', 'ibs_uf_percentual_diferimento'),
+            self::value($data, 'situacaoTributariaPisCofins', 'situacao_tributaria_pis_cofins'),
+            self::value($data, 'tipoRetencaoPisCofins', 'tipo_retencao_pis_cofins'),
+            self::value($data, 'codigoAnexoCnae', 'codigo_anexo_cnae'),
+            self::numericValue($data, 'valorServicoExt', 'valor_servico_ext'),
+            self::numericValue($data, 'valorFinalCobrado', 'valor_final_cobrado'),
+            self::numericValue($data, 'valorInicialCobrado', 'valor_inicial_cobrado'),
+            self::numericValue($data, 'valorIpi', 'valor_ipi'),
+            self::numericValue($data, 'valorJuros', 'valor_juros'),
+            self::numericValue($data, 'valorMulta', 'valor_multa'),
+            self::boolValue($data, 'pisRetido', 'pis_retido'),
+            self::boolValue($data, 'cofinsRetido', 'cofins_retido'),
+            self::boolValue($data, 'csllRetido', 'csll_retido'),
+            self::boolValue($data, 'inssRetido', 'inss_retido'),
+            self::boolValue($data, 'irRetido', 'ir_retido'),
+            self::boolValue($data, 'icmsRetido', 'icms_retido'),
+            self::boolValue($data, 'cpRetido', 'cp_retido'),
+            self::numericValue($data, 'aliquotaPis', 'aliquota_pis'),
+            self::numericValue($data, 'aliquotaCofins', 'aliquota_cofins'),
+            self::numericValue($data, 'aliquotaCsll', 'aliquota_csll'),
+            self::numericValue($data, 'aliquotaInss', 'aliquota_inss'),
+            self::numericValue($data, 'aliquotaIr', 'aliquota_ir'),
+            self::numericValue($data, 'aliquotaIcms', 'aliquota_icms'),
+            self::numericValue($data, 'aliquotaCp', 'aliquota_cp'),
+            self::value($data, 'camposExtras', 'campos_extras') ?? [],
         );
     }
 
@@ -201,6 +300,29 @@ class ServicoDTO extends DTO
     {
         $value = self::value($data, $camelKey, $snakeKey);
         return $value === null ? null : (float) $value;
+    }
+
+    private static function boolValue(array $data, string $camelKey, ?string $snakeKey = null): ?bool
+    {
+        $value = self::value($data, $camelKey, $snakeKey);
+        return $value === null ? null : (bool) $value;
+    }
+
+    /**
+     * Converte o serviço para array sem enviar campos opcionais nulos.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        $payload = parent::toArray();
+        $camposExtras = $payload['campos_extras'] ?? [];
+
+        unset($payload['campos_extras']);
+
+        $payload = array_filter($payload, static fn (mixed $value): bool => $value !== null);
+
+        return array_merge($payload, $camposExtras);
     }
 
     /**

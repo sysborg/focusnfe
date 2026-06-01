@@ -167,4 +167,59 @@ class NFSeDTOTest extends TestCase
         $this->assertSame(100.0, $array['servico']['ibs_cbs_base_calculo']);
         $this->assertSame(0.9, $array['servico']['cbs_valor']);
     }
+
+    public function test_to_array_formata_campos_de_reforma_tributaria_e_substituicao(): void
+    {
+        $nfse = new NFSeDTO(
+            dataEmissao: Carbon::now()->subDay(),
+            prestador: $this->getPrestadorValido(),
+            tomador: $this->getTomadorValido(),
+            servico: $this->getServicoValido(),
+            numeroNfseSubstituido: '678',
+            codigoIndicadorOperacao: '050101',
+            codigoMoeda: '220',
+            codigoOpcaoSimplesNacional: '3',
+            consumidorFinal: '1',
+            dataCompetencia: Carbon::parse('2026-01-10'),
+            dataEmissaoDps: Carbon::parse('2026-01-10T12:30:00+00:00'),
+            indicadorDestinatario: '0',
+            obra: ['codigo' => 'OBRA123'],
+            camposExtras: ['tipo_compra_governamental' => '1']
+        );
+
+        $array = $nfse->toArray();
+
+        $this->assertSame('678', $array['numero_nfse_substituido']);
+        $this->assertSame('050101', $array['codigo_indicador_operacao']);
+        $this->assertSame('220', $array['codigo_moeda']);
+        $this->assertSame('3', $array['codigo_opcao_simples_nacional']);
+        $this->assertSame('1', $array['consumidor_final']);
+        $this->assertSame('2026-01-10', $array['data_competencia']);
+        $this->assertSame('2026-01-10T12:30:00+00:00', $array['data_emissao_dps']);
+        $this->assertSame('0', $array['indicador_destinatario']);
+        $this->assertSame(['codigo' => 'OBRA123'], $array['obra']);
+        $this->assertSame('1', $array['tipo_compra_governamental']);
+    }
+
+    public function test_to_array_formata_campos_de_rps_normal(): void
+    {
+        $nfse = new NFSeDTO(
+            dataEmissao: Carbon::now()->subDay(),
+            prestador: $this->getPrestadorValido(),
+            tomador: $this->getTomadorValido(),
+            servico: $this->getServicoValido(),
+            numeroRps: '224',
+            serieRps: '1',
+            tipoRps: '1',
+            dataEmissaoRps: Carbon::parse('2026-01-10T12:30:00+00:00')
+        );
+
+        $array = $nfse->toArray();
+
+        $this->assertSame('224', $array['numero_rps']);
+        $this->assertSame('1', $array['serie_rps']);
+        $this->assertSame('1', $array['tipo_rps']);
+        $this->assertSame('2026-01-10T12:30:00+00:00', $array['data_emissao_rps']);
+        $this->assertArrayNotHasKey('numero_rps_substituido', $array);
+    }
 }
