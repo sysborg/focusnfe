@@ -103,6 +103,11 @@ class NFeDTOTest extends TestCase
             'transporte' => ['cnpj_transportador' => '12345678000190'],
             'valor_total_produtos' => 100.00,
             'valor_frete' => 10.00,
+            'valor_total_ii' => 0.0,
+            'valor_ipi' => 0.0,
+            'valor_ipi_devolvido' => 0.0,
+            'valor_pis' => 0.0,
+            'valor_cofins' => 0.0,
             'valor_total_nota' => 110.00,
             'informacoes_adicionais_contribuinte' => 'Pedido 123',
             'informacoes_adicionais_fisco' => 'Obs fisco',
@@ -110,6 +115,9 @@ class NFeDTOTest extends TestCase
             'indicador_intermed_transacao' => '1',
             'cnpj_intermediador' => '12345678000190',
             'id_cadastro_intermediador' => 'INT-1',
+            'campos_extras' => [
+                'ibs_cbs_base_calculo' => 100.0,
+            ],
         ]));
 
         $payload = $dto->toArray();
@@ -120,9 +128,15 @@ class NFeDTOTest extends TestCase
         $this->assertSame('cliente@empresa.com', $payload['email_destinatario']);
         $this->assertSame(0, $payload['modalidade_frete']);
         $this->assertSame(['cnpj_transportador' => '12345678000190'], $payload['transporte']);
-        $this->assertSame(110.0, $payload['valor_total_nota']);
+        $this->assertSame(100.0, $payload['valor_produtos']);
+        $this->assertSame(110.0, $payload['valor_total']);
+        $this->assertSame(0.0, $payload['valor_total_ii']);
         $this->assertSame('Pedido 123', $payload['informacoes_adicionais_contribuinte']);
-        $this->assertSame('1', $payload['indicador_intermed_transacao']);
+        $this->assertSame([['chave_nfe' => '35260107504505000132550010000000011234567890']], $payload['notas_referenciadas']);
+        $this->assertSame('1', $payload['indicador_intermediario']);
+        $this->assertSame('12345678000190', $payload['cnpj_intermediario']);
+        $this->assertSame('INT-1', $payload['id_intermediario']);
+        $this->assertSame(100.0, $payload['ibs_cbs_base_calculo']);
     }
 
     public function test_to_array_mantem_nomes_aderentes_ao_manual(): void
@@ -134,8 +148,12 @@ class NFeDTOTest extends TestCase
         $this->assertArrayHasKey('formas_pagamento', $payload);
         $this->assertArrayHasKey('logradouro_emitente', $payload);
         $this->assertArrayHasKey('logradouro_destinatario', $payload);
+        $this->assertArrayHasKey('valor_produtos', $payload);
+        $this->assertArrayHasKey('valor_total', $payload);
         $this->assertArrayNotHasKey('cnpjEmitente', $payload);
         $this->assertArrayNotHasKey('formasPagamento', $payload);
+        $this->assertArrayNotHasKey('valor_total_nota', $payload);
+        $this->assertArrayNotHasKey('valor_total_produtos', $payload);
     }
 
     public function test_data_emissao_e_carbon_no_dto(): void
@@ -143,5 +161,32 @@ class NFeDTOTest extends TestCase
         $dto = NFeDTO::fromArray($this->makeBaseData());
 
         $this->assertInstanceOf(Carbon::class, $dto->data_emissao);
+    }
+
+    public function test_from_array_aceita_aliases_oficiais_da_documentacao_atual(): void
+    {
+        $dto = NFeDTO::fromArray(array_merge($this->makeBaseData(), [
+            'data_entrada_saida' => '2026-01-15T11:00:00-03:00',
+            'nome_emitente' => 'Empresa Teste LTDA',
+            'codigo_municipio_emitente' => '3550308',
+            'codigo_municipio_destinatario' => '3550308',
+            'pais_destinatario' => 'Brasil',
+            'valor_produtos' => 100.0,
+            'valor_total' => 100.0,
+            'notas_referenciadas' => [['chave_nfe' => '35260107504505000132550010000000011234567890']],
+            'indicador_intermediario' => '1',
+            'cnpj_intermediario' => '12345678000190',
+            'id_intermediario' => 'MARKET-1',
+        ]));
+
+        $payload = $dto->toArray();
+
+        $this->assertSame('2026-01-15T14:00:00+00:00', $payload['data_entrada_saida']);
+        $this->assertSame('Empresa Teste LTDA', $payload['nome_emitente']);
+        $this->assertSame('3550308', $payload['codigo_municipio_emitente']);
+        $this->assertSame('Brasil', $payload['pais_destinatario']);
+        $this->assertSame(100.0, $payload['valor_produtos']);
+        $this->assertSame(100.0, $payload['valor_total']);
+        $this->assertSame('MARKET-1', $payload['id_intermediario']);
     }
 }

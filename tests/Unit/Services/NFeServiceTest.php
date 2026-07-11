@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\TestCase;
 use Sysborg\FocusNfe\app\DTO\NFeDTO;
+use Sysborg\FocusNfe\app\DTO\NFeEmissaoResponseDTO;
 use Sysborg\FocusNfe\app\Services\NFe;
 
 class NFeServiceTest extends TestCase
@@ -133,6 +134,152 @@ class NFeServiceTest extends TestCase
         });
     }
 
+    /**
+     * @dataProvider enviaDtoStatusProvider
+     */
+    public function test_envia_dto_classifica_response_por_status_code(
+        int $httpStatus,
+        array|string $body,
+        string $resultado,
+        string $assertionMethod,
+        bool $sucesso
+    ): void {
+        Http::fake([
+            $this->baseUrl . NFe::URL . '*' => Http::response($body, $httpStatus),
+        ]);
+
+        $dto = $this->service->enviaDto($this->makeDto(), $this->ref);
+
+        $this->assertInstanceOf(NFeEmissaoResponseDTO::class, $dto);
+        $this->assertSame($httpStatus, $dto->http_status);
+        $this->assertSame($resultado, $dto->resultado);
+        $this->assertSame($sucesso, $dto->sucesso);
+        $this->assertTrue($dto->{$assertionMethod}());
+    }
+
+    public static function enviaDtoStatusProvider(): array
+    {
+        return [
+            '201 autorizada' => [
+                201,
+                [
+                    'cnpj_emitente' => '07504505000132',
+                    'ref' => 'nfe-001',
+                    'status' => 'autorizado',
+                    'status_sefaz' => '100',
+                    'mensagem_sefaz' => 'Autorizado o uso da NF-e',
+                    'chave_nfe' => 'NFe4119060750450500013255001000000221923094166',
+                    'numero' => '22',
+                    'serie' => '1',
+                    'caminho_xml_nota_fiscal' => '/xml/nfe.xml',
+                    'caminho_danfe' => '/danfe/nfe.pdf',
+                ],
+                NFeEmissaoResponseDTO::RESULTADO_AUTORIZADA,
+                'autorizada',
+                true,
+            ],
+            '202 processando' => [
+                202,
+                [
+                    'cnpj_emitente' => '07504505000132',
+                    'ref' => 'nfe-001',
+                    'status' => 'processando_autorizacao',
+                ],
+                NFeEmissaoResponseDTO::RESULTADO_PROCESSANDO,
+                'processando',
+                true,
+            ],
+            '400 requisicao invalida' => [
+                400,
+                [
+                    'codigo' => 'requisicao_invalida',
+                    'mensagem' => 'Parâmetro "ref" não informado.',
+                ],
+                NFeEmissaoResponseDTO::RESULTADO_REQUISICAO_INVALIDA,
+                'requisicaoInvalida',
+                false,
+            ],
+            '401 nao autorizado' => [
+                401,
+                'HTTP Basic: Access denied',
+                NFeEmissaoResponseDTO::RESULTADO_NAO_AUTORIZADO,
+                'naoAutorizado',
+                false,
+            ],
+            '415 formato invalido' => [
+                415,
+                [
+                    'codigo' => 'formato_invalido',
+                    'mensagem' => 'Recebida requisição vazia quando eram esperados dados.',
+                ],
+                NFeEmissaoResponseDTO::RESULTADO_FORMATO_INVALIDO,
+                'formatoInvalido',
+                false,
+            ],
+            '422 erro processamento' => [
+                422,
+                [
+                    'codigo' => 'erro_validacao_schema',
+                    'mensagem' => 'Erro na validação do Schema XML, verifique o detalhamento dos erros.',
+                    'erros' => [
+                        ['campo' => 'tipo_documento', 'mensagem' => 'Tipo documento não pode ser vazio'],
+                    ],
+                ],
+                NFeEmissaoResponseDTO::RESULTADO_ERRO_PROCESSAMENTO,
+                'erroProcessamento',
+                false,
+            ],
+        ];
+    }
+
+    public function test_envia_dto_preserva_campos_da_resposta_autorizada(): void
+    {
+        Http::fake([
+            $this->baseUrl . NFe::URL . '*' => Http::response([
+                'cnpj_emitente' => '07504505000132',
+                'ref' => $this->ref,
+                'status' => 'autorizado',
+                'status_sefaz' => '100',
+                'mensagem_sefaz' => 'Autorizado o uso da NF-e',
+                'chave_nfe' => 'NFe4119060750450500013255001000000221923094166',
+                'numero' => '22',
+                'serie' => '1',
+                'caminho_xml_nota_fiscal' => '/xml/nfe.xml',
+                'caminho_danfe' => '/danfe/nfe.pdf',
+            ], 201),
+        ]);
+
+        $dto = $this->service->enviaDto($this->makeDto(), $this->ref);
+
+        $this->assertSame('07504505000132', $dto->cnpj_emitente);
+        $this->assertSame($this->ref, $dto->ref);
+        $this->assertSame('autorizado', $dto->status);
+        $this->assertSame('100', $dto->status_sefaz);
+        $this->assertSame('NFe4119060750450500013255001000000221923094166', $dto->chave_nfe);
+        $this->assertSame('/xml/nfe.xml', $dto->caminho_xml_nota_fiscal);
+        $this->assertSame('/danfe/nfe.pdf', $dto->caminho_danfe);
+    }
+
+    public function test_envia_dto_preserva_erros_de_validacao_422(): void
+    {
+        Http::fake([
+            $this->baseUrl . NFe::URL . '*' => Http::response([
+                'codigo' => 'erro_validacao_schema',
+                'mensagem' => 'Erro na validação do Schema XML, verifique o detalhamento dos erros.',
+                'erros' => [
+                    ['campo' => 'tipo_documento', 'mensagem' => 'Tipo documento não pode ser vazio'],
+                ],
+            ], 422),
+        ]);
+
+        $dto = $this->service->enviaDto($this->makeDto(), $this->ref);
+
+        $this->assertSame('erro_validacao_schema', $dto->codigo);
+        $this->assertSame('Erro na validação do Schema XML, verifique o detalhamento dos erros.', $dto->mensagem);
+        $this->assertSame('tipo_documento', $dto->erros[0]['campo']);
+        $this->assertSame('Tipo documento não pode ser vazio', $dto->erros[0]['mensagem']);
+    }
+
     public function test_get_nfe_autorizada(): void
     {
         Http::fake([
@@ -147,6 +294,21 @@ class NFeServiceTest extends TestCase
 
         $this->assertEquals(200, $response->status());
         $this->assertEquals('autorizado', $response->json('status'));
+    }
+
+    public function test_get_nfe_completa(): void
+    {
+        Http::fake([
+            $this->baseUrl . NFe::URL . '/' . $this->ref . '?completa=1' => Http::response([
+                'status' => 'autorizado',
+                'requisicao_nota_fiscal' => ['natureza_operacao' => 'Venda'],
+            ], 200),
+        ]);
+
+        $response = $this->service->get($this->ref, true);
+
+        $this->assertEquals(200, $response->status());
+        $this->assertEquals('Venda', $response->json('requisicao_nota_fiscal.natureza_operacao'));
     }
 
     public function test_cancela_nfe(): void
@@ -215,21 +377,25 @@ class NFeServiceTest extends TestCase
         $email = 'cliente@exemplo.com';
 
         Http::fake([
-            $this->baseUrl . NFe::URL . "/$this->ref/$email" => Http::response([
-                'status' => 'email_reenviado',
+            $this->baseUrl . NFe::URL . "/$this->ref/email" => Http::response([
+                'mensagem' => 'Emails agendados para envio',
             ], 200),
         ]);
 
         $response = $this->service->reenviaEmail($this->ref, $email);
 
         $this->assertEquals(200, $response->status());
-        $this->assertEquals('email_reenviado', $response->json('status'));
+        $this->assertEquals('Emails agendados para envio', $response->json('mensagem'));
+        Http::assertSent(function ($request) use ($email): bool {
+            return $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/email"
+                && $request['emails'] === [$email];
+        });
     }
 
     public function test_download_xml(): void
     {
         Http::fake([
-            $this->baseUrl . NFe::URL . '/' . $this->ref . '?completo=true' => Http::response([
+            $this->baseUrl . NFe::URL . '/' . $this->ref . '?completa=1' => Http::response([
                 'status' => 'autorizado',
                 'xml' => '<NFe>conteudo</NFe>',
             ], 200),
@@ -256,6 +422,21 @@ class NFeServiceTest extends TestCase
         ]);
 
         $this->assertEquals(200, $response->status());
+    }
+
+    public function test_cancela_insucesso_entrega(): void
+    {
+        Http::fake([
+            $this->baseUrl . NFe::URL . "/$this->ref/insucesso_entrega" => Http::response([
+                'status' => 'autorizado',
+                'numero_cancelamento_insucesso_entrega' => 1,
+            ], 200),
+        ]);
+
+        $response = $this->service->cancelaInsucessoEntrega($this->ref);
+
+        $this->assertEquals(200, $response->status());
+        $this->assertEquals(1, $response->json('numero_cancelamento_insucesso_entrega'));
     }
 
     public function test_ator_interessado(): void
@@ -338,6 +519,20 @@ class NFeServiceTest extends TestCase
         $this->assertEquals('cancelado', $response->json('status'));
     }
 
+    public function test_reenviar_hook(): void
+    {
+        Http::fake([
+            $this->baseUrl . NFe::URL . "/$this->ref/hook" => Http::response([
+                ['id' => 'hook-1', 'event' => 'nfe'],
+            ], 200),
+        ]);
+
+        $response = $this->service->reenviarHook($this->ref);
+
+        $this->assertEquals(200, $response->status());
+        $this->assertEquals('hook-1', $response->json('0.id'));
+    }
+
     public function test_nfe_dto_inclui_formas_pagamento_no_payload(): void
     {
         $dto = $this->makeDto();
@@ -363,6 +558,6 @@ class NFeServiceTest extends TestCase
         $this->assertEquals('01001000', $payload['cep_emitente']);
         $this->assertEquals('emitente@empresa.com', $payload['email_emitente']);
         $this->assertEquals('Pedido #123', $payload['informacoes_adicionais_contribuinte']);
-        $this->assertNotEmpty($payload['documentos_referenciados']);
+        $this->assertNotEmpty($payload['notas_referenciadas']);
     }
 }

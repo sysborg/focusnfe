@@ -4,6 +4,7 @@ namespace Sysborg\FocusNfe\app\Services;
 
 use Illuminate\Http\Client\Response;
 use Sysborg\FocusNfe\app\DTO\NFeDTO;
+use Sysborg\FocusNfe\app\DTO\NFeEmissaoResponseDTO;
 use Sysborg\FocusNfe\app\Events\NFeAutorizada;
 use Sysborg\FocusNfe\app\Events\NFeCancelada;
 use Sysborg\FocusNfe\app\Events\NFeInutilizada;
@@ -72,15 +73,32 @@ class NFe extends EventHelper
     }
 
     /**
+     * Envia uma NF-e e retorna o contrato tipado do endpoint de emissão.
+     *
+     * Cobre os status documentados: 201, 202, 400, 401, 415 e 422.
+     *
+     * @param NFeDTO $data
+     * @param string $referencia
+     * @return NFeEmissaoResponseDTO
+     */
+    public function enviaDto(NFeDTO $data, string $referencia): NFeEmissaoResponseDTO
+    {
+        return NFeEmissaoResponseDTO::fromResponse($this->envia($data, $referencia));
+    }
+
+    /**
      * Consulta uma NF-e pelo número de referência
      *
      * @param string $referencia
      * @return Response
      */
-    public function get(string $referencia): Response
+    public function get(string $referencia, bool $completa = false): Response
     {
         $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
-        $response = FocusNfeHttp::withToken($this->token)->get($url);
+        $response = FocusNfeHttp::withToken($this->token)->get(
+            $url,
+            $completa ? ['completa' => 1] : []
+        );
 
         if ($response->failed()) {
             FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao consultar NF-e', $this->ambiente, 'get', $url, $response, [
@@ -181,18 +199,21 @@ class NFe extends EventHelper
      * Reenvia o email da NF-e para o destinatário
      *
      * @param string $referencia
-     * @param string $email
+     * @param string|array<int, string> $emails
      * @return Response
      */
-    public function reenviaEmail(string $referencia, string $email): Response
+    public function reenviaEmail(string $referencia, string|array $emails): Response
     {
-        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/$email";
-        $response = FocusNfeHttp::withToken($this->token)->post($url);
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/email";
+        $emailList = is_array($emails) ? $emails : [$emails];
+        $response = FocusNfeHttp::withToken($this->token)->post($url, [
+            'emails' => $emailList,
+        ]);
 
         if ($response->failed()) {
             FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao reenviar email da NF-e', $this->ambiente, 'post', $url, $response, [
                 'referencia' => $referencia,
-                'email' => $email,
+                'emails' => $emailList,
             ]);
         }
 
@@ -209,7 +230,7 @@ class NFe extends EventHelper
     {
         $response = FocusNfeHttp::withToken($this->token)->get(
             config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia",
-            ['completo' => 'true']
+            ['completa' => 1]
         );
 
         if ($response->failed()) {
@@ -239,6 +260,26 @@ class NFe extends EventHelper
         if ($response->failed()) {
             FocusNfeLogger::error('FocusNfe.NFe: Erro ao registrar insucesso de entrega', [
                 'response' => $response->json(),
+                'referencia' => $referencia,
+            ]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Cancela evento de insucesso na entrega da NF-e.
+     *
+     * @param string $referencia
+     * @return Response
+     */
+    public function cancelaInsucessoEntrega(string $referencia): Response
+    {
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/insucesso_entrega";
+        $response = FocusNfeHttp::withToken($this->token)->delete($url);
+
+        if ($response->failed()) {
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao cancelar insucesso de entrega', $this->ambiente, 'delete', $url, $response, [
                 'referencia' => $referencia,
             ]);
         }
@@ -360,6 +401,26 @@ class NFe extends EventHelper
                 'response' => $response->json(),
                 'referencia' => $referencia,
                 'protocolo' => $protocolo,
+            ]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Solicita reenvio dos webhooks da NF-e.
+     *
+     * @param string $referencia
+     * @return Response
+     */
+    public function reenviarHook(string $referencia): Response
+    {
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/hook";
+        $response = FocusNfeHttp::withToken($this->token)->post($url);
+
+        if ($response->failed()) {
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao reenviar hook da NF-e', $this->ambiente, 'post', $url, $response, [
+                'referencia' => $referencia,
             ]);
         }
 
