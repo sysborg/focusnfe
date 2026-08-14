@@ -123,6 +123,7 @@ class NFeDTO extends DTO
     protected static function fieldMapping(): array
     {
         return [
+            'itens' => 'items',
             'valor_total_produtos' => 'valor_produtos',
             'valor_total_nota' => 'valor_total',
             'documentos_referenciados' => 'notas_referenciadas',
@@ -168,7 +169,7 @@ class NFeDTO extends DTO
             indicador_inscricao_estadual_destinatario: (int) $data['indicador_inscricao_estadual_destinatario'],
             codigo_municipio_destinatario: $data['codigo_municipio_destinatario'] ?? null,
             pais_destinatario: $data['pais_destinatario'] ?? null,
-            itens: $data['itens'],
+            itens: $data['items'] ?? $data['itens'],
             formas_pagamento: $data['formas_pagamento'] ?? [],
             complemento_emitente: $data['complemento_emitente'] ?? null,
             cep_emitente: $data['cep_emitente'] ?? null,

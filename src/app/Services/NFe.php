@@ -110,19 +110,52 @@ class NFe extends EventHelper
     }
 
     /**
-     * Cancela uma NF-e
+     * Cancela uma NF-e.
+     *
+     * A API Focus NFe exige justificativa entre 15 e 255 caracteres. Uma string
+     * sera convertida para ['justificativa' => $valor].
      *
      * @param string $referencia
+     * @param array<mixed>|string $data
      * @return Response
      */
-    public function cancela(string $referencia): Response
+    public function cancela(string $referencia, array|string $data = []): Response
     {
         $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia";
-        $response = FocusNfeHttp::withToken($this->token)->delete($url);
+        $payload = is_string($data) ? ['justificativa' => $data] : $data;
+        $response = FocusNfeHttp::withToken($this->token)->delete($url, $payload);
 
         $this->dispatch(NFeCancelada::class, $response);
         if ($response->failed()) {
             FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao cancelar NF-e', $this->ambiente, 'delete', $url, $response, [
+                'referencia' => $referencia,
+            ]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Importa uma NF-e a partir do XML.
+     *
+     * @param string $xml Conteudo XML da NF-e
+     * @param string|null $referencia Referencia unica opcional; se omitida, a API usa a chave da nota
+     * @return Response
+     */
+    public function importaXml(string $xml, ?string $referencia = null): Response
+    {
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . '/importacao';
+        if ($referencia !== null) {
+            $url .= '?ref=' . urlencode($referencia);
+        }
+
+        $response = FocusNfeHttp::withToken($this->token)
+            ->pending()
+            ->withBody($xml, 'application/xml')
+            ->post($url);
+
+        if ($response->failed()) {
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao importar XML da NF-e', $this->ambiente, 'post', $url, $response, [
                 'referencia' => $referencia,
             ]);
         }
@@ -179,14 +212,16 @@ class NFe extends EventHelper
     }
 
     /**
-     * Consulta numerações inutilizadas
+     * Consulta numeracoes inutilizadas.
      *
+     * @param array<mixed> $filtros Filtros oficiais: cnpj, cpf, data_recebimento_inicial,
+     * data_recebimento_final, numero_inicial, numero_final
      * @return Response
      */
-    public function inutilizacoes(): Response
+    public function inutilizacoes(array $filtros = []): Response
     {
         $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . '/inutilizacoes';
-        $response = FocusNfeHttp::withToken($this->token)->get($url);
+        $response = FocusNfeHttp::withToken($this->token)->get($url, $filtros);
 
         if ($response->failed()) {
             FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao consultar inutilizações', $this->ambiente, 'get', $url, $response);
@@ -244,22 +279,21 @@ class NFe extends EventHelper
     }
 
     /**
-     * Registra evento de insucesso na entrega da NF-e
+     * Registra evento de insucesso na entrega da NF-e.
      *
      * @param string $referencia
-     * @param array $data {data_tentativa, numero_tentativas, motivo: 0=desconhecido, 1=recusada, 2=inacessível}
+     * @param array $data Payload oficial com data_tentativa_entrega, numero_tentativas,
+     * motivo_insucesso, justificativa_insucesso, latitude_entrega, longitude_entrega,
+     * hash_tentativa_entrega e data_hash_tentativa.
      * @return Response
      */
     public function insucessoEntrega(string $referencia, array $data): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/insucesso_entrega",
-            $data
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/insucesso_entrega";
+        $response = FocusNfeHttp::withToken($this->token)->post($url, $data);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao registrar insucesso de entrega', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao registrar insucesso de entrega', $this->ambiente, 'post', $url, $response, [
                 'referencia' => $referencia,
             ]);
         }
@@ -288,22 +322,19 @@ class NFe extends EventHelper
     }
 
     /**
-     * Registra um ator interessado na NF-e (ex: transportador)
+     * Registra um ator interessado na NF-e.
      *
      * @param string $referencia
-     * @param array $data {tipo_ator: 1=transportador|2=redespacho, cnpj ou cpf, ie}
+     * @param array $data Payload oficial com cpf ou cnpj e permite_autorizacao_terceiros
      * @return Response
      */
     public function atorInteressado(string $referencia, array $data): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/ator_interessado",
-            $data
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/ator_interessado";
+        $response = FocusNfeHttp::withToken($this->token)->post($url, $data);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao registrar ator interessado', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao registrar ator interessado', $this->ambiente, 'post', $url, $response, [
                 'referencia' => $referencia,
             ]);
         }
@@ -312,46 +343,78 @@ class NFe extends EventHelper
     }
 
     /**
-     * Registra prorrogação de prazo de ICMS suspenso
+     * Emite um evento generico de NF-e.
      *
      * @param string $referencia
-     * @param array $data
+     * @param array<mixed> $data
+     * @return Response
+     */
+    public function evento(string $referencia, array $data): Response
+    {
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/evento";
+        $response = FocusNfeHttp::withToken($this->token)->post($url, $data);
+
+        if ($response->failed()) {
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao registrar evento', $this->ambiente, 'post', $url, $response, [
+                'referencia' => $referencia,
+                'tipo_evento' => $data['tipo_evento'] ?? null,
+            ]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Cancela um evento generico de NF-e.
+     *
+     * @param string $referencia
+     * @param array<mixed>|string $data Tipo do evento ou payload oficial com tipo_evento
+     * @return Response
+     */
+    public function cancelaEvento(string $referencia, array|string $data): Response
+    {
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/evento";
+        $payload = is_string($data) ? ['tipo_evento' => $data] : $data;
+        $response = FocusNfeHttp::withToken($this->token)->delete($url, $payload);
+
+        if ($response->failed()) {
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao cancelar evento', $this->ambiente, 'delete', $url, $response, [
+                'referencia' => $referencia,
+                'tipo_evento' => $payload['tipo_evento'] ?? null,
+            ]);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Registra prorrogacao de prazo de ICMS suspenso pelo endpoint oficial de eventos.
+     *
+     * @param string $referencia
+     * @param array<mixed> $data
      * @return Response
      */
     public function prorrogacaoIcms(string $referencia, array $data): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/prorrogacao_icms",
-            $data
-        );
-
-        if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao registrar prorrogação de ICMS', [
-                'response' => $response->json(),
-                'referencia' => $referencia,
-            ]);
-        }
-
-        return $response;
+        return $this->evento($referencia, array_merge([
+            'tipo_evento' => 'prorrogacao_suspensao_icms',
+        ], $data));
     }
 
     /**
-     * Registra evento de Conciliação Financeira - ECONF
+     * Registra evento de Conciliação Financeira - ECONF.
      *
      * @param string $referencia
-     * @param array $data
+     * @param array<mixed> $data Payload oficial com detalhes_pagamento
      * @return Response
      */
     public function registraEconf(string $referencia, array $data): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->post(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf",
-            $data
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf";
+        $response = FocusNfeHttp::withToken($this->token)->post($url, $data);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao registrar ECONF', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao registrar ECONF', $this->ambiente, 'post', $url, $response, [
                 'referencia' => $referencia,
             ]);
         }
@@ -363,20 +426,18 @@ class NFe extends EventHelper
      * Consulta evento de Conciliação Financeira - ECONF
      *
      * @param string $referencia
-     * @param string $protocolo
+     * @param string $numeroProtocolo
      * @return Response
      */
-    public function consultaEconf(string $referencia, string $protocolo): Response
+    public function consultaEconf(string $referencia, string $numeroProtocolo): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->get(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo"
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$numeroProtocolo";
+        $response = FocusNfeHttp::withToken($this->token)->get($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao consultar ECONF', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao consultar ECONF', $this->ambiente, 'get', $url, $response, [
                 'referencia' => $referencia,
-                'protocolo' => $protocolo,
+                'numero_protocolo' => $numeroProtocolo,
             ]);
         }
 
@@ -387,20 +448,18 @@ class NFe extends EventHelper
      * Cancela evento de Conciliação Financeira - ECONF
      *
      * @param string $referencia
-     * @param string $protocolo
+     * @param string $numeroProtocolo
      * @return Response
      */
-    public function cancelaEconf(string $referencia, string $protocolo): Response
+    public function cancelaEconf(string $referencia, string $numeroProtocolo): Response
     {
-        $response = FocusNfeHttp::withToken($this->token)->delete(
-            config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$protocolo"
-        );
+        $url = config('focusnfe.URL.' . $this->ambiente) . self::URL . "/$referencia/econf/$numeroProtocolo";
+        $response = FocusNfeHttp::withToken($this->token)->delete($url);
 
         if ($response->failed()) {
-            FocusNfeLogger::error('FocusNfe.NFe: Erro ao cancelar ECONF', [
-                'response' => $response->json(),
+            FocusNfeLogger::apiError('FocusNfe.NFe: Erro ao cancelar ECONF', $this->ambiente, 'delete', $url, $response, [
                 'referencia' => $referencia,
-                'protocolo' => $protocolo,
+                'numero_protocolo' => $numeroProtocolo,
             ]);
         }
 

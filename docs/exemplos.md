@@ -17,7 +17,9 @@ $nfe = app(NFe::class);
 $response = $nfe->get('pedido-123');
 ```
 
-## Enviando NF-e
+## NFe
+
+### Emissao
 
 ```php
 use Sysborg\FocusNfe\app\DTO\NFeDTO;
@@ -48,7 +50,7 @@ $dto = NFeDTO::fromArray([
     'municipio_destinatario' => 'Sao Paulo',
     'uf_destinatario' => 'SP',
     'indicador_inscricao_estadual_destinatario' => 9,
-    'itens' => [[
+    'items' => [[
         'numero_item' => 1,
         'codigo_produto' => 'P001',
         'descricao' => 'Produto',
@@ -70,6 +72,183 @@ $dto = NFeDTO::fromArray([
 
 $response = $nfe->envia($dto, 'pedido-123');
 ```
+
+### Consulta simples
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+$response = $nfe->get('pedido-123');
+```
+
+### Consulta completa
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+$response = $nfe->get('pedido-123', completa: true);
+```
+
+### Cancelamento com justificativa
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+$response = $nfe->cancela('pedido-123', 'Cancelamento solicitado pelo cliente.');
+```
+
+Tambem e aceito o payload em array:
+
+```php
+$response = $nfe->cancela('pedido-123', [
+    'justificativa' => 'Cancelamento solicitado pelo cliente.',
+]);
+```
+
+### Carta de correcao
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+$response = $nfe->cartaCorrecao('pedido-123', [
+    'correcao' => 'Correcao do endereco do destinatario.',
+    'data_evento' => '2026-01-15T10:00:00-03:00',
+]);
+```
+
+### Inutilizacao
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+$response = $nfe->inutilizar([
+    'cnpj' => '07504505000132',
+    'serie' => '1',
+    'numero_inicial' => '10',
+    'numero_final' => '12',
+    'justificativa' => 'Quebra de sequencia em homologacao.',
+]);
+```
+
+### Consulta de inutilizacoes
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+$response = $nfe->inutilizacoes([
+    'cnpj' => '07504505000132',
+    'data_recebimento_inicial' => '2026-01-01',
+    'data_recebimento_final' => '2026-01-31',
+    'numero_inicial' => 10,
+    'numero_final' => 12,
+]);
+```
+
+### Importacao XML
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+$xml = file_get_contents(storage_path('app/nfe-homologacao.xml'));
+
+$response = $nfe->importaXml($xml, 'pedido-xml-123');
+```
+
+### Email
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+$response = $nfe->reenviaEmail('pedido-123', [
+    'cliente@example.com',
+    'financeiro@example.com',
+]);
+```
+
+### ECONF
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+
+$response = $nfe->registraEconf('pedido-123', [
+    'detalhes_pagamento' => [
+        [
+            'forma_pagamento' => '01',
+            'valor' => 100.0,
+        ],
+    ],
+]);
+
+$numeroProtocolo = $response->json('protocolo');
+
+$consulta = $nfe->consultaEconf('pedido-123', $numeroProtocolo);
+$cancelamento = $nfe->cancelaEconf('pedido-123', $numeroProtocolo);
+```
+
+### Eventos auxiliares
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+
+$nfe->insucessoEntrega('pedido-123', [
+    'data_tentativa_entrega' => '2026-01-15T10:30:56-03:00',
+    'numero_tentativas' => 1,
+    'motivo_insucesso' => 4,
+    'justificativa_insucesso' => 'Endereco de entrega nao localizado.',
+    'latitude_entrega' => '-25.428400',
+    'longitude_entrega' => '-49.273300',
+    'hash_tentativa_entrega' => 'hash-gerado-pelo-aplicativo',
+    'data_hash_tentativa' => '2026-01-15T10:35:00-03:00',
+]);
+
+$nfe->atorInteressado('pedido-123', [
+    'cnpj' => '07504505000132',
+    'permite_autorizacao_terceiros' => true,
+]);
+
+$nfe->prorrogacaoIcms('pedido-123', [
+    'itens_prorrogacao_suspensao_icms' => [
+        ['numero_item' => 1],
+    ],
+]);
+```
+
+### Hook
+
+```php
+use Sysborg\FocusNfe\app\Services\NFe;
+
+$nfe = app(NFe::class);
+$response = $nfe->reenviarHook('pedido-123');
+```
+
+### Nomes oficiais e aliases aceitos
+
+O payload serializado para a Focus NFe usa os nomes oficiais principais:
+
+- `items`
+- `valor_produtos`
+- `valor_total`
+- `notas_referenciadas`
+
+Para compatibilidade com aplicacoes existentes, `NFeDTO::fromArray()` tambem aceita:
+
+- `itens`
+- `valor_total_produtos`
+- `valor_total_nota`
+- `documentos_referenciados`
 
 ## Consultando CNPJ tipado
 

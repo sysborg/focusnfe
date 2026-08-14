@@ -72,6 +72,25 @@ class NFeDTOTest extends TestCase
         $this->assertCount(1, $dto->formas_pagamento);
     }
 
+    public function test_from_array_aceita_items_oficial(): void
+    {
+        $data = $this->makeBaseData();
+        $items = $data['itens'];
+        unset($data['itens']);
+        $data['items'] = $items;
+
+        $dto = NFeDTO::fromArray($data);
+
+        $this->assertSame($items, $dto->itens);
+    }
+
+    public function test_from_array_mantem_itens_legado(): void
+    {
+        $dto = NFeDTO::fromArray($this->makeBaseData());
+
+        $this->assertSame($this->makeItens(), $dto->itens);
+    }
+
     public function test_from_array_aceita_cpf_emitente_quando_informado(): void
     {
         $data = $this->makeBaseData();
@@ -139,6 +158,15 @@ class NFeDTOTest extends TestCase
         $this->assertSame(100.0, $payload['ibs_cbs_base_calculo']);
     }
 
+    public function test_to_array_serializa_itens_como_items(): void
+    {
+        $payload = NFeDTO::fromArray($this->makeBaseData())->toArray();
+
+        $this->assertArrayHasKey('items', $payload);
+        $this->assertArrayNotHasKey('itens', $payload);
+        $this->assertSame($this->makeItens(), $payload['items']);
+    }
+
     public function test_to_array_mantem_nomes_aderentes_ao_manual(): void
     {
         $payload = NFeDTO::fromArray($this->makeBaseData())->toArray();
@@ -148,10 +176,12 @@ class NFeDTOTest extends TestCase
         $this->assertArrayHasKey('formas_pagamento', $payload);
         $this->assertArrayHasKey('logradouro_emitente', $payload);
         $this->assertArrayHasKey('logradouro_destinatario', $payload);
+        $this->assertArrayHasKey('items', $payload);
         $this->assertArrayHasKey('valor_produtos', $payload);
         $this->assertArrayHasKey('valor_total', $payload);
         $this->assertArrayNotHasKey('cnpjEmitente', $payload);
         $this->assertArrayNotHasKey('formasPagamento', $payload);
+        $this->assertArrayNotHasKey('itens', $payload);
         $this->assertArrayNotHasKey('valor_total_nota', $payload);
         $this->assertArrayNotHasKey('valor_total_produtos', $payload);
     }

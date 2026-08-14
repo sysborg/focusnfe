@@ -2,7 +2,6 @@
 
 namespace Sysborg\FocusNfe\tests\Unit\Services;
 
-use Carbon\Carbon;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Container\Container;
 use Illuminate\Events\Dispatcher;
@@ -38,11 +37,22 @@ class NFeServiceTest extends TestCase
             ],
         ]));
         $container->instance('log', new class () {
-            public function channel(?string $channel = null): static { return $this; }
-            public function error(string $message, array $context = []): void {}
-            public function warning(string $message, array $context = []): void {}
-            public function info(string $message, array $context = []): void {}
-            public function debug(string $message, array $context = []): void {}
+            public function channel(?string $channel = null): static
+            {
+                return $this;
+            }
+            public function error(string $message, array $context = []): void
+            {
+            }
+            public function warning(string $message, array $context = []): void
+            {
+            }
+            public function info(string $message, array $context = []): void
+            {
+            }
+            public function debug(string $message, array $context = []): void
+            {
+            }
         });
         $container->instance('http', new HttpFactory());
         $container->instance('events', new Dispatcher($container));
@@ -311,7 +321,50 @@ class NFeServiceTest extends TestCase
         $this->assertEquals('Venda', $response->json('requisicao_nota_fiscal.natureza_operacao'));
     }
 
-    public function test_cancela_nfe(): void
+    public function test_cancela_nfe_envia_justificativa_string(): void
+    {
+        $justificativa = 'Cancelamento de teste homologacao';
+
+        Http::fake([
+            $this->baseUrl . NFe::URL . '/' . $this->ref => Http::response([
+                'status' => 'cancelado',
+                'ref' => $this->ref,
+            ], 200),
+        ]);
+
+        $response = $this->service->cancela($this->ref, $justificativa);
+
+        $this->assertEquals(200, $response->status());
+        $this->assertEquals('cancelado', $response->json('status'));
+        Http::assertSent(function ($request) use ($justificativa): bool {
+            return $request->method() === 'DELETE'
+                && $request->url() === $this->baseUrl . NFe::URL . '/' . $this->ref
+                && $request['justificativa'] === $justificativa;
+        });
+    }
+
+    public function test_cancela_nfe_envia_payload_array(): void
+    {
+        $payload = ['justificativa' => 'Cancelamento de teste via array'];
+
+        Http::fake([
+            $this->baseUrl . NFe::URL . '/' . $this->ref => Http::response([
+                'status' => 'cancelado',
+                'ref' => $this->ref,
+            ], 200),
+        ]);
+
+        $response = $this->service->cancela($this->ref, $payload);
+
+        $this->assertEquals(200, $response->status());
+        Http::assertSent(function ($request) use ($payload): bool {
+            return $request->method() === 'DELETE'
+                && $request->url() === $this->baseUrl . NFe::URL . '/' . $this->ref
+                && $request['justificativa'] === $payload['justificativa'];
+        });
+    }
+
+    public function test_cancela_nfe_mantem_chamada_sem_payload_por_compatibilidade(): void
     {
         Http::fake([
             $this->baseUrl . NFe::URL . '/' . $this->ref => Http::response([
@@ -323,11 +376,20 @@ class NFeServiceTest extends TestCase
         $response = $this->service->cancela($this->ref);
 
         $this->assertEquals(200, $response->status());
-        $this->assertEquals('cancelado', $response->json('status'));
+        Http::assertSent(function ($request): bool {
+            return $request->method() === 'DELETE'
+                && $request->url() === $this->baseUrl . NFe::URL . '/' . $this->ref
+                && $request->body() === '';
+        });
     }
 
     public function test_carta_correcao(): void
     {
+        $payload = [
+            'correcao' => 'Correcao do endereco do destinatario',
+            'data_evento' => '2026-01-15T10:00:00-03:00',
+        ];
+
         Http::fake([
             $this->baseUrl . NFe::URL . '/' . $this->ref . '/carta_correcao' => Http::response([
                 'status' => 'autorizado',
@@ -335,13 +397,27 @@ class NFeServiceTest extends TestCase
             ], 200),
         ]);
 
-        $response = $this->service->cartaCorrecao($this->ref, ['correcao' => 'Correção de dado']);
+        $response = $this->service->cartaCorrecao($this->ref, $payload);
 
         $this->assertEquals(200, $response->status());
+        Http::assertSent(function ($request) use ($payload): bool {
+            return $request->method() === 'POST'
+                && $request->url() === $this->baseUrl . NFe::URL . '/' . $this->ref . '/carta_correcao'
+                && $request['correcao'] === $payload['correcao']
+                && $request['data_evento'] === $payload['data_evento'];
+        });
     }
 
     public function test_inutilizar_nfe(): void
     {
+        $payload = [
+            'cnpj' => '07504505000132',
+            'serie' => '1',
+            'numero_inicial' => '10',
+            'numero_final' => '12',
+            'justificativa' => 'Teste de inutilizacao',
+        ];
+
         Http::fake([
             $this->baseUrl . NFe::URL . '/inutilizacao' => Http::response([
                 'status' => 'autorizado',
@@ -349,16 +425,19 @@ class NFeServiceTest extends TestCase
             ], 200),
         ]);
 
-        $response = $this->service->inutilizar([
-            'cnpj' => '07504505000132',
-            'serie' => '1',
-            'numero_inicial' => '10',
-            'numero_final' => '12',
-            'justificativa' => 'Teste de inutilizacao',
-        ]);
+        $response = $this->service->inutilizar($payload);
 
         $this->assertEquals(200, $response->status());
         $this->assertEquals('autorizado', $response->json('status'));
+        Http::assertSent(function ($request) use ($payload): bool {
+            return $request->method() === 'POST'
+                && $request->url() === $this->baseUrl . NFe::URL . '/inutilizacao'
+                && $request['cnpj'] === $payload['cnpj']
+                && $request['serie'] === $payload['serie']
+                && $request['numero_inicial'] === $payload['numero_inicial']
+                && $request['numero_final'] === $payload['numero_final']
+                && $request['justificativa'] === $payload['justificativa'];
+        });
     }
 
     public function test_inutilizacoes(): void
@@ -370,6 +449,77 @@ class NFeServiceTest extends TestCase
         $response = $this->service->inutilizacoes();
 
         $this->assertEquals(200, $response->status());
+    }
+
+    public function test_inutilizacoes_com_filtros(): void
+    {
+        $filtros = [
+            'cnpj' => '07504505000132',
+            'data_recebimento_inicial' => '2026-01-01',
+            'data_recebimento_final' => '2026-01-31',
+            'numero_inicial' => 10,
+            'numero_final' => 12,
+        ];
+
+        Http::fake([
+            $this->baseUrl . NFe::URL . '/inutilizacoes*' => Http::response([], 200),
+        ]);
+
+        $response = $this->service->inutilizacoes($filtros);
+
+        $this->assertEquals(200, $response->status());
+        Http::assertSent(function ($request): bool {
+            return $request->url() === $this->baseUrl . NFe::URL . '/inutilizacoes'
+                . '?cnpj=07504505000132'
+                . '&data_recebimento_inicial=2026-01-01'
+                . '&data_recebimento_final=2026-01-31'
+                . '&numero_inicial=10'
+                . '&numero_final=12';
+        });
+    }
+
+    public function test_importa_xml_sem_referencia(): void
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?><NFe><infNFe Id="NFe123"/></NFe>';
+
+        Http::fake([
+            $this->baseUrl . NFe::URL . '/importacao' => Http::response([
+                'status' => 'importado',
+            ], 200),
+        ]);
+
+        $response = $this->service->importaXml($xml);
+
+        $this->assertEquals(200, $response->status());
+        Http::assertSent(function ($request) use ($xml): bool {
+            return $request->method() === 'POST'
+                && $request->url() === $this->baseUrl . NFe::URL . '/importacao'
+                && $request->body() === $xml
+                && $request->hasHeader('Content-Type', 'application/xml');
+        });
+    }
+
+    public function test_importa_xml_com_referencia(): void
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?><NFe><infNFe Id="NFe123"/></NFe>';
+        $referencia = 'xml-001';
+
+        Http::fake([
+            $this->baseUrl . NFe::URL . '/importacao?ref=' . $referencia => Http::response([
+                'status' => 'importado',
+                'ref' => $referencia,
+            ], 200),
+        ]);
+
+        $response = $this->service->importaXml($xml, $referencia);
+
+        $this->assertEquals(200, $response->status());
+        $this->assertEquals($referencia, $response->json('ref'));
+        Http::assertSent(function ($request) use ($xml, $referencia): bool {
+            return $request->method() === 'POST'
+                && $request->url() === $this->baseUrl . NFe::URL . '/importacao?ref=' . $referencia
+                && $request->body() === $xml;
+        });
     }
 
     public function test_reenvia_email(): void
@@ -392,6 +542,26 @@ class NFeServiceTest extends TestCase
         });
     }
 
+    public function test_reenvia_email_com_lista(): void
+    {
+        $emails = ['cliente1@exemplo.com', 'cliente2@exemplo.com'];
+
+        Http::fake([
+            $this->baseUrl . NFe::URL . "/$this->ref/email" => Http::response([
+                'mensagem' => 'Emails agendados para envio',
+            ], 200),
+        ]);
+
+        $response = $this->service->reenviaEmail($this->ref, $emails);
+
+        $this->assertEquals(200, $response->status());
+        Http::assertSent(function ($request) use ($emails): bool {
+            return $request->method() === 'POST'
+                && $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/email"
+                && $request['emails'] === $emails;
+        });
+    }
+
     public function test_download_xml(): void
     {
         Http::fake([
@@ -409,19 +579,33 @@ class NFeServiceTest extends TestCase
 
     public function test_insucesso_entrega(): void
     {
+        $payload = [
+            'data_tentativa_entrega' => '2026-01-15T10:30:56-03:00',
+            'numero_tentativas' => 1,
+            'motivo_insucesso' => 4,
+            'justificativa_insucesso' => 'Endereco de entrega nao localizado.',
+            'latitude_entrega' => '-25.428400',
+            'longitude_entrega' => '-49.273300',
+            'hash_tentativa_entrega' => 'yzmPGyT1YM5KqilP56w+oPlVkx8=',
+            'data_hash_tentativa' => '2026-01-15T10:35:00-03:00',
+        ];
+
         Http::fake([
             $this->baseUrl . NFe::URL . "/$this->ref/insucesso_entrega" => Http::response([
                 'status' => 'autorizado',
             ], 200),
         ]);
 
-        $response = $this->service->insucessoEntrega($this->ref, [
-            'data_tentativa' => '2026-01-15',
-            'numero_tentativas' => 1,
-            'motivo' => 1,
-        ]);
+        $response = $this->service->insucessoEntrega($this->ref, $payload);
 
         $this->assertEquals(200, $response->status());
+        Http::assertSent(function ($request) use ($payload): bool {
+            return $request->method() === 'POST'
+                && $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/insucesso_entrega"
+                && $request['data_tentativa_entrega'] === $payload['data_tentativa_entrega']
+                && $request['motivo_insucesso'] === $payload['motivo_insucesso']
+                && $request['hash_tentativa_entrega'] === $payload['hash_tentativa_entrega'];
+        });
     }
 
     public function test_cancela_insucesso_entrega(): void
@@ -437,35 +621,101 @@ class NFeServiceTest extends TestCase
 
         $this->assertEquals(200, $response->status());
         $this->assertEquals(1, $response->json('numero_cancelamento_insucesso_entrega'));
+        Http::assertSent(function ($request): bool {
+            return $request->method() === 'DELETE'
+                && $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/insucesso_entrega";
+        });
     }
 
     public function test_ator_interessado(): void
     {
+        $payload = [
+            'cnpj' => '07504505000132',
+            'permite_autorizacao_terceiros' => true,
+        ];
+
         Http::fake([
             $this->baseUrl . NFe::URL . "/$this->ref/ator_interessado" => Http::response([
                 'status' => 'autorizado',
             ], 200),
         ]);
 
-        $response = $this->service->atorInteressado($this->ref, [
-            'tipo_ator' => 1,
-            'cnpj' => '07504505000132',
-        ]);
+        $response = $this->service->atorInteressado($this->ref, $payload);
 
         $this->assertEquals(200, $response->status());
+        Http::assertSent(function ($request) use ($payload): bool {
+            return $request->method() === 'POST'
+                && $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/ator_interessado"
+                && $request['cnpj'] === $payload['cnpj']
+                && $request['permite_autorizacao_terceiros'] === true;
+        });
     }
 
     public function test_prorrogacao_icms(): void
     {
         Http::fake([
-            $this->baseUrl . NFe::URL . "/$this->ref/prorrogacao_icms" => Http::response([
+            $this->baseUrl . NFe::URL . "/$this->ref/evento" => Http::response([
                 'status' => 'autorizado',
             ], 200),
         ]);
 
-        $response = $this->service->prorrogacaoIcms($this->ref, ['tipo' => 1]);
+        $response = $this->service->prorrogacaoIcms($this->ref, [
+            'itens_prorrogacao_suspensao_icms' => [
+                ['numero_item' => 1],
+            ],
+        ]);
 
         $this->assertEquals(200, $response->status());
+        Http::assertSent(function ($request): bool {
+            return $request->method() === 'POST'
+                && $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/evento"
+                && $request['tipo_evento'] === 'prorrogacao_suspensao_icms'
+                && $request['itens_prorrogacao_suspensao_icms'][0]['numero_item'] === 1;
+        });
+    }
+
+    public function test_evento_nfe_generico(): void
+    {
+        $payload = [
+            'tipo_evento' => 'atualizacao_previsao_entrega',
+            'data_previsao_entrega' => '2026-02-01T10:00:00-03:00',
+        ];
+
+        Http::fake([
+            $this->baseUrl . NFe::URL . "/$this->ref/evento" => Http::response([
+                'status' => 'autorizado',
+            ], 200),
+        ]);
+
+        $response = $this->service->evento($this->ref, $payload);
+
+        $this->assertEquals(200, $response->status());
+        Http::assertSent(function ($request) use ($payload): bool {
+            return $request->method() === 'POST'
+                && $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/evento"
+                && $request['tipo_evento'] === $payload['tipo_evento']
+                && $request['data_previsao_entrega'] === $payload['data_previsao_entrega'];
+        });
+    }
+
+    public function test_cancela_evento_nfe_generico(): void
+    {
+        $tipoEvento = 'atualizacao_previsao_entrega';
+
+        Http::fake([
+            $this->baseUrl . NFe::URL . "/$this->ref/evento" => Http::response([
+                'status' => 'cancelado',
+            ], 200),
+        ]);
+
+        $response = $this->service->cancelaEvento($this->ref, $tipoEvento);
+
+        $this->assertEquals(200, $response->status());
+        Http::assertSent(function ($request) use ($tipoEvento): bool {
+            return $request->method() === 'DELETE'
+                && $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/evento"
+                && $request['tipo_evento'] === $tipoEvento;
+        });
     }
 
     public function test_registra_econf(): void
@@ -477,13 +727,24 @@ class NFeServiceTest extends TestCase
             ], 201),
         ]);
 
-        $response = $this->service->registraEconf($this->ref, [
-            'forma_pagamento' => '01',
-            'valor' => 100.0,
-        ]);
+        $payload = [
+            'detalhes_pagamento' => [
+                [
+                    'forma_pagamento' => '01',
+                    'valor' => 100.0,
+                ],
+            ],
+        ];
+
+        $response = $this->service->registraEconf($this->ref, $payload);
 
         $this->assertEquals(201, $response->status());
         $this->assertEquals('ECONF-001', $response->json('protocolo'));
+        Http::assertSent(function ($request) use ($payload): bool {
+            return $request->method() === 'POST'
+                && $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/econf"
+                && $request['detalhes_pagamento'] === $payload['detalhes_pagamento'];
+        });
     }
 
     public function test_consulta_econf(): void
@@ -501,6 +762,10 @@ class NFeServiceTest extends TestCase
 
         $this->assertEquals(200, $response->status());
         $this->assertEquals($protocolo, $response->json('protocolo'));
+        Http::assertSent(function ($request) use ($protocolo): bool {
+            return $request->method() === 'GET'
+                && $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/econf/$protocolo";
+        });
     }
 
     public function test_cancela_econf(): void
@@ -517,6 +782,10 @@ class NFeServiceTest extends TestCase
 
         $this->assertEquals(200, $response->status());
         $this->assertEquals('cancelado', $response->json('status'));
+        Http::assertSent(function ($request) use ($protocolo): bool {
+            return $request->method() === 'DELETE'
+                && $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/econf/$protocolo";
+        });
     }
 
     public function test_reenviar_hook(): void
@@ -531,6 +800,10 @@ class NFeServiceTest extends TestCase
 
         $this->assertEquals(200, $response->status());
         $this->assertEquals('hook-1', $response->json('0.id'));
+        Http::assertSent(function ($request): bool {
+            return $request->method() === 'POST'
+                && $request->url() === $this->baseUrl . NFe::URL . "/$this->ref/hook";
+        });
     }
 
     public function test_nfe_dto_inclui_formas_pagamento_no_payload(): void

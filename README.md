@@ -40,10 +40,30 @@ $response = $nfe->get('pedido-123');
 - [Exemplos](docs/exemplos.md)
 - [Erros e respostas](docs/erros-e-respostas.md)
 - [Eventos](docs/eventos.md)
+- [Homologação NFe](docs/homologacao-nfe.md)
 - [FAQ](docs/faq.md)
 - [Migração](docs/migracao.md)
 - [Contribuição](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)
+
+## NFe
+
+O service `NFe` cobre os principais contratos atuais da Focus NFe v2:
+
+- emissão com `NFeDTO`;
+- consulta simples e completa;
+- cancelamento com justificativa;
+- carta de correção;
+- inutilização e consulta de inutilizações com filtros;
+- importação por XML;
+- envio por email;
+- ECONF;
+- reenvio de hook;
+- eventos auxiliares, incluindo insucesso de entrega, ator interessado e eventos genéricos.
+
+O `NFeDTO` serializa o payload usando nomes oficiais da API, como `items`, `valor_produtos` e `valor_total`, mantendo aliases legados na entrada para compatibilidade com aplicações existentes.
+
+Veja exemplos completos em [docs/exemplos.md](docs/exemplos.md#nfe) e a estratégia de homologação em [docs/homologacao-nfe.md](docs/homologacao-nfe.md).
 
 ## Eventos
 
