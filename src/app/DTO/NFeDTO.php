@@ -222,6 +222,30 @@ class NFeDTO extends DTO
 
         unset($payload['campos_extras']);
 
-        return array_merge($payload, $camposExtras);
+        return $this->removeNullValues(array_merge($payload, $camposExtras));
+    }
+
+    /**
+     * Remove valores null do payload sem descartar valores fiscais validos
+     * como 0, "0", false ou string vazia.
+     *
+     * @param array<mixed> $payload
+     * @return array<mixed>
+     */
+    private function removeNullValues(array $payload): array
+    {
+        $filtered = [];
+
+        foreach ($payload as $key => $value) {
+            if ($value === null) {
+                continue;
+            }
+
+            $filtered[$key] = is_array($value)
+                ? $this->removeNullValues($value)
+                : $value;
+        }
+
+        return $filtered;
     }
 }

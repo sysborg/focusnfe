@@ -167,6 +167,44 @@ class NFeDTOTest extends TestCase
         $this->assertSame($this->makeItens(), $payload['items']);
     }
 
+    public function test_to_array_omite_campos_opcionais_null_sem_remover_valores_validos(): void
+    {
+        $payload = NFeDTO::fromArray(array_merge($this->makeBaseData(), [
+            'serie' => null,
+            'numero' => null,
+            'codigo_municipio_emitente' => null,
+            'codigo_municipio_destinatario' => null,
+            'transporte' => null,
+            'notas_referenciadas' => null,
+            'valor_frete' => 0.0,
+            'valor_desconto' => 0.0,
+            'campos_extras' => [
+                'informacoes_compra' => [
+                    'nota_empenho' => null,
+                    'pedido' => '',
+                    'contrato' => '0',
+                ],
+                'intermediador_presente' => false,
+            ],
+        ]))->toArray();
+
+        $this->assertArrayNotHasKey('transporte', $payload);
+        $this->assertArrayNotHasKey('notas_referenciadas', $payload);
+        $this->assertArrayNotHasKey('serie', $payload);
+        $this->assertArrayNotHasKey('numero', $payload);
+        $this->assertArrayNotHasKey('codigo_municipio_emitente', $payload);
+        $this->assertArrayNotHasKey('codigo_municipio_destinatario', $payload);
+        $this->assertArrayNotHasKey('nota_empenho', $payload['informacoes_compra']);
+
+        $this->assertSame(0.0, $payload['valor_frete']);
+        $this->assertSame(0.0, $payload['valor_desconto']);
+        $this->assertSame(1, $payload['consumidor_final']);
+        $this->assertSame(9, $payload['indicador_inscricao_estadual_destinatario']);
+        $this->assertSame('', $payload['informacoes_compra']['pedido']);
+        $this->assertSame('0', $payload['informacoes_compra']['contrato']);
+        $this->assertFalse($payload['intermediador_presente']);
+    }
+
     public function test_to_array_mantem_nomes_aderentes_ao_manual(): void
     {
         $payload = NFeDTO::fromArray($this->makeBaseData())->toArray();
@@ -177,8 +215,6 @@ class NFeDTOTest extends TestCase
         $this->assertArrayHasKey('logradouro_emitente', $payload);
         $this->assertArrayHasKey('logradouro_destinatario', $payload);
         $this->assertArrayHasKey('items', $payload);
-        $this->assertArrayHasKey('valor_produtos', $payload);
-        $this->assertArrayHasKey('valor_total', $payload);
         $this->assertArrayNotHasKey('cnpjEmitente', $payload);
         $this->assertArrayNotHasKey('formasPagamento', $payload);
         $this->assertArrayNotHasKey('itens', $payload);
