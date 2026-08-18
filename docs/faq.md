@@ -14,7 +14,7 @@ Pelo manual local versionado no projeto, os campos documentados para autenticaca
 
 ## O pacote ja possui retry e rate limit?
 
-Sim. O `FocusNfeHttp` aplica retry configuravel e rate limiting local opcional.
+O pacote possui rate limiting local opcional, mas nao agenda retentativas automaticas. Para documentos em processamento, use os webhooks da FocusNFe ou consulte a nota posteriormente sob demanda.
 
 ## As respostas ja possuem DTO dedicado?
 

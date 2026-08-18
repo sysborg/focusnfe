@@ -39,7 +39,6 @@ class EmpresasServiceTest extends TestCase
                 'URL' => ['production' => $this->baseUrl],
                 'log' => ['channel' => 'stack', 'level' => 'error'],
                 'rate_limit' => ['enabled' => false],
-                'retry' => ['times' => 1, 'sleep' => 0],
             ],
         ]));
 

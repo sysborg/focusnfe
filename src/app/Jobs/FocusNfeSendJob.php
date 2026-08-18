@@ -43,11 +43,15 @@ abstract class FocusNfeSendJob implements ShouldQueue
     use SerializesModels;
 
     /**
-     * Número máximo de tentativas antes de marcar o job como falhado
+     * Número máximo de tentativas antes de marcar o job como falhado.
+     *
+     * O pacote nao agenda retentativas automaticas de envio: a FocusNFe pode
+     * notificar mudanças por webhook, e a aplicação pode consultar a nota
+     * posteriormente sob demanda.
      *
      * @var int
      */
-    public int $tries = 3;
+    public int $tries = 1;
 
     /**
      * Timeout máximo em segundos para execução do job
@@ -55,16 +59,6 @@ abstract class FocusNfeSendJob implements ShouldQueue
      * @var int
      */
     public int $timeout = 60;
-
-    /**
-     * Calcula o delay em segundos para cada tentativa (exponential backoff)
-     *
-     * @return array<int>
-     */
-    public function backoff(): array
-    {
-        return [1, 5, 10];
-    }
 
     /**
      * Lógica de envio a ser implementada na classe filha

@@ -32,7 +32,6 @@ class NFCeServiceTest extends TestCase
                 ],
                 'log' => ['channel' => 'stack', 'level' => 'error'],
                 'rate_limit' => ['enabled' => false],
-                'retry' => ['times' => 1, 'sleep' => 0],
             ],
         ]));
         $container->instance('log', new class () {

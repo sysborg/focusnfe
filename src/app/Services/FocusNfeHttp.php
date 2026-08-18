@@ -2,7 +2,6 @@
 
 namespace Sysborg\FocusNfe\app\Services;
 
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -11,7 +10,7 @@ use Sysborg\FocusNfe\app\Exceptions\RateLimitException;
 
 /**
  * Cliente HTTP inteligente do FocusNFe com autenticação,
- * retry com exponential backoff e proteção contra rate limits
+ * e proteção contra rate limits
  */
 class FocusNfeHttp
 {
@@ -33,23 +32,16 @@ class FocusNfeHttp
     }
 
     /**
-     * Cria uma instância autenticada com retry e exponential backoff configurados
+     * Cria uma instância autenticada.
      *
      * @param string $token Token de acesso da API FocusNFe
      * @return self
      */
     public static function withToken(string $token): self
     {
-        $times = (int) config('focusnfe.retry.times', 3);
-        $sleep = (int) config('focusnfe.retry.sleep', 1000);
-
         $http = Http::withHeaders([
             'Authorization' => 'Basic ' . base64_encode($token),
-        ])->retry(
-            $times,
-            static fn (int $attempt) => $sleep * (2 ** ($attempt - 1)),
-            static fn (\Throwable $e) => $e instanceof ConnectionException
-        );
+        ]);
 
         return new self($http);
     }

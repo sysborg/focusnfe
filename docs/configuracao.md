@@ -17,15 +17,6 @@ As URLs base ficam em `config/focusnfe.php`:
 
 O token e lido de `FOCUSNFE_TOKEN` e enviado em `Authorization: Basic {base64(token)}`.
 
-## Retry e exponential backoff
-
-```env
-FOCUSNFE_RETRY_TIMES=3
-FOCUSNFE_RETRY_SLEEP=1000
-```
-
-O sleep configurado e a base do backoff exponencial usado pelo `FocusNfeHttp`.
-
 ## Rate limit local
 
 ```env

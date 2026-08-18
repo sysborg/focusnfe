@@ -8,6 +8,7 @@ use Illuminate\Cache\Repository;
 use Illuminate\Contracts\Cache\Repository as CacheRepositoryContract;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Container\Container;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Http;
@@ -25,7 +26,6 @@ class FocusNfeHttpTest extends TestCase
         $container->instance('config', new ConfigRepository([
             'focusnfe' => [
                 'log' => ['channel' => 'stack', 'level' => 'debug'],
-                'retry' => ['times' => 1, 'sleep' => 0],
                 'rate_limit' => ['enabled' => false, 'max_attempts' => 60, 'decay_seconds' => 60],
             ],
         ]));
@@ -63,6 +63,27 @@ class FocusNfeHttpTest extends TestCase
             return $request->url() === 'https://api.focusnfe.com.br/v2/nfe/teste?completo=true'
                 && $request->hasHeader('Authorization', 'Basic ' . base64_encode('meu-token'));
         });
+    }
+
+    public function test_nao_retenta_automaticamente_quando_ocorre_erro_de_conexao(): void
+    {
+        $requests = 0;
+
+        Http::fake(function () use (&$requests) {
+            $requests++;
+
+            throw new ConnectionException('Falha de conexao simulada');
+        });
+
+        $client = FocusNfeHttp::withToken('meu-token');
+
+        $this->expectException(ConnectionException::class);
+
+        try {
+            $client->get('https://api.focusnfe.com.br/v2/nfe/teste');
+        } finally {
+            $this->assertSame(1, $requests);
+        }
     }
 
     public function test_post_put_delete_e_pending_usam_pending_request_configurado(): void

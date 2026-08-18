@@ -44,7 +44,6 @@ class SBFocusNFeProviderTest extends TestCase
                 'token' => 'test-token',
                 'ambiente' => 'production',
                 'rate_limit' => ['enabled' => false],
-                'retry' => ['times' => 1, 'sleep' => 0],
                 'log' => ['channel' => 'stack', 'level' => 'error'],
                 'listeners' => [
                     'hooks' => [

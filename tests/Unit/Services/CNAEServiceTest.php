@@ -28,7 +28,6 @@ class CNAEServiceTest extends TestCase
                 'URL' => ['production' => 'https://api.focusnfe.com.br'],
                 'log' => ['channel' => 'stack', 'level' => 'error'],
                 'rate_limit' => ['enabled' => false],
-                'retry' => ['times' => 1, 'sleep' => 0],
             ],
         ]));
         $container->instance('http', new HttpFactory());
